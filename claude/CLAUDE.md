@@ -23,8 +23,32 @@
 - **OneDrive**: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/` for large file backups (trade.db, etc.)
 - **Dotfiles**: `~/dotfiles` synced to github.com/deluair/dotfiles
 
-## Workflow
-- Don't ask for confirmation on routine tasks when intent is clear.
-- Offer numbered options for choices.
-- Action first, explain only if needed.
-- Never commit .env, credentials, API keys, or large .db files.
+## Workflow Orchestration (ACE)
+
+### Planning
+- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
+- If something goes sideways, STOP and re-plan immediately
+- Write detailed specs upfront to reduce ambiguity
+
+### Execution
+- Don't ask for confirmation on routine tasks when intent is clear
+- Offer numbered options for choices
+- Action first, explain only if needed
+- Offload research and parallel work to subagents, keep main context clean
+- One task per subagent for focused execution
+
+### Self-Improvement
+- After ANY correction: update project `tasks/lessons.md` with the pattern
+- Write rules that prevent the same mistake
+- Review lessons at session start
+
+### Verification
+- Never mark a task complete without proving it works
+- Run the project's build/test command after every change set
+- Ask: "Would a staff engineer approve this?"
+
+### Standards
+- **Simplicity First**: Make every change as simple as possible
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Changes touch only what is necessary
+- Never commit .env, credentials, API keys, or large .db files
