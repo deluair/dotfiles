@@ -3,7 +3,7 @@
 ## About Me
 - **Md Deluair Hossen, PhD** - Post-Doctoral Research Associate, University of Tennessee.
 - **Projects**: bdpolicylab.com (OMTT), bdfacts.org (BDFacts), tradeweave.org (TradeWeave)
-- **Domain**: Bangladesh policy, economics, trade, open data platforms
+- **Domain**: Bangladesh policy, economics, trade, genomics, geospatial, AI/ML
 
 ## Writing Style
 - **No em dashes** - never use em dashes in any output, code, templates, or writing. Use commas, periods, colons, or parentheses instead.
@@ -20,7 +20,6 @@
 ## Infrastructure
 - **Hosting**: OVH VPS, Nginx, PM2 (Node) or systemd (Python).
 - **GitHub**: github.com/deluair - all repos.
-- **OneDrive**: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/` for large file backups (trade.db, etc.)
 - **Dotfiles**: `~/dotfiles` synced to github.com/deluair/dotfiles
 
 ## Workflow Orchestration (ACE)
@@ -52,3 +51,9 @@
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
 - **Minimal Impact**: Changes touch only what is necessary
 - Never commit .env, credentials, API keys, or large .db files
+
+## Technical Lessons
+- **Plotly 6**: `add_vline`/`add_hline` with string x-axis does not work. Use `add_shape` + `add_annotation` separately with `xref="paper"` or `yref="paper"`.
+- **Windows encoding**: Prefix commands with `PYTHONIOENCODING=utf-8` when printing non-ASCII (Bengali, etc.) on Windows.
+- **aiosqlite**: Use `row_factory = aiosqlite.Row` for dict-like access. Schema auto-created by `init_db()`.
+- **FastAPI templates**: Use `TemplateResponse(request, "name.html", {ctx})`, request first (new Starlette API).
