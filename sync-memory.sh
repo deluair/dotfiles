@@ -13,7 +13,8 @@ encode_path() {
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
         p=$(cygpath -w "$HOME" 2>/dev/null || echo "$HOME")
     fi
-    echo "$p" | sed 's|[/\\:]|-|g' | sed 's|^-*||' | sed 's|-*$||'
+    # Replace path separators with dashes, keep leading dash (Claude expects it)
+    echo "$p" | sed 's|[/\\:]|-|g' | sed 's|-*$||'
 }
 
 PROJECT_FOLDER=$(encode_path "$HOME")

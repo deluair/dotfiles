@@ -28,8 +28,8 @@ encode_path() {
         # Convert /c/Users/mhossen -> C--Users-mhossen
         p=$(cygpath -w "$HOME" 2>/dev/null || echo "$HOME")
     fi
-    # Replace path separators and colons with dashes
-    echo "$p" | sed 's|[/\\:]|-|g' | sed 's|^-*||' | sed 's|-*$||'
+    # Replace path separators with dashes, keep leading dash (Claude expects it)
+    echo "$p" | sed 's|[/\\:]|-|g' | sed 's|-*$||'
 }
 
 PROJECT_FOLDER=$(encode_path "$HOME")
