@@ -1,6 +1,15 @@
 #!/bin/bash
 # Cross-platform path resolution. Source this from all scripts.
 # Sets: OS, ONEDRIVE, GDRIVE, PROJECTS_DIR, SHELL_RC, LINK_CMD
+# Sources config.sh for machine-specific values (identity, VPS, repos).
+
+DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
+
+if [ -f "$DOTFILES_DIR/config.sh" ]; then
+    source "$DOTFILES_DIR/config.sh"
+else
+    echo "WARNING: $DOTFILES_DIR/config.sh not found. Copy config.sh.example to config.sh and edit." >&2
+fi
 
 case "$OSTYPE" in
     darwin*)  OS="macos" ;;
@@ -9,26 +18,24 @@ case "$OSTYPE" in
     *)        OS="unknown" ;;
 esac
 
-# ── Cloud storage paths ──
+# ── Cloud storage paths (built from config.sh values) ──
+ONEDRIVE_ORG_NOSPACE=$(echo "$ONEDRIVE_ORG" | tr -d ' ')
 if [ "$OS" = "macos" ]; then
-    ONEDRIVE="$HOME/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage"
-    GDRIVE="$HOME/Library/CloudStorage/GoogleDrive-dulal1986@gmail.com/My Drive/dev_backups"
+    ONEDRIVE="$HOME/Library/CloudStorage/OneDrive-${ONEDRIVE_ORG_NOSPACE}/${ONEDRIVE_FOLDER}"
+    GDRIVE="$HOME/Library/CloudStorage/GoogleDrive-${GDRIVE_EMAIL}/My Drive/${GDRIVE_FOLDER}"
 elif [ "$OS" = "windows" ]; then
-    # Git Bash on Windows: OneDrive syncs to user profile
     WIN_HOME=$(cygpath -u "$USERPROFILE" 2>/dev/null || echo "$HOME")
-    ONEDRIVE="$WIN_HOME/OneDrive - University of Tennessee/hossen_storage"
-    # Google Drive for Desktop: check common mount points
+    ONEDRIVE="$WIN_HOME/OneDrive - ${ONEDRIVE_ORG}/${ONEDRIVE_FOLDER}"
     if [ -d "/g/My Drive" ]; then
-        GDRIVE="/g/My Drive/dev_backups"
+        GDRIVE="/g/My Drive/${GDRIVE_FOLDER}"
     elif [ -d "$WIN_HOME/Google Drive/My Drive" ]; then
-        GDRIVE="$WIN_HOME/Google Drive/My Drive/dev_backups"
+        GDRIVE="$WIN_HOME/Google Drive/My Drive/${GDRIVE_FOLDER}"
     else
         GDRIVE=""
     fi
 else
-    # Linux: OneDrive via rclone mount or similar
-    ONEDRIVE="$HOME/OneDrive/hossen_storage"
-    GDRIVE="$HOME/GDrive/dev_backups"
+    ONEDRIVE="$HOME/OneDrive/${ONEDRIVE_FOLDER}"
+    GDRIVE="$HOME/GDrive/${GDRIVE_FOLDER}"
 fi
 
 # ── Project root ──
@@ -82,3 +89,4 @@ copy_with_progress() {
 }
 
 export OS ONEDRIVE GDRIVE PROJECTS_DIR SHELL_RC SHELL_RC_NAME
+export GIT_USER_NAME GIT_USER_EMAIL GPG_EMAIL GITHUB_USER VPS_HOST VPS_BACKUP_PATH REPOS

@@ -1,8 +1,5 @@
 .PHONY: install brew sync push pull doctor backup restore clone-all sites vps-pull gpg-import all deps
 
-# ── One line to edit when adding a new project ──
-REPOS = omtt bddata trade-explorer dulalratna pmgai econai hossen
-
 # ── Setup ──
 
 # Full setup: deps + install
@@ -29,20 +26,21 @@ install:
 gpg-import:
 	@bash -c 'source paths.sh; \
 		KEY=""; \
-		[ -f "$$ONEDRIVE/gpg_backup/deluair_private.asc" ] && KEY="$$ONEDRIVE/gpg_backup/deluair_private.asc"; \
-		[ -z "$$KEY" ] && [ -n "$$GDRIVE" ] && [ -f "$$GDRIVE/../sensitive/gpg_backup/deluair_private.asc" ] && KEY="$$GDRIVE/../sensitive/gpg_backup/deluair_private.asc"; \
+		[ -f "$$ONEDRIVE/gpg_backup/$$GPG_KEY_NAME.asc" ] && KEY="$$ONEDRIVE/gpg_backup/$$GPG_KEY_NAME.asc"; \
+		[ -z "$$KEY" ] && [ -n "$$GDRIVE" ] && [ -f "$$GDRIVE/../sensitive/gpg_backup/$$GPG_KEY_NAME.asc" ] && KEY="$$GDRIVE/../sensitive/gpg_backup/$$GPG_KEY_NAME.asc"; \
 		if [ -n "$$KEY" ]; then gpg --import "$$KEY"; else echo "Key not found in cloud storage"; fi'
 
 # Clone all project repos
 clone-all:
-	@for repo in $(REPOS); do \
+	@bash -c 'source paths.sh; \
+	for repo in $$REPOS; do \
 		if [ ! -d "$(HOME)/$$repo" ]; then \
 			echo "Cloning $$repo..."; \
-			git clone "https://github.com/deluair/$$repo.git" "$(HOME)/$$repo"; \
+			git clone "https://github.com/$$GITHUB_USER/$$repo.git" "$(HOME)/$$repo"; \
 		else \
 			echo "$$repo already exists"; \
 		fi \
-	done
+	done'
 
 # ── Sit down / Stand up ──
 
@@ -52,13 +50,14 @@ pull:
 	@git pull --ff-only 2>/dev/null || git pull
 	@bash install.sh
 	@echo ""
-	@echo "Pulling project repos..."
-	@for repo in $(REPOS); do \
+	@bash -c 'source paths.sh; \
+	echo "Pulling project repos..."; \
+	for repo in $$REPOS; do \
 		if [ -d "$(HOME)/$$repo/.git" ]; then \
 			printf "  %-20s" "$$repo"; \
 			cd "$(HOME)/$$repo" && git pull --ff-only 2>/dev/null && printf "OK\n" || printf "CONFLICT (resolve manually)\n"; \
 		fi \
-	done
+	done'
 	@echo ""
 	@bash restore-data.sh
 	@echo ""
@@ -72,8 +71,9 @@ push: sync
 	@git add -A && git diff --cached --quiet || git commit -m "sync memory"
 	@git push 2>/dev/null && echo "  OK" || echo "  already up to date"
 	@echo ""
-	@echo "Project repos:"
-	@for repo in $(REPOS); do \
+	@bash -c 'source paths.sh; \
+	echo "Project repos:"; \
+	for repo in $$REPOS; do \
 		if [ -d "$(HOME)/$$repo/.git" ]; then \
 			AHEAD=$$(cd "$(HOME)/$$repo" && git rev-list --count @{u}..HEAD 2>/dev/null || echo "?"); \
 			if [ "$$AHEAD" = "0" ] || [ "$$AHEAD" = "?" ]; then \
@@ -83,7 +83,7 @@ push: sync
 				cd "$(HOME)/$$repo" && git push 2>/dev/null && printf "OK\n" || printf "FAILED\n"; \
 			fi \
 		fi \
-	done
+	done'
 
 # Sync Claude memory to dotfiles
 sync:
@@ -133,7 +133,7 @@ doctor:
 	([ -L "$$HOME/.claude/CLAUDE.md" ] || [ -f "$$HOME/.claude/CLAUDE.md" ]) && printf "  OK   CLAUDE.md\n" || printf "  WARN CLAUDE.md\n"; \
 	echo ""; \
 	echo "=== GPG ==="; \
-	gpg --list-keys deluair@gmail.com >/dev/null 2>&1 && printf "  OK   GPG key imported\n" || printf "  MISS GPG key (run: make gpg-import)\n"; \
+	gpg --list-keys "$$GPG_EMAIL" >/dev/null 2>&1 && printf "  OK   GPG key imported\n" || printf "  MISS GPG key (run: make gpg-import)\n"; \
 	echo ""; \
 	echo "=== Data Files ==="; \
 	P="$$PROJECTS_DIR"; \
@@ -147,9 +147,10 @@ doctor:
 	[ -f "$$ONEDRIVE/db_backups/trade.db" ] && printf "  OK   trade.db in OneDrive\n" || printf "  MISS trade.db in OneDrive\n"; \
 	if [ -n "$$GDRIVE" ] && [ -f "$$GDRIVE/db_backups/trade.db" ]; then printf "  OK   trade.db in GDrive\n"; else printf "  MISS trade.db in GDrive (make backup)\n"; fi; \
 	echo ""; \
-	echo "=== Claude Memory ==="; \
+	echo "=== Claude Code ==="; \
 	MEM_DIR="$$HOME/.claude/projects/$$(encode_claude_path "$$HOME")/memory"; \
-	if [ -d "$$MEM_DIR" ]; then printf "  OK   %s files\n" "$$(ls $$MEM_DIR/*.md 2>/dev/null | wc -l | tr -d " ")"; else printf "  MISS (run make install)\n"; fi; \
+	if [ -d "$$MEM_DIR" ]; then printf "  OK   memory: %s files\n" "$$(ls $$MEM_DIR/*.md 2>/dev/null | wc -l | tr -d " ")"; else printf "  MISS memory (run make install)\n"; fi; \
+	if [ -d "$$HOME/.claude/commands" ]; then printf "  OK   commands: %s\n" "$$(ls $$HOME/.claude/commands/*.md 2>/dev/null | wc -l | tr -d " ")"; else printf "  MISS commands (run make install)\n"; fi; \
 	echo ""; \
 	echo "=== Disk Space ==="; \
 	if [ "$$OS" = "macos" ]; then \

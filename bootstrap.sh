@@ -45,8 +45,16 @@ if [ ! -d "$HOME/dotfiles" ]; then
     git clone https://github.com/deluair/dotfiles.git "$HOME/dotfiles"
 fi
 
-# ── 3. Install system deps + configs ──
+# ── 3. Create config.sh if missing ──
 cd "$HOME/dotfiles"
+if [ ! -f "config.sh" ]; then
+    cp config.sh.example config.sh
+    echo "Created config.sh from template. Edit it with your values:"
+    echo "  $HOME/dotfiles/config.sh"
+    echo ""
+fi
+
+# ── 4. Install system deps + configs ──
 
 if [ "$OS" = "macos" ]; then
     make all

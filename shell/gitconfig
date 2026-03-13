@@ -1,6 +1,5 @@
-[user]
-	name = Md Deluair Hossen
-	email = Dulal1986@gmail.com
+[include]
+	path = ~/.gitconfig.local
 
 [safe]
 	directory = *

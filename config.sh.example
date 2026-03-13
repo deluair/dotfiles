@@ -1,0 +1,24 @@
+#!/bin/bash
+# Machine-specific config. Copy to config.sh and edit.
+# config.sh is gitignored and never committed.
+
+# ── Identity ──
+GIT_USER_NAME="Your Name"
+GIT_USER_EMAIL="you@example.com"
+GPG_EMAIL="you@example.com"
+GPG_KEY_NAME="your_private"
+GITHUB_USER="your-github-username"
+
+# ── Cloud storage ──
+# Used by paths.sh to build OS-specific cloud paths.
+ONEDRIVE_ORG="Your Organization"
+ONEDRIVE_FOLDER="your_storage"
+GDRIVE_EMAIL="you@gmail.com"
+GDRIVE_FOLDER="dev_backups"
+
+# ── VPS ──
+VPS_HOST="user@your-vps-ip"
+VPS_BACKUP_PATH="/home/user/backups"
+
+# ── Projects to manage ──
+REPOS="repo1 repo2 repo3"

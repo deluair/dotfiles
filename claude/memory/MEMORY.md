@@ -2,19 +2,19 @@
 
 ## User Info
 
-- **GitHub username**: `deluair`
+- **GitHub username**: `$GITHUB_USER` (from `~/dotfiles/config.sh`)
 
 ## Workflow Preferences
 
 - **Local-first**: Always test/check locally before deploying to VPS. VPS SSH is slow; local iteration is faster.
 - **Machineless setup**: See [machineless_setup.md](machineless_setup.md) for full details. All 6 projects: git-secret + OneDrive + Makefile + pre-commit hooks. `git clone` + `make setup` = running.
 - **New machine bootstrap**: See [new_machine_bootstrap.md](new_machine_bootstrap.md) for step-by-step: dotfiles first, then projects, then push dotfiles after sessions.
-- **GPG key**: `deluair@gmail.com` (8A4821AE71E9AB760CD4BCB845AA56DF3876E02B). Backed up to OneDrive `gpg_backup/`.
+- **GPG key**: `$GPG_EMAIL` (from `~/dotfiles/config.sh`). Backed up to OneDrive `gpg_backup/`.
 - **No git-lfs**: Decided against it. OneDrive is free via UTK, not worth $5/mo for LFS.
 
 ## OneDrive Data Backup Map
 
-Base path: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
+Base path: `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
 
 | Project | Gitignored Data | OneDrive Location | Notes |
 |---------|----------------|-------------------|-------|
@@ -41,8 +41,8 @@ Base path: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage
 
 ## Personal Page
 
-- **Repo**: `deluair/hossen` (`~/hossen`)
-- **URL**: deluair.github.io/hossen/
+- **Repo**: `$GITHUB_USER/hossen` (`~/hossen`)
+- **URL**: `$GITHUB_USER`.github.io/hossen/
 - **Hosting**: GitHub Pages (master branch)
 - **Stack**: Single static `index.html`, no framework
 - **Tone**: Understated, introverted, let work speak. No salesy copy.
@@ -53,11 +53,11 @@ Base path: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage
 
 | Project | Repo / Dir | Domain | Purpose | Stack |
 |---------|-----------|--------|---------|-------|
-| **BDFacts** | `deluair/bddata` (`~/bddata`) | bdfacts.org | Charity: BD open data dissemination | React 19 + FastAPI + SQLite |
-| **TradeWeave** | `deluair/trade-explorer` (`~/trade-explorer`) | tradeweave.org | Job/skill: International trade analytics | Full-stack, D3/Deck.gl, BACI data |
-| **OMTT** | `deluair/omtt` (`~/omtt`) | bdpolicylab.com | Future business: pure think tank, consultancy | Policy-first, AI-augmented |
+| **BDFacts** | `$GITHUB_USER/bddata` (`~/bddata`) | bdfacts.org | Charity: BD open data dissemination | React 19 + FastAPI + SQLite |
+| **TradeWeave** | `$GITHUB_USER/trade-explorer` (`~/trade-explorer`) | tradeweave.org | Job/skill: International trade analytics | Full-stack, D3/Deck.gl, BACI data |
+| **OMTT** | `$GITHUB_USER/omtt` (`~/omtt`) | bdpolicylab.com | Future business: pure think tank, consultancy | Policy-first, AI-augmented |
 
-- All hosted on OVH VPS (`vps-45aafae5.vps.ovh.us`, user `ubuntu`)
+- All hosted on OVH VPS (`$VPS_HOST` from `~/dotfiles/config.sh`)
 
 ## Core Values / Project Purpose Hierarchy
 
@@ -99,7 +99,7 @@ See `projects-overview.md` for detailed cross-project design system comparison, 
 
 ## PMGAI Toolkit
 
-- **Location**: `~/pmgai/` (repo: `deluair/pmgai`)
+- **Location**: `~/pmgai/` (repo: `$GITHUB_USER/pmgai`)
 - **Purpose**: AI-augmented plant molecular genetics research toolkit
 - **Key modules**:
   - `src/python/latex/pipeline.py`: `PaperPipeline` class (sections + tables + figures -> PDF)
@@ -119,7 +119,7 @@ See `projects-overview.md` for detailed cross-project design system comparison, 
 ## DulalRatna (Life OS)
 
 See [dulalratna.md](dulalratna.md) for full details.
-- **Location**: `~/dulalratna/` (repo: `deluair/dulalratna`, private)
+- **Location**: `~/dulalratna/` (repo: `$GITHUB_USER/dulalratna`, private)
 - **Stack**: SQLite (`me.db`, schema v4) + Gemini AI + Telegram bot
 - **Model**: `gemini-3.1-flash-lite-preview` (DO NOT CHANGE per user)
 - **Intelligence**: 10 tools, FTS5 memory, Holt's forecasting, z-score anomaly detection, auto-context priming

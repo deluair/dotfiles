@@ -7,6 +7,15 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/paths.sh"
 
+human_size() {
+    local src="$1"
+    if [ -f "$src" ]; then
+        du -h "$src" 2>/dev/null | cut -f1
+    else
+        echo "?"
+    fi
+}
+
 restore() {
     local label="$1" dest="$2" onedrive_src="$3" gdrive_src="$4"
     if [ -f "$dest" ]; then
@@ -14,23 +23,52 @@ restore() {
         return
     fi
     mkdir -p "$(dirname "$dest")"
+    local src=""
+    local cloud=""
     if [ -f "$onedrive_src" ]; then
-        echo "  COPY  $label <- OneDrive"
-        copy_with_progress "$onedrive_src" "$dest"
+        src="$onedrive_src"
+        cloud="OneDrive"
     elif [ -n "$GDRIVE" ] && [ -f "$gdrive_src" ]; then
-        echo "  COPY  $label <- GDrive"
-        copy_with_progress "$gdrive_src" "$dest"
-    else
-        echo "  MISS  $label (not found in either cloud)"
+        src="$gdrive_src"
+        cloud="GDrive"
     fi
+    if [ -z "$src" ]; then
+        echo "  MISS  $label (not found in either cloud)"
+        return
+    fi
+    local size
+    size=$(human_size "$src")
+    echo "  COPY  $label ($size) <- $cloud"
+    copy_with_progress "$src" "$dest"
 }
 
 echo "Restoring project data ($OS)..."
 echo ""
 
+# Show total size estimate before starting
+TOTAL=0
+for f in \
+    "$ONEDRIVE/db_backups/trade.db" \
+    "$ONEDRIVE/db_backups/tradeweave_app_latest.db" \
+    "$ONEDRIVE/db_backups/bddb_latest.sqlite" \
+    "$ONEDRIVE/db_backups/omtt_bdpolicy_latest.db" \
+    "$ONEDRIVE/db_backups/omtt_bangladesh_latest.db" \
+    "$ONEDRIVE/db_backups/omtt_baci_latest.db" \
+    "$ONEDRIVE/db_backups/dulalratna_me_latest.db"; do
+    if [ -f "$f" ]; then
+        SIZE=$(du -k "$f" 2>/dev/null | cut -f1)
+        TOTAL=$((TOTAL + SIZE))
+    fi
+done
+if [ "$TOTAL" -gt 0 ]; then
+    TOTAL_H=$(echo "$TOTAL" | awk '{if ($1 > 1048576) printf "%.1fGB", $1/1048576; else if ($1 > 1024) printf "%.0fMB", $1/1024; else printf "%dKB", $1}')
+    echo "Total source data: ~$TOTAL_H (files already present will be skipped)"
+    echo ""
+fi
+
 P="$PROJECTS_DIR"
 
-restore "trade.db (18GB)" \
+restore "trade.db (18GB, may take a while)" \
     "$P/trade-explorer/data/trade.db" \
     "$ONEDRIVE/db_backups/trade.db" \
     "$GDRIVE/db_backups/trade.db"

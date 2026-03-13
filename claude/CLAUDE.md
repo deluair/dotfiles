@@ -7,6 +7,11 @@
 - **GitHub**: github.com/deluair
 - **Primary language**: Python. Default to Python unless the project dictates otherwise.
 
+## Environment
+- **Primary OS**: Windows (Git Bash / MSYS2). Do not suggest Unix-only tools (ssh-copy-id, xdg-open, pbcopy) without checking availability first.
+- **Cross-platform**: All scripts must work on macOS, Windows (Git Bash), and Linux. Use OS detection from `~/dotfiles/paths.sh`.
+- **Machine config**: All machine-specific values live in `~/dotfiles/config.sh` (gitignored). Never hardcode usernames, IPs, or absolute paths in committed files.
+
 ## Writing Style
 - **No em dashes or en dashes** in any output, code, templates, or writing. Use commas, periods, colons, or parentheses instead.
 - **No emojis** unless explicitly asked.
@@ -22,6 +27,7 @@
 - Add features beyond what was requested. No "while we're at it" improvements.
 - Over-abstract. Three similar lines > a premature helper function.
 - Use mock, fake, or hallucinated data. Always use real data unless I explicitly say otherwise.
+- When fixing a reported bug, fix ONLY the reported issue. No unsolicited visual improvements, polish, or design changes.
 
 ## Tools
 - **Python**: always use `uv` (not pip/pipx). `uv run python` for scripts, `uvx` for CLI tools like ruff.
@@ -50,13 +56,20 @@
 - SQLite is the default data store. Use WAL mode for concurrent reads.
 - When replacing `.db` files, always clean up stale WAL/SHM files.
 - Data file paths: use project-relative paths, never hardcode absolute paths in code.
-- For data backups, use OneDrive: `"C:\Users\mhossen\OneDrive - University of Tennessee\hossen_storage\"`.
+- For data backups, use OneDrive (`$ONEDRIVE` from `~/dotfiles/paths.sh`).
 
 ## Infrastructure
 - **Hosting**: OVH VPS, Ubuntu, Nginx reverse proxy.
 - **Process management**: PM2 (Node apps) or systemd (Python services).
 - **DNS/SSL**: Cloudflare.
-- **Dotfiles**: `~/dotfiles` synced to github.com/deluair/dotfiles.
+- **Dotfiles**: `~/dotfiles` synced to GitHub.
+
+## Deployment
+- **Always** use `npm install` on VPS, not `npm ci` (cross-platform lockfile incompatibility).
+- **Always** remove stale WAL/SHM files before and after DB file operations on VPS.
+- **Always** verify SSH connectivity before starting file transfers.
+- **Pre-deploy**: Run full local build first. Never deploy unbuildable code.
+- **Post-deploy**: Hit at least one health endpoint to confirm the service is alive.
 
 ## Error Handling Rules
 - **Build fails**: Read the error, fix the root cause. Don't retry blindly.
@@ -88,6 +101,7 @@
 ### Verification
 - Never mark a task complete without proving it works.
 - Run the project's build/test command after every change set.
+- After multi-file refactors or route rewrites: grep for all references to removed/renamed variables and fix before building.
 - Ask: "Would a staff engineer approve this?"
 
 ### Standards

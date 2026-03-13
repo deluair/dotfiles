@@ -7,7 +7,22 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
+# Generate config.sh from example if missing
+if [ ! -f "$DOTFILES_DIR/config.sh" ]; then
+    echo "No config.sh found. Creating from template..."
+    cp "$DOTFILES_DIR/config.sh.example" "$DOTFILES_DIR/config.sh"
+    echo "  Edit $DOTFILES_DIR/config.sh with your values, then re-run."
+    exit 1
+fi
+
 source "$DOTFILES_DIR/paths.sh"
+
+# Validate config.sh has real values (not placeholders)
+if [ "$GIT_USER_NAME" = "Your Name" ] || [ "$GIT_USER_EMAIL" = "you@example.com" ] || [ "$GITHUB_USER" = "your-github-username" ]; then
+    echo "ERROR: config.sh still has placeholder values. Edit it first:"
+    echo "  $DOTFILES_DIR/config.sh"
+    exit 1
+fi
 
 echo "=== Installing dotfiles ($OS) ==="
 echo ""
@@ -32,8 +47,16 @@ if [ -f "$SHELL_RC" ] && [ ! -L "$SHELL_RC" ]; then
 fi
 try_link "$SHELL_SRC" "$SHELL_RC"
 
-# .gitconfig
+# .gitconfig (shared settings)
 try_link "$DOTFILES_DIR/shell/gitconfig" "$HOME/.gitconfig"
+
+# .gitconfig.local (machine-specific identity, from config.sh)
+cat > "$HOME/.gitconfig.local" <<EOF
+[user]
+	name = $GIT_USER_NAME
+	email = $GIT_USER_EMAIL
+EOF
+echo "  ~/.gitconfig.local -> generated from config.sh"
 
 # ── Claude Code ──
 echo ""
@@ -43,6 +66,14 @@ mkdir -p "$CLAUDE_DIR"
 try_link "$DOTFILES_DIR/claude/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
 try_link "$DOTFILES_DIR/claude/settings.json" "$CLAUDE_DIR/settings.json"
 try_link "$DOTFILES_DIR/claude/settings.local.json" "$CLAUDE_DIR/settings.local.json"
+
+# Deploy commands
+if [ -d "$DOTFILES_DIR/claude/commands" ]; then
+    mkdir -p "$CLAUDE_DIR/commands"
+    cp "$DOTFILES_DIR/claude/commands/"*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
+    count=$(ls "$CLAUDE_DIR/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
+    echo "  commands -> deployed ($count commands)"
+fi
 
 # Deploy memory
 PROJECT_FOLDER=$(encode_claude_path "$HOME")
@@ -58,17 +89,17 @@ fi
 # ── GPG key ──
 echo ""
 echo "GPG key:"
-if gpg --list-keys deluair@gmail.com &>/dev/null; then
+if gpg --list-keys "$GPG_EMAIL" &>/dev/null; then
     echo "  Already imported"
 else
     KEY=""
-    [ -f "$ONEDRIVE/gpg_backup/deluair_private.asc" ] && KEY="$ONEDRIVE/gpg_backup/deluair_private.asc"
-    [ -z "$KEY" ] && [ -n "$GDRIVE" ] && [ -f "$GDRIVE/../sensitive/gpg_backup/deluair_private.asc" ] && KEY="$GDRIVE/../sensitive/gpg_backup/deluair_private.asc"
+    [ -f "$ONEDRIVE/gpg_backup/${GPG_KEY_NAME}.asc" ] && KEY="$ONEDRIVE/gpg_backup/${GPG_KEY_NAME}.asc"
+    [ -z "$KEY" ] && [ -n "$GDRIVE" ] && [ -f "$GDRIVE/../sensitive/gpg_backup/${GPG_KEY_NAME}.asc" ] && KEY="$GDRIVE/../sensitive/gpg_backup/${GPG_KEY_NAME}.asc"
     if [ -n "$KEY" ]; then
         gpg --import "$KEY" 2>/dev/null && echo "  Imported from cloud storage" || echo "  Import failed (check passphrase)"
     else
         echo "  Not found in cloud storage. Import manually:"
-        echo "    gpg --import /path/to/deluair_private.asc"
+        echo "    gpg --import /path/to/${GPG_KEY_NAME}.asc"
     fi
 fi
 
