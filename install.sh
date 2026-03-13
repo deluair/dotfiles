@@ -1,34 +1,52 @@
 #!/bin/bash
-# Install Claude Code dotfiles
-# Works on macOS, Linux, and Git Bash (Windows)
-
+# Install dotfiles: symlink configs, deploy Claude memory, import GPG key.
+# Idempotent: safe to run multiple times.
 set -e
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
+echo "=== Installing dotfiles ==="
+echo ""
+
+# ── Shell configs ──
+echo "Shell configs:"
+
+# .zshrc: preserve machine-local additions
+if [ -f "$HOME/.zshrc" ] && [ ! -L "$HOME/.zshrc" ]; then
+    # Move existing content to .zshrc.local if it has more than our managed content
+    if ! grep -q "Managed by ~/dotfiles" "$HOME/.zshrc" 2>/dev/null; then
+        mv "$HOME/.zshrc" "$HOME/.zshrc.local"
+        echo "  Existing .zshrc moved to .zshrc.local"
+    fi
+fi
+ln -sf "$DOTFILES_DIR/shell/zshrc" "$HOME/.zshrc"
+echo "  .zshrc -> symlinked"
+
+# .gitconfig
+ln -sf "$DOTFILES_DIR/shell/gitconfig" "$HOME/.gitconfig"
+echo "  .gitconfig -> symlinked"
+
+# ── Claude Code ──
+echo ""
+echo "Claude Code:"
 mkdir -p "$CLAUDE_DIR"
 
-# Symlink global instructions
 ln -sf "$DOTFILES_DIR/claude/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
+echo "  CLAUDE.md -> symlinked"
 
-# Symlink settings (plugins, effort level)
 ln -sf "$DOTFILES_DIR/claude/settings.json" "$CLAUDE_DIR/settings.json"
+echo "  settings.json -> symlinked"
 
-# Symlink permission rules
 ln -sf "$DOTFILES_DIR/claude/settings.local.json" "$CLAUDE_DIR/settings.local.json"
+echo "  settings.local.json -> symlinked"
 
 # Deploy memory to the current machine's project folder
-# Claude Code encodes the home dir path as the project folder name
-# e.g. C:\Users\mhossen -> C--Users-mhossen, /home/mhossen -> -home-mhossen
 encode_path() {
     local p="$1"
-    # On Windows (Git Bash), HOME is /c/Users/mhossen but Claude uses C:\Users\mhossen
     if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-        # Convert /c/Users/mhossen -> C--Users-mhossen
         p=$(cygpath -w "$HOME" 2>/dev/null || echo "$HOME")
     fi
-    # Replace path separators with dashes, keep leading dash (Claude expects it)
     echo "$p" | sed 's|[/\\:]|-|g' | sed 's|-*$||'
 }
 
@@ -38,16 +56,31 @@ PROJECT_MEMORY_DIR="$CLAUDE_DIR/projects/$PROJECT_FOLDER/memory"
 if [ -d "$DOTFILES_DIR/claude/memory" ]; then
     mkdir -p "$PROJECT_MEMORY_DIR"
     cp -n "$DOTFILES_DIR/claude/memory/"*.md "$PROJECT_MEMORY_DIR/" 2>/dev/null || true
-    echo "Memory deployed to: $PROJECT_MEMORY_DIR"
+    count=$(ls "$PROJECT_MEMORY_DIR/"*.md 2>/dev/null | wc -l | tr -d ' ')
+    echo "  memory -> deployed ($count files)"
+fi
+
+# ── GPG key ──
+echo ""
+echo "GPG key:"
+if gpg --list-keys deluair@gmail.com &>/dev/null; then
+    echo "  Already imported"
+else
+    ONEDRIVE="$HOME/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage"
+    GDRIVE="$HOME/Library/CloudStorage/GoogleDrive-dulal1986@gmail.com/My Drive/dev_backups"
+    KEY=""
+    if [ -f "$ONEDRIVE/gpg_backup/deluair_private.asc" ]; then
+        KEY="$ONEDRIVE/gpg_backup/deluair_private.asc"
+    elif [ -f "$GDRIVE/sensitive/gpg_backup/deluair_private.asc" ]; then
+        KEY="$GDRIVE/sensitive/gpg_backup/deluair_private.asc"
+    fi
+    if [ -n "$KEY" ]; then
+        gpg --import "$KEY" 2>/dev/null && echo "  Imported from cloud storage" || echo "  Import failed (check passphrase)"
+    else
+        echo "  Not found in cloud storage. Import manually:"
+        echo "    gpg --import /path/to/deluair_private.asc"
+    fi
 fi
 
 echo ""
-echo "Claude Code config linked:"
-echo "  CLAUDE.md            -> $CLAUDE_DIR/CLAUDE.md"
-echo "  settings.json        -> $CLAUDE_DIR/settings.json"
-echo "  settings.local.json  -> $CLAUDE_DIR/settings.local.json"
-echo "  memory/              -> $PROJECT_MEMORY_DIR/"
-echo ""
-echo "Not managed (keep local):"
-echo "  config.json   (API key)"
-echo "  plugins/      (auto-cached)"
+echo "Done. Run 'make doctor' to verify."

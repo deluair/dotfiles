@@ -1,0 +1,22 @@
+[user]
+	name = Md Deluair Hossen
+	email = Dulal1986@gmail.com
+
+[safe]
+	directory = *
+
+[claudecode]
+	termsAccepted = true
+
+[core]
+	editor = code --wait
+	autocrlf = input
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = false
+
+[push]
+	autoSetupRemote = true

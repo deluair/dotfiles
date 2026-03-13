@@ -1,14 +1,18 @@
-# Core tools
+# Core
 brew "git"
 brew "gnupg"
+brew "gh"
+brew "jq"
+
+# Languages / runtimes
 brew "node"
 brew "uv"
-brew "pm2"
-
-# Data/dev
 brew "sqlite3"
-brew "jq"
-brew "gh"
 
-# Optional but useful
-brew "rclone"
+# Ops
+brew "rsync"
+
+# Casks
+cask "google-drive"
+cask "onedrive"
+cask "visual-studio-code"
