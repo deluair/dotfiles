@@ -1,4 +1,4 @@
-.PHONY: install brew sync push doctor backup restore clone-all sites vps-pull gpg-import all deps
+.PHONY: install brew sync push pull doctor backup restore clone-all sites vps-pull gpg-import all deps
 
 # ── Setup ──
 
@@ -41,15 +41,33 @@ clone-all:
 		fi \
 	done
 
-# ── Daily operations ──
+# ── Sit down / Stand up ──
+
+# Sit down: pull dotfiles + all repos + deploy configs + restore data
+pull:
+	@echo "=== Pulling everything ==="
+	@git pull --ff-only 2>/dev/null || git pull
+	@bash install.sh
+	@echo ""
+	@echo "Pulling project repos..."
+	@for repo in omtt bddata trade-explorer dulalratna pmgai econai hossen; do \
+		if [ -d "$(HOME)/$$repo/.git" ]; then \
+			printf "  %-20s" "$$repo"; \
+			cd "$(HOME)/$$repo" && git pull --ff-only 2>/dev/null && printf "OK\n" || printf "CONFLICT (resolve manually)\n"; \
+		fi \
+	done
+	@echo ""
+	@bash restore-data.sh
+	@echo ""
+	@make -s doctor
+
+# Stand up: sync memory + commit + push dotfiles
+push: sync
+	git add -A && git diff --cached --quiet || git commit -m "sync memory" && git push
 
 # Sync Claude memory to dotfiles
 sync:
 	bash sync-memory.sh
-
-# Sync + commit + push
-push: sync
-	git add -A && git diff --cached --quiet || git commit -m "sync memory" && git push
 
 # Incremental backup to OneDrive + GDrive
 backup:
