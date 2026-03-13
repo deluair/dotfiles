@@ -1,4 +1,4 @@
-.PHONY: install brew sync push pull doctor backup restore clone-all sites vps-pull gpg-import lock unlock all deps
+.PHONY: install brew sync push pull doctor backup restore clone-all setup-all sites vps-pull gpg-import lock unlock all deps
 
 # ── Setup ──
 
@@ -41,6 +41,10 @@ clone-all:
 			echo "$$repo already exists"; \
 		fi \
 	done'
+
+# Set up all project dependencies, secrets, and verify builds
+setup-all:
+	bash setup-projects.sh
 
 # ── Sit down / Stand up ──
 

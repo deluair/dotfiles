@@ -28,9 +28,11 @@ All 6 projects must be machineless: git clone + one command = running on any mac
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/deluair/dotfiles/main/bootstrap.sh | bash
+make unlock       # decrypt config.sh with age passphrase
 make clone-all    # clone all 7 repos
 make restore      # pull data from OneDrive/GDrive
-make doctor       # verify everything (7 categories)
+make setup-all    # install deps, decrypt secrets, verify builds
+make doctor       # verify everything
 ```
 
 ## Key make targets
@@ -44,6 +46,9 @@ make doctor       # verify everything (7 categories)
 | `make restore` | restore data from cloud (OneDrive primary, GDrive fallback) |
 | `make sites` | health check all 3 sites |
 | `make clone-all` | clone all 7 repos |
+| `make setup-all` | install deps, decrypt secrets, verify builds for all projects |
+| `make lock` | encrypt config.sh with age (passphrase) |
+| `make unlock` | decrypt config.sh.age |
 | `make gpg-import` | import GPG key from cloud |
 
 ## Rules
