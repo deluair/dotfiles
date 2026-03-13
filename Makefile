@@ -61,9 +61,26 @@ pull:
 	@echo ""
 	@make -s doctor
 
-# Stand up: sync memory + commit + push dotfiles
+# Stand up: sync memory + push dotfiles + push all project repos
 push: sync
-	git add -A && git diff --cached --quiet || git commit -m "sync memory" && git push
+	@echo "=== Pushing everything ==="
+	@echo ""
+	@echo "dotfiles:"
+	@git add -A && git diff --cached --quiet || git commit -m "sync memory"
+	@git push 2>/dev/null && echo "  OK" || echo "  already up to date"
+	@echo ""
+	@echo "Project repos:"
+	@for repo in omtt bddata trade-explorer dulalratna pmgai econai hossen; do \
+		if [ -d "$(HOME)/$$repo/.git" ]; then \
+			AHEAD=$$(cd "$(HOME)/$$repo" && git rev-list --count @{u}..HEAD 2>/dev/null || echo "?"); \
+			if [ "$$AHEAD" = "0" ] || [ "$$AHEAD" = "?" ]; then \
+				printf "  %-20s up to date\n" "$$repo"; \
+			else \
+				printf "  %-20s pushing $$AHEAD commit(s)... " "$$repo"; \
+				cd "$(HOME)/$$repo" && git push 2>/dev/null && printf "OK\n" || printf "FAILED\n"; \
+			fi \
+		fi \
+	done
 
 # Sync Claude memory to dotfiles
 sync:
