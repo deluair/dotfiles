@@ -78,6 +78,7 @@
 - Action first, explain only if needed.
 - Offload research and parallel work to subagents, keep main context clean.
 - One task per subagent for focused execution.
+- **Max 10 parallel agents per batch**. For larger tasks, run in waves of 10, collecting results to /tmp between waves.
 
 ### Self-Improvement
 - After ANY correction: update project `tasks/lessons.md` with the pattern.
