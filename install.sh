@@ -7,12 +7,19 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CLAUDE_DIR="$HOME/.claude"
 
-# Generate config.sh from example if missing
+# Decrypt or create config.sh if missing
 if [ ! -f "$DOTFILES_DIR/config.sh" ]; then
-    echo "No config.sh found. Creating from template..."
-    cp "$DOTFILES_DIR/config.sh.example" "$DOTFILES_DIR/config.sh"
-    echo "  Edit $DOTFILES_DIR/config.sh with your values, then re-run."
-    exit 1
+    if [ -f "$DOTFILES_DIR/config.sh.age" ] && command -v age &>/dev/null; then
+        echo "Decrypting config.sh from config.sh.age..."
+        age -d "$DOTFILES_DIR/config.sh.age" > "$DOTFILES_DIR/config.sh"
+        echo "  Decrypted."
+    else
+        echo "No config.sh found. Creating from template..."
+        cp "$DOTFILES_DIR/config.sh.example" "$DOTFILES_DIR/config.sh"
+        echo "  Edit $DOTFILES_DIR/config.sh with your values, then re-run."
+        [ -f "$DOTFILES_DIR/config.sh.age" ] && echo "  (config.sh.age found but age not installed. Install age to decrypt.)"
+        exit 1
+    fi
 fi
 
 source "$DOTFILES_DIR/paths.sh"
@@ -67,12 +74,27 @@ try_link "$DOTFILES_DIR/claude/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
 try_link "$DOTFILES_DIR/claude/settings.json" "$CLAUDE_DIR/settings.json"
 try_link "$DOTFILES_DIR/claude/settings.local.json" "$CLAUDE_DIR/settings.local.json"
 
-# Deploy commands
+# Deploy commands (symlink for instant propagation)
 if [ -d "$DOTFILES_DIR/claude/commands" ]; then
-    mkdir -p "$CLAUDE_DIR/commands"
-    cp "$DOTFILES_DIR/claude/commands/"*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
-    count=$(ls "$CLAUDE_DIR/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
-    echo "  commands -> deployed ($count commands)"
+    # Merge any existing custom commands back to dotfiles first
+    if [ -d "$CLAUDE_DIR/commands" ] && [ ! -L "$CLAUDE_DIR/commands" ]; then
+        cp -n "$CLAUDE_DIR/commands/"*.md "$DOTFILES_DIR/claude/commands/" 2>/dev/null || true
+        rm -rf "$CLAUDE_DIR/commands"
+    fi
+    if [ "$OS" = "windows" ]; then
+        if ln -sf "$DOTFILES_DIR/claude/commands" "$CLAUDE_DIR/commands" 2>/dev/null; then
+            echo "  commands -> symlinked"
+        else
+            mkdir -p "$CLAUDE_DIR/commands"
+            cp "$DOTFILES_DIR/claude/commands/"*.md "$CLAUDE_DIR/commands/" 2>/dev/null || true
+            echo "  commands -> copied (enable Developer Mode for symlinks)"
+        fi
+    else
+        ln -sf "$DOTFILES_DIR/claude/commands" "$CLAUDE_DIR/commands"
+        echo "  commands -> symlinked"
+    fi
+    count=$(ls "$DOTFILES_DIR/claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
+    echo "  $count commands available"
 fi
 
 # Deploy memory

@@ -1,4 +1,4 @@
-.PHONY: install brew sync push pull doctor backup restore clone-all sites vps-pull gpg-import all deps
+.PHONY: install brew sync push pull doctor backup restore clone-all sites vps-pull gpg-import lock unlock all deps
 
 # ── Setup ──
 
@@ -105,6 +105,18 @@ sites:
 vps-pull:
 	bash pull-vps-backups.sh
 
+# Encrypt config.sh with age (passphrase-based)
+lock:
+	@if ! command -v age >/dev/null 2>&1; then echo "age not installed. Install: brew install age (macOS) or winget install FiloSottile.age (Windows)"; exit 1; fi
+	@if [ ! -f config.sh ]; then echo "No config.sh to encrypt"; exit 1; fi
+	@age -p config.sh > config.sh.age && echo "config.sh.age written (encrypted)"
+
+# Decrypt config.sh.age with age
+unlock:
+	@if ! command -v age >/dev/null 2>&1; then echo "age not installed. Install: brew install age (macOS) or winget install FiloSottile.age (Windows)"; exit 1; fi
+	@if [ ! -f config.sh.age ]; then echo "No config.sh.age to decrypt"; exit 1; fi
+	@age -d config.sh.age > config.sh && echo "config.sh decrypted"
+
 # ── Verification ──
 
 # Verify all prerequisites, data, and configs (cross-platform)
@@ -120,6 +132,7 @@ doctor:
 	command -v gpg >/dev/null    && printf "  OK   gpg\n"        || printf "  MISS gpg\n"; \
 	command -v gh >/dev/null     && printf "  OK   gh\n"         || printf "  MISS gh\n"; \
 	command -v rsync >/dev/null  && printf "  OK   rsync\n"      || printf "  WARN rsync (optional, using cp fallback)\n"; \
+	command -v age >/dev/null    && printf "  OK   age\n"        || printf "  WARN age (optional, install for config encryption)\n"; \
 	echo ""; \
 	echo "=== Cloud Storage ==="; \
 	[ -d "$$ONEDRIVE" ] && printf "  OK   OneDrive\n" || printf "  MISS OneDrive (sign in and sync)\n"; \

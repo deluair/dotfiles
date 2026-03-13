@@ -1,0 +1,81 @@
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create test config
+        run: |
+          cat > config.sh <<'EOF'
+          GIT_USER_NAME="Test User"
+          GIT_USER_EMAIL="test@example.com"
+          GPG_EMAIL="test@example.com"
+          GPG_KEY_NAME="test_private"
+          GITHUB_USER="testuser"
+          ONEDRIVE_ORG="Test Org"
+          ONEDRIVE_FOLDER="test_storage"
+          GDRIVE_EMAIL="test@gmail.com"
+          GDRIVE_FOLDER="test_backups"
+          VPS_HOST="user@127.0.0.1"
+          VPS_BACKUP_PATH="/tmp/backups"
+          REPOS="dotfiles"
+          EOF
+
+      - name: Verify paths.sh sources correctly
+        run: |
+          source paths.sh
+          echo "OS=$OS"
+          echo "GITHUB_USER=$GITHUB_USER"
+          echo "VPS_HOST=$VPS_HOST"
+          [ -n "$OS" ] || exit 1
+          [ "$GITHUB_USER" = "testuser" ] || exit 1
+
+      - name: Verify config validation catches placeholders
+        run: |
+          cp config.sh config.sh.real
+          cp config.sh.example config.sh
+          if bash install.sh 2>&1; then
+            echo "FAIL: install.sh should have rejected placeholder config"
+            exit 1
+          fi
+          echo "PASS: placeholder config correctly rejected"
+          mv config.sh.real config.sh
+
+      - name: Run install
+        run: bash install.sh
+
+      - name: Verify configs deployed
+        run: |
+          [ -f "$HOME/.gitconfig" ] || exit 1
+          [ -f "$HOME/.gitconfig.local" ] || exit 1
+          [ -f "$HOME/.claude/CLAUDE.md" ] || exit 1
+          echo "PASS: configs deployed"
+
+      - name: Verify commands deployed
+        run: |
+          COUNT=$(ls "$HOME/.claude/commands/"*.md 2>/dev/null | wc -l | tr -d ' ')
+          [ "$COUNT" -ge 5 ] || exit 1
+          echo "PASS: $COUNT commands deployed"
+
+      - name: Verify memory deployed
+        run: |
+          MEM=$(find "$HOME/.claude/projects/" -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+          [ "$MEM" -gt 0 ] || exit 1
+          echo "PASS: $MEM memory files deployed"
+
+      - name: Run doctor (partial, no cloud/data)
+        run: make doctor || true

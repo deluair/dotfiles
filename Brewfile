@@ -11,6 +11,7 @@ brew "sqlite3"
 
 # Ops
 brew "rsync"
+brew "age"
 
 # Casks
 cask "google-drive"

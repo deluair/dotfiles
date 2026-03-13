@@ -45,12 +45,17 @@ if [ ! -d "$HOME/dotfiles" ]; then
     git clone https://github.com/deluair/dotfiles.git "$HOME/dotfiles"
 fi
 
-# ── 3. Create config.sh if missing ──
+# ── 3. Decrypt or create config.sh ──
 cd "$HOME/dotfiles"
 if [ ! -f "config.sh" ]; then
-    cp config.sh.example config.sh
-    echo "Created config.sh from template. Edit it with your values:"
-    echo "  $HOME/dotfiles/config.sh"
+    if [ -f "config.sh.age" ] && command -v age &>/dev/null; then
+        echo "Decrypting config.sh from config.sh.age..."
+        age -d config.sh.age > config.sh
+    else
+        cp config.sh.example config.sh
+        echo "Created config.sh from template. Edit it with your values:"
+        echo "  $HOME/dotfiles/config.sh"
+    fi
     echo ""
 fi
 
@@ -68,6 +73,7 @@ elif [ "$OS" = "windows" ]; then
     winget install -e --id GitHub.cli --accept-package-agreements 2>/dev/null || true
     winget install -e --id Google.GoogleDrive --accept-package-agreements 2>/dev/null || true
     winget install -e --id Microsoft.OneDrive --accept-package-agreements 2>/dev/null || true
+    winget install -e --id FiloSottile.age --accept-package-agreements 2>/dev/null || true
     echo ""
     make install
 else
