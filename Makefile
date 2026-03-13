@@ -1,8 +1,11 @@
 .PHONY: install brew sync push pull doctor backup restore clone-all sites vps-pull gpg-import all deps
 
+# ── One line to edit when adding a new project ──
+REPOS = omtt bddata trade-explorer dulalratna pmgai econai hossen
+
 # ── Setup ──
 
-# Full setup (macOS): brew + install
+# Full setup: deps + install
 all: deps install
 	@echo ""
 	@echo "Setup complete. Next: make clone-all && make restore && make doctor"
@@ -32,7 +35,7 @@ gpg-import:
 
 # Clone all project repos
 clone-all:
-	@for repo in omtt bddata trade-explorer dulalratna pmgai econai hossen; do \
+	@for repo in $(REPOS); do \
 		if [ ! -d "$(HOME)/$$repo" ]; then \
 			echo "Cloning $$repo..."; \
 			git clone "https://github.com/deluair/$$repo.git" "$(HOME)/$$repo"; \
@@ -50,7 +53,7 @@ pull:
 	@bash install.sh
 	@echo ""
 	@echo "Pulling project repos..."
-	@for repo in omtt bddata trade-explorer dulalratna pmgai econai hossen; do \
+	@for repo in $(REPOS); do \
 		if [ -d "$(HOME)/$$repo/.git" ]; then \
 			printf "  %-20s" "$$repo"; \
 			cd "$(HOME)/$$repo" && git pull --ff-only 2>/dev/null && printf "OK\n" || printf "CONFLICT (resolve manually)\n"; \
@@ -70,7 +73,7 @@ push: sync
 	@git push 2>/dev/null && echo "  OK" || echo "  already up to date"
 	@echo ""
 	@echo "Project repos:"
-	@for repo in omtt bddata trade-explorer dulalratna pmgai econai hossen; do \
+	@for repo in $(REPOS); do \
 		if [ -d "$(HOME)/$$repo/.git" ]; then \
 			AHEAD=$$(cd "$(HOME)/$$repo" && git rev-list --count @{u}..HEAD 2>/dev/null || echo "?"); \
 			if [ "$$AHEAD" = "0" ] || [ "$$AHEAD" = "?" ]; then \
