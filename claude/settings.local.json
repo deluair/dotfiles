@@ -40,7 +40,8 @@
       "Bash(streamlit run:*)",
       "WebSearch",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:api.github.com)"
+      "WebFetch(domain:api.github.com)",
+      "Bash(cd ~/dotfiles && bash install.sh)"
     ],
     "deny": [],
     "ask": []

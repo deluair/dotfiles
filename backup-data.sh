@@ -1,10 +1,10 @@
 #!/bin/bash
 # Redundant incremental backup: critical data to OneDrive + Google Drive.
-# Uses rsync --update to skip unchanged files (mtime+size check).
+# Cross-platform: macOS, Windows (Git Bash), Linux.
 set -e
 
-ONEDRIVE="$HOME/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage"
-GDRIVE="$HOME/Library/CloudStorage/GoogleDrive-dulal1986@gmail.com/My Drive/dev_backups"
+DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
+source "$DOTFILES_DIR/paths.sh"
 
 ERRORS=0
 
@@ -16,67 +16,76 @@ backup() {
     fi
     local size
     size=$(du -h "$src" | cut -f1)
-    for dest in "$onedrive_dest" "$gdrive_dest"; do
-        mkdir -p "$(dirname "$dest")"
-        if rsync -u --progress "$src" "$dest" 2>/dev/null; then
-            :
-        else
-            echo "  FAIL  $label -> $dest"
-            ERRORS=$((ERRORS + 1))
-        fi
-    done
+    # OneDrive
+    if [ -n "$onedrive_dest" ] && [ -d "$(dirname "$ONEDRIVE")" ]; then
+        mkdir -p "$(dirname "$onedrive_dest")"
+        copy_with_progress "$src" "$onedrive_dest" 2>/dev/null || { echo "  FAIL  $label -> OneDrive"; ERRORS=$((ERRORS + 1)); }
+    fi
+    # GDrive
+    if [ -n "$gdrive_dest" ] && [ -n "$GDRIVE" ] && [ -d "$(dirname "$GDRIVE")" ]; then
+        mkdir -p "$(dirname "$gdrive_dest")"
+        copy_with_progress "$src" "$gdrive_dest" 2>/dev/null || { echo "  FAIL  $label -> GDrive"; ERRORS=$((ERRORS + 1)); }
+    fi
     echo "  OK    $label ($size)"
 }
 
-echo "Incremental backup: $(date '+%Y-%m-%d %H:%M')"
+echo "Incremental backup ($OS): $(date '+%Y-%m-%d %H:%M')"
 echo ""
 
-# Databases
+P="$PROJECTS_DIR"
+
 backup "trade.db" \
-    "$HOME/trade-explorer/data/trade.db" \
+    "$P/trade-explorer/data/trade.db" \
     "$ONEDRIVE/db_backups/trade.db" \
     "$GDRIVE/db_backups/trade.db"
 
 backup "tradeweave app.db" \
-    "$HOME/trade-explorer/data/app.db" \
+    "$P/trade-explorer/data/app.db" \
     "$ONEDRIVE/db_backups/tradeweave_app_latest.db" \
     "$GDRIVE/db_backups/tradeweave_app_latest.db"
 
 backup "bangladesh.db" \
-    "$HOME/bddata/backend/data/bangladesh.db" \
+    "$P/bddata/backend/data/bangladesh.db" \
     "$ONEDRIVE/db_backups/bddb_latest.sqlite" \
     "$GDRIVE/db_backups/bddb_latest.sqlite"
 
 backup "bdpolicy.db" \
-    "$HOME/omtt/data/bdpolicy.db" \
+    "$P/omtt/data/bdpolicy.db" \
     "$ONEDRIVE/db_backups/omtt_bdpolicy_latest.db" \
     "$GDRIVE/db_backups/omtt_bdpolicy_latest.db"
 
 backup "bangladesh.db (omtt)" \
-    "$HOME/omtt/data/bangladesh.db" \
+    "$P/omtt/data/bangladesh.db" \
     "$ONEDRIVE/db_backups/omtt_bangladesh_latest.db" \
     "$GDRIVE/db_backups/omtt_bangladesh_latest.db"
 
 backup "baci.db" \
-    "$HOME/omtt/data/baci.db" \
+    "$P/omtt/data/baci.db" \
     "$ONEDRIVE/db_backups/omtt_baci_latest.db" \
     "$GDRIVE/db_backups/omtt_baci_latest.db"
 
 backup "me.db" \
-    "$HOME/dulalratna/me.db" \
+    "$P/dulalratna/me.db" \
     "$ONEDRIVE/db_backups/dulalratna_me_latest.db" \
     "$GDRIVE/db_backups/dulalratna_me_latest.db"
 
-# Sensitive files (GPG, env)
+# Sensitive files (GPG, env) - OneDrive -> GDrive redundancy
 echo ""
 echo "Syncing sensitive files..."
-mkdir -p "$GDRIVE/sensitive/gpg_backup"
-rsync -au "$ONEDRIVE/gpg_backup/" "$GDRIVE/sensitive/gpg_backup/" 2>/dev/null && echo "  OK    GPG backup" || echo "  SKIP  GPG backup"
+if [ -n "$GDRIVE" ] && [ -d "$ONEDRIVE/gpg_backup" ]; then
+    mkdir -p "$GDRIVE/../sensitive/gpg_backup"
+    if command -v rsync &>/dev/null; then
+        rsync -au "$ONEDRIVE/gpg_backup/" "$GDRIVE/../sensitive/gpg_backup/" 2>/dev/null
+    else
+        cp -ru "$ONEDRIVE/gpg_backup/"* "$GDRIVE/../sensitive/gpg_backup/" 2>/dev/null || true
+    fi
+    echo "  OK    GPG backup"
+fi
 
 for f in dulalratna_sensitive/env.txt econai_sensitive/env.txt; do
-    if [ -f "$ONEDRIVE/$f" ]; then
-        mkdir -p "$GDRIVE/sensitive/$(dirname "$f")"
-        rsync -u "$ONEDRIVE/$f" "$GDRIVE/sensitive/$f" 2>/dev/null
+    if [ -f "$ONEDRIVE/$f" ] && [ -n "$GDRIVE" ]; then
+        mkdir -p "$GDRIVE/../sensitive/$(dirname "$f")"
+        copy_with_progress "$ONEDRIVE/$f" "$GDRIVE/../sensitive/$f" 2>/dev/null || true
     fi
 done
 echo "  OK    env files"
@@ -86,4 +95,4 @@ if [ "$ERRORS" -gt 0 ]; then
     echo "Completed with $ERRORS errors."
     exit 1
 fi
-echo "All backups current. OneDrive + GDrive."
+echo "All backups current."

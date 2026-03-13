@@ -1,0 +1,21 @@
+# Managed by ~/dotfiles - do not edit directly
+# Machine-specific additions go in ~/.bashrc.local
+
+export PATH="$HOME/.local/bin:$PATH"
+
+# uv (Python)
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Aliases
+alias dev="cd ~/trade-explorer && npm run dev"
+alias sites="bash ~/dotfiles/check-sites.sh"
+alias dr="make -C ~/dotfiles doctor"
+alias backup="make -C ~/dotfiles backup"
+
+# Project shortcuts
+alias tw="cd ~/trade-explorer"
+alias bd="cd ~/bddata"
+alias om="cd ~/omtt"
+
+# Source machine-local overrides (untracked)
+[ -f ~/.bashrc.local ] && source ~/.bashrc.local

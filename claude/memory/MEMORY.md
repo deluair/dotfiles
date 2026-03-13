@@ -159,6 +159,10 @@ Project skills created:
 - Expert framing: "be reviewer 2", "SOTA?", "would you accept this?"
 - Delegation style: give direction, then "yes/go on/continue" to keep executing
 
+## Hardware
+
+See [hardware.md](hardware.md). 4 machines: Mac Mini M4, MacBook Air M4 (both 256GB), Samsung Galaxy Book Edge (Snapdragon, 512GB), Dell Precision 5560 (32GB, 1TB). 256GB Macs are tight with 18GB trade.db.
+
 ## TradeWeave Audit (2026-03-12)
 
 See [tradeweave_audit_2026_03.md](tradeweave_audit_2026_03.md) for full details. 3-wave audit, 49 CRITICAL fixes, 44 files. Key: FAOSTAT 1e3 not 1e6, ECI citation is Hidalgo 2009 PNAS, PCI negatives are normal, HHI thresholds 0.15/0.25, unit values in USD/t not $/kg.
