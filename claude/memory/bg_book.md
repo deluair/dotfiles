@@ -10,7 +10,7 @@ type: project
 Bengali memoir by Kabir (common prisoner) about serving as attendant to Tarek Rahman (son of former PM Khaleda Zia) in Dhaka Central Jail during 2007-2009 (1/11 military-backed government).
 
 ## Location
-`$ONEDRIVE/../misc_2026/bg_book` (OneDrive, alongside hossen_storage)
+C:\Users\mhossen\OneDrive - University of Tennessee\misc_2026\bg_book
 
 ## Structure
 - `original/` - source manuscript (.docx, 1913 paragraphs, ~43,600 words)
@@ -42,6 +42,6 @@ Bengali memoir by Kabir (common prisoner) about serving as attendant to Tarek Ra
 ## Current status (2026-03-11)
 - All 9 chapters (ch0-ch8) AI-rewritten and built: 284 pages, ~44,898 words
 - PDF visually checked, formatting verified, publish-ready
-- GitHub: github.com/`$GITHUB_USER`/bg-book (private)
+- GitHub: github.com/deluair/bg-book (private)
 - PENDING: Letters partially integrated but not all. Photo references (ছবি ০১-৪ে+) exist as text markers only, actual scanned letter images NOT embedded in PDF. Need to extract images from original .docx and audit which letters are missing.
 - PENDING: Anecdotes (data/raw_chapters/anec.json) may not be fully integrated into narrative chapters.

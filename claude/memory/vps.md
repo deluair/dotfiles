@@ -1,11 +1,11 @@
 # VPS Deployment Info
 
 - **Provider**: OVH VPS
-- **Host**: `$VPS_HOST` (from `~/dotfiles/config.sh`)
+- **Host**: ubuntu@40.160.2.223
 - **Auth**: SSH key (password removed for security)
 - **App path**: /opt/tradeweave/app
 - **Data path**: /opt/tradeweave/data
-- **trade.db**: Symlinked from /opt/tradeweave/data/trade.db to /opt/tradeweave/app/data/trade.db
+- **trade.db**: Symlinked from /opt/tradeweave/data/trade.db → /opt/tradeweave/app/data/trade.db
 - **Process manager**: PM2 (name: tradeweave)
 - **Deploy script**: deploy.sh --full (syncs DB too)
 - **Domain**: tradeweave.org (Cloudflare DNS/SSL)

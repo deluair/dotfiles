@@ -2,19 +2,23 @@
 
 ## User Info
 
-- **GitHub username**: `$GITHUB_USER` (from `~/dotfiles/config.sh`)
+- **GitHub username**: `deluair`
 
 ## Workflow Preferences
 
 - **Local-first**: Always test/check locally before deploying to VPS. VPS SSH is slow; local iteration is faster.
 - **Machineless setup**: See [machineless_setup.md](machineless_setup.md) for full details. All 6 projects: git-secret + OneDrive + Makefile + pre-commit hooks. `git clone` + `make setup` = running.
 - **New machine bootstrap**: See [new_machine_bootstrap.md](new_machine_bootstrap.md) for step-by-step: dotfiles first, then projects, then push dotfiles after sessions.
-- **GPG key**: `$GPG_EMAIL` (from `~/dotfiles/config.sh`). Backed up to OneDrive `gpg_backup/`.
+- **GPG key**: `deluair@gmail.com` (8A4821AE71E9AB760CD4BCB845AA56DF3876E02B). Backed up to OneDrive `gpg_backup/`.
 - **No git-lfs**: Decided against it. OneDrive is free via UTK, not worth $5/mo for LFS.
+
+## Data Inventory
+
+See [data_inventory.md](data_inventory.md) for the complete cross-project data inventory: all databases, sources, row counts, coverage years, freshness dates, gaps, and the data flow diagram between BDFacts, OMTT, and TradeWeave.
 
 ## OneDrive Data Backup Map
 
-Base path: `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
+Base path: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
 
 | Project | Gitignored Data | OneDrive Location | Notes |
 |---------|----------------|-------------------|-------|
@@ -26,8 +30,9 @@ Base path: `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
 | **BACI** | All 7 HS revision zips + xlsx | `trade_backup/baci_zips/` | HS92/96/02/07/12/17/22 + HSCodeandDescription.xlsx |
 | **OMTT** | `data/trade_flagship_results.json` | `omtt_trade_data/trade_flagship_results.json` | |
 | **BDFacts** | `backend/data/bangladesh.db` (43MB) | `db_backups/bddb_latest.sqlite` | Also timestamped copies |
-| **BDFacts** | `backend/analytics.db` (1.2MB) | `db_backups/bddb_latest.sqlite` | Bundled in same backup |
-| **BDFacts** | `backend/wdi.db` (56KB) | `db_backups/bddb_latest.sqlite` | Bundled in same backup |
+| **BDFacts** | `backend/analytics.db` (1.2MB) | `db_backups/bddb_analytics_latest.db` | Separate backup (added 2026-03-14) |
+| **BDFacts** | `backend/wdi.db` (56KB) | `db_backups/bddb_wdi_latest.db` | Separate backup (added 2026-03-14) |
+| **BDFacts** | `backend/data/baci.db` (215MB) | (same as OMTT baci backup) | Copy from OMTT, added 2026-03-14 |
 | **TradeWeave** | `trade.db` (18GB+) | `db_backups/trade.db` | The big one |
 | **TradeWeave** | app db | `db_backups/tradeweave_app_latest.db` | |
 | **DulalRatna** | `me.db` (560KB) | `db_backups/dulalratna_me_latest.db` | Personal health/finance DB |
@@ -41,8 +46,8 @@ Base path: `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
 
 ## Personal Page
 
-- **Repo**: `$GITHUB_USER/hossen` (`~/hossen`)
-- **URL**: `$GITHUB_USER`.github.io/hossen/
+- **Repo**: `deluair/hossen` (`~/hossen`)
+- **URL**: deluair.github.io/hossen/
 - **Hosting**: GitHub Pages (master branch)
 - **Stack**: Single static `index.html`, no framework
 - **Tone**: Understated, introverted, let work speak. No salesy copy.
@@ -53,11 +58,11 @@ Base path: `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
 
 | Project | Repo / Dir | Domain | Purpose | Stack |
 |---------|-----------|--------|---------|-------|
-| **BDFacts** | `$GITHUB_USER/bddata` (`~/bddata`) | bdfacts.org | Charity: BD open data dissemination | React 19 + FastAPI + SQLite |
-| **TradeWeave** | `$GITHUB_USER/trade-explorer` (`~/trade-explorer`) | tradeweave.org | Job/skill: International trade analytics | Full-stack, D3/Deck.gl, BACI data |
-| **OMTT** | `$GITHUB_USER/omtt` (`~/omtt`) | bdpolicylab.com | Future business: pure think tank, consultancy | Policy-first, AI-augmented |
+| **BDFacts** | `deluair/bddata` (`~/bddata`) | bdfacts.org | Charity: BD open data dissemination | React 19 + FastAPI + SQLite |
+| **TradeWeave** | `deluair/trade-explorer` (`~/trade-explorer`) | tradeweave.org | Job/skill: International trade analytics | Full-stack, D3/Deck.gl, BACI data |
+| **OMTT** | `deluair/omtt` (`~/omtt`) | bdpolicylab.com | Future business: pure think tank, consultancy | Policy-first, AI-augmented |
 
-- All hosted on OVH VPS (`$VPS_HOST` from `~/dotfiles/config.sh`)
+- All hosted on OVH VPS (`vps-45aafae5.vps.ovh.us`, user `ubuntu`)
 
 ## Core Values / Project Purpose Hierarchy
 
@@ -69,6 +74,10 @@ Project alignment:
 - BDFacts (charity) -> values 1 & 2: open data for Bangladesh, free public good
 - TradeWeave (job/skill) -> value 3: professional credibility in trade economics
 - OMTT (future business) -> values 1, 2, 3: pure think tank for BD, consultancy/business revenue
+
+## Cross-Project Lessons
+
+- [Cross-project lessons](cross_project_lessons.md): Shared patterns (no mock data, deploy safety, WAL cleanup, .env rules, watermarks, agent limits) that apply to BDFacts, TradeWeave, and OMTT. Per-project lessons are in each project's `tasks/lessons.md`, decisions in `tasks/decisions.md`.
 
 ## Hard Rules for All Projects
 
@@ -99,7 +108,7 @@ See `projects-overview.md` for detailed cross-project design system comparison, 
 
 ## PMGAI Toolkit
 
-- **Location**: `~/pmgai/` (repo: `$GITHUB_USER/pmgai`)
+- **Location**: `~/pmgai/` (repo: `deluair/pmgai`)
 - **Purpose**: AI-augmented plant molecular genetics research toolkit
 - **Key modules**:
   - `src/python/latex/pipeline.py`: `PaperPipeline` class (sections + tables + figures -> PDF)
@@ -119,7 +128,7 @@ See `projects-overview.md` for detailed cross-project design system comparison, 
 ## DulalRatna (Life OS)
 
 See [dulalratna.md](dulalratna.md) for full details.
-- **Location**: `~/dulalratna/` (repo: `$GITHUB_USER/dulalratna`, private)
+- **Location**: `~/dulalratna/` (repo: `deluair/dulalratna`, private)
 - **Stack**: SQLite (`me.db`, schema v4) + Gemini AI + Telegram bot
 - **Model**: `gemini-3.1-flash-lite-preview` (DO NOT CHANGE per user)
 - **Intelligence**: 10 tools, FTS5 memory, Holt's forecasting, z-score anomaly detection, auto-context priming
@@ -153,6 +162,15 @@ Project skills created:
 ### Agent Limits
 - [Max 10 parallel agents](feedback_max_agents.md): Never launch more than 10 agents at once. Batch in waves, write results to /tmp.
 
+### Session Bookends
+- [Start/exit workflow](feedback_session_bookends.md): User says "start" -> `make -C ~/dotfiles pull`. User says "exit" -> `make -C ~/dotfiles push`. No questions, just do it.
+
+### Optimize for Time
+- [Always optimize](feedback_optimize_time.md): Local compute > cloud APIs. Streaming > full downloads. Parallel > sequential. Coarse resolution for quick checks. Kill stuck processes fast.
+
+### Large File Transfers
+- [Think before transferring](feedback_large_file_transfers.md): Never use naive scp for >1GB. Use rsync with keepalive and resume. Consider if transfer is even necessary (split DB, remote ingest).
+
 ### Key Patterns Identified
 - Build-then-audit cycle: build features, then obsessively verify data
 - Deploy frequency: 75+ push/deploy commands across 13 days
@@ -162,6 +180,14 @@ Project skills created:
 ## Hardware
 
 See [hardware.md](hardware.md). 4 machines: Mac Mini M4, MacBook Air M4 (both 256GB), Samsung Galaxy Book Edge (Snapdragon, 512GB), Dell Precision 5560 (32GB, 1TB). 256GB Macs are tight with 18GB trade.db.
+
+## BD GIS Sub-project
+
+See [bd_gis_subproject.md](bd_gis_subproject.md). 18 GIS modules in ~/omtt/bd_gis, 70+ CSV outputs, audited and fixed 2026-03-15. Next: Data Nexus (A: Data Bridge, B: Cross-Domain Analyzers, C: Policy Publications).
+
+## OMTT Detailed Data Inventory
+
+See [omtt_data_inventory_detail.md](omtt_data_inventory_detail.md). Full DB inventory: bdpolicy.db (11.7K series, 162K points), bangladesh.db (30K indicators, 542K values), baci.db (1.9M trade rows), bd_gis outputs (70+ CSVs).
 
 ## TradeWeave Audit (2026-03-12)
 
