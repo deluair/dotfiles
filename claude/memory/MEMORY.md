@@ -6,7 +6,7 @@
 
 ## Workflow Preferences
 
-- **Local-first**: Always test/check locally before deploying to VPS. VPS SSH is slow; local iteration is faster.
+- **Local-first**: See [feedback_local_first_always.md](feedback_local_first_always.md). NEVER edit files on VPS directly. All changes local, test local, then deploy.
 - **Machineless setup**: See [machineless_setup.md](machineless_setup.md) for full details. All 6 projects: git-secret + OneDrive + Makefile + pre-commit hooks. `git clone` + `make setup` = running.
 - **New machine bootstrap**: See [new_machine_bootstrap.md](new_machine_bootstrap.md) for step-by-step: dotfiles first, then projects, then push dotfiles after sessions.
 - **GPG key**: `$GPG_EMAIL` (from `~/dotfiles/config.sh`). Backed up to OneDrive `gpg_backup/`.
