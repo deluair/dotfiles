@@ -7,15 +7,6 @@ set -e
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 source "$DOTFILES_DIR/paths.sh"
 
-human_size() {
-    local src="$1"
-    if [ -f "$src" ]; then
-        du -h "$src" 2>/dev/null | cut -f1
-    else
-        echo "?"
-    fi
-}
-
 restore() {
     local label="$1" dest="$2" onedrive_src="$3" gdrive_src="$4"
     if [ -f "$dest" ]; then
@@ -36,35 +27,15 @@ restore() {
         echo "  MISS  $label (not found in either cloud)"
         return
     fi
-    local size
-    size=$(human_size "$src")
-    echo "  COPY  $label ($size) <- $cloud"
+    # No du/stat on cloud files -- triggers OneDrive Files On-Demand download.
+    echo "  COPY  $label <- $cloud"
     copy_with_progress "$src" "$dest"
 }
 
 echo "Restoring project data ($OS)..."
 echo ""
 
-# Show total size estimate before starting
-TOTAL=0
-for f in \
-    "$ONEDRIVE/db_backups/trade.db" \
-    "$ONEDRIVE/db_backups/tradeweave_app_latest.db" \
-    "$ONEDRIVE/db_backups/bddb_latest.sqlite" \
-    "$ONEDRIVE/db_backups/omtt_bdpolicy_latest.db" \
-    "$ONEDRIVE/db_backups/omtt_bangladesh_latest.db" \
-    "$ONEDRIVE/db_backups/omtt_baci_latest.db" \
-    "$ONEDRIVE/db_backups/dulalratna_me_latest.db"; do
-    if [ -f "$f" ]; then
-        SIZE=$(du -k "$f" 2>/dev/null | cut -f1)
-        TOTAL=$((TOTAL + SIZE))
-    fi
-done
-if [ "$TOTAL" -gt 0 ]; then
-    TOTAL_H=$(echo "$TOTAL" | awk '{if ($1 > 1048576) printf "%.1fGB", $1/1048576; else if ($1 > 1024) printf "%.0fMB", $1/1024; else printf "%dKB", $1}')
-    echo "Total source data: ~$TOTAL_H (files already present will be skipped)"
-    echo ""
-fi
+# No size estimation here -- accessing OneDrive files triggers Files On-Demand downloads.
 
 P="$PROJECTS_DIR"
 
@@ -102,6 +73,37 @@ restore "me.db" \
     "$P/dulalratna/me.db" \
     "$ONEDRIVE/db_backups/dulalratna_me_latest.db" \
     "$GDRIVE/db_backups/dulalratna_me_latest.db"
+
+# Directory restores
+echo ""
+echo "Directory restores..."
+
+restore_dir() {
+    local label="$1" dest="$2" src="$3"
+    if [ -d "$dest" ] && [ "$(ls -A "$dest" 2>/dev/null)" ]; then
+        echo "  SKIP  $label (already exists)"
+        return
+    fi
+    if [ ! -d "$src" ]; then
+        echo "  MISS  $label (not found in cloud)"
+        return
+    fi
+    mkdir -p "$dest"
+    echo "  COPY  $label <- OneDrive"
+    if command -v rsync &>/dev/null; then
+        rsync -au "$src/" "$dest/"
+    else
+        cp -r "$src/"* "$dest/"
+    fi
+}
+
+restore_dir "bd_gis/outputs" \
+    "$P/omtt/bd_gis/outputs" \
+    "$ONEDRIVE/omtt_gis_data/outputs"
+
+restore_dir "bd_gis/local_data (5GB+)" \
+    "$P/omtt/bd_gis/local_data" \
+    "$ONEDRIVE/omtt_gis_data/local_data"
 
 echo ""
 echo "Done. Run 'make doctor' to verify."

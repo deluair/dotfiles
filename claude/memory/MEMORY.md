@@ -42,6 +42,8 @@ Base path: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage
 | **EconAI** | `.env` | `econai_sensitive/env.txt` | API keys |
 | **PMGAI** | `projects/scn_race2_pdil/data/raw/` (1.6GB) | `pmgai_data/scn_race2_pdil_raw/` | Raw experimental data |
 | **PMGAI** | `projects/scn_race2_pdil/data/external/` (11MB) | `pmgai_data/scn_race2_pdil_external/` | Reference papers |
+| **OMTT** | `bd_gis/outputs/` (49MB) | `omtt_gis_data/outputs/` | GIS CSV/HTML analysis results |
+| **OMTT** | `bd_gis/local_data/` (5.4GB) | `omtt_gis_data/local_data/` | GeoTIFFs (Hansen, JRC, CHIRPS, Landsat, WorldPop, GHSL) |
 | **GPG** | Private key for git-secret | `gpg_backup/deluair_private.asc` | Required to decrypt .env.secret files |
 
 ## Personal Page
@@ -163,7 +165,10 @@ Project skills created:
 - [Max 10 parallel agents](feedback_max_agents.md): Never launch more than 10 agents at once. Batch in waves, write results to /tmp.
 
 ### Session Bookends
-- [Start/exit workflow](feedback_session_bookends.md): User says "start" -> `make -C ~/dotfiles pull`. User says "exit" -> `make -C ~/dotfiles push`. No questions, just do it.
+- [Start/end workflow](feedback_session_bookends.md): User says "start" -> `make -C ~/dotfiles pull`. User says "end" -> `make -C ~/dotfiles push`. No questions, just do it.
+
+### Proactive Backup
+- [Backup gitignored data](feedback_backup_gitignored.md): Any time large gitignored data is created/downloaded, immediately add to backup/restore scripts and run backup. Don't wait to be asked.
 
 ### Optimize for Time
 - [Always optimize](feedback_optimize_time.md): Local compute > cloud APIs. Streaming > full downloads. Parallel > sequential. Coarse resolution for quick checks. Kill stuck processes fast.

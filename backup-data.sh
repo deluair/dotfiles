@@ -69,6 +69,35 @@ backup "me.db" \
     "$ONEDRIVE/db_backups/dulalratna_me_latest.db" \
     "$GDRIVE/db_backups/dulalratna_me_latest.db"
 
+# Directory backups (rsync incremental)
+echo ""
+echo "Directory backups..."
+
+backup_dir() {
+    local label="$1" src="$2" dest="$3"
+    if [ ! -d "$src" ]; then
+        echo "  SKIP  $label (source missing)"
+        return
+    fi
+    mkdir -p "$dest"
+    if command -v rsync &>/dev/null; then
+        rsync -au --delete "$src/" "$dest/" 2>/dev/null || { echo "  FAIL  $label"; ERRORS=$((ERRORS + 1)); return; }
+    else
+        cp -ru "$src/"* "$dest/" 2>/dev/null || { echo "  FAIL  $label"; ERRORS=$((ERRORS + 1)); return; }
+    fi
+    local size
+    size=$(du -sh "$src" | cut -f1)
+    echo "  OK    $label ($size)"
+}
+
+backup_dir "bd_gis/outputs" \
+    "$P/omtt/bd_gis/outputs" \
+    "$ONEDRIVE/omtt_gis_data/outputs"
+
+backup_dir "bd_gis/local_data" \
+    "$P/omtt/bd_gis/local_data" \
+    "$ONEDRIVE/omtt_gis_data/local_data"
+
 # Sensitive files (GPG, env) - OneDrive -> GDrive redundancy
 echo ""
 echo "Syncing sensitive files..."
