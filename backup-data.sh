@@ -39,6 +39,11 @@ backup "trade.db" \
     "$ONEDRIVE/db_backups/trade.db" \
     "$GDRIVE/db_backups/trade.db"
 
+backup "tradeweave imf.db" \
+    "$P/trade-explorer/data/imf.db" \
+    "$ONEDRIVE/db_backups/tradeweave_imf_latest.db" \
+    "$GDRIVE/db_backups/tradeweave_imf_latest.db"
+
 backup "tradeweave app.db" \
     "$P/trade-explorer/data/app.db" \
     "$ONEDRIVE/db_backups/tradeweave_app_latest.db" \

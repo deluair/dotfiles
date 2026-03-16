@@ -44,6 +44,11 @@ restore "trade.db (18GB, may take a while)" \
     "$ONEDRIVE/db_backups/trade.db" \
     "$GDRIVE/db_backups/trade.db"
 
+restore "tradeweave imf.db (691MB)" \
+    "$P/trade-explorer/data/imf.db" \
+    "$ONEDRIVE/db_backups/tradeweave_imf_latest.db" \
+    "$GDRIVE/db_backups/tradeweave_imf_latest.db"
+
 restore "tradeweave app.db" \
     "$P/trade-explorer/data/app.db" \
     "$ONEDRIVE/db_backups/tradeweave_app_latest.db" \
