@@ -2,6 +2,7 @@
 
 ## User Info
 
+- **Profile**: See [profile.md](profile.md). Postdoc ~4 years, ending imminently. OMTT is the primary bet. ML poverty paper is priority one.
 - **GitHub username**: `deluair`
 
 ## Workflow Preferences
