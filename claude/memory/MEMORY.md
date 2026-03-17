@@ -195,6 +195,10 @@ See [bd_gis_subproject.md](bd_gis_subproject.md). 18 GIS modules in ~/omtt/bd_gi
 
 See [omtt_data_inventory_detail.md](omtt_data_inventory_detail.md). Full DB inventory: bdpolicy.db (11.7K series, 162K points), bangladesh.db (30K indicators, 542K values), baci.db (1.9M trade rows), bd_gis outputs (70+ CSVs).
 
+## SOTA Poverty Mapping ML Project (planned)
+
+See [project_sota_poverty_ml.md](project_sota_poverty_ml.md). Deep learning on Sentinel-2 for sub-district poverty prediction. DHS 2017-18 GPS data: registered, awaiting approval. BBS HIES 2022 PDF available. GEE pipeline ready. Method: transfer learning (ResNet) on ~1,200 DHS clusters, predict at union parishad level, validate against HIES 2022.
+
 ## TradeWeave Audit (2026-03-12)
 
 See [tradeweave_audit_2026_03.md](tradeweave_audit_2026_03.md) for full details. 3-wave audit, 49 CRITICAL fixes, 44 files. Key: FAOSTAT 1e3 not 1e6, ECI citation is Hidalgo 2009 PNAS, PCI negatives are normal, HHI thresholds 0.15/0.25, unit values in USD/t not $/kg.
