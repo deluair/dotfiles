@@ -21,16 +21,18 @@ All 6 projects must be machineless: git clone + one command = running on any mac
 | Pre-commit | auto `git secret hide` | Hook in `.git/hooks/pre-commit`. |
 | Data sync | OneDrive + GDrive + `backup.sh`/`restore.sh` | Dual cloud, incremental rsync |
 | Setup automation | `Makefile` | `make setup` = restore + decrypt + install. |
-| GPG key | `deluair@gmail.com` | Auto-imported during `make install`. Backed up to both clouds. |
+| GPG key | `$GPG_EMAIL` (from config.sh) | Auto-imported during `make install`. Backed up to both clouds. |
 | Claude memory | `sync-memory.sh` | Synced to dotfiles, deployed on install. |
 
 ## New machine workflow
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/deluair/dotfiles/main/bootstrap.sh | bash
+make unlock       # decrypt config.sh with age passphrase
 make clone-all    # clone all 7 repos
 make restore      # pull data from OneDrive/GDrive
-make doctor       # verify everything (7 categories)
+make setup-all    # install deps, decrypt secrets, verify builds
+make doctor       # verify everything
 ```
 
 ## Key make targets
@@ -44,6 +46,9 @@ make doctor       # verify everything (7 categories)
 | `make restore` | restore data from cloud (OneDrive primary, GDrive fallback) |
 | `make sites` | health check all 3 sites |
 | `make clone-all` | clone all 7 repos |
+| `make setup-all` | install deps, decrypt secrets, verify builds for all projects |
+| `make lock` | encrypt config.sh with age (passphrase) |
+| `make unlock` | decrypt config.sh.age |
 | `make gpg-import` | import GPG key from cloud |
 
 ## Rules
@@ -57,8 +62,8 @@ make doctor       # verify everything (7 categories)
 
 ## Dual cloud backup
 
-- **OneDrive** (UTK): primary. `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
-- **GDrive** (personal `dulal1986@gmail.com`): redundant. `~/GDrive/My Drive/dev_backups/`
+- **OneDrive** (UTK): primary. `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
+- **GDrive** (personal): redundant. `$GDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
 - GDrive exists so losing the UTK account doesn't lose 18GB+ of trade data
 
 ## Projects with git-secret (5/6)

@@ -18,13 +18,6 @@
 - **Be terse**. Match my short, direct communication style. No filler, no preamble. If I say "push", just push.
 - **No unsolicited commentary**. Don't explain what you're about to do, just do it. Don't narrate obvious steps.
 
-## ABSOLUTE RULES (non-negotiable)
-- **Local first, always.** Test every change locally before touching VPS. Run imports, run tests, verify output. Only then deploy. One combined SSH command for deploy (rsync + install + generate + restart). Never retry blindly on VPS. If VPS fails, come back to local.
-- **Smart time.** Do the work, verify once. No polling loops. No redundant testing. No asking "want me to do X?" when the answer is obvious. Combine commands. If something fails, diagnose the root cause, don't retry the same command. If the user says "go on", execute.
-- **Never get stuck.** If a command hangs, kill it and try a different approach. If VPS is unresponsive, move on to other work. If a tool is blocked, use a different tool. If an approach isn't working after 2 attempts, stop, explain what's wrong, and ask for direction. Never sit in a polling loop. Never wait for something that might not come.
-
-- **Session bookends.** When I say "start": run `make -C ~/dotfiles pull`. When I say "end": run `make -C ~/dotfiles push`. No questions, just do it.
-
 ## Do NOT
 - Refactor code I didn't ask you to touch.
 - Add type annotations, docstrings, or comments to code you didn't change.
