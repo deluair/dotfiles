@@ -150,7 +150,9 @@ doctor:
 	([ -L "$$HOME/.claude/CLAUDE.md" ] || [ -f "$$HOME/.claude/CLAUDE.md" ]) && printf "  OK   CLAUDE.md\n" || printf "  WARN CLAUDE.md\n"; \
 	echo ""; \
 	echo "=== GPG ==="; \
-	gpg --list-keys "$$GPG_EMAIL" >/dev/null 2>&1 && printf "  OK   GPG key imported\n" || printf "  MISS GPG key (run: make gpg-import)\n"; \
+	if timeout 5 gpg --list-keys "$$GPG_EMAIL" >/dev/null 2>&1; then printf "  OK   GPG key imported\n"; \
+	elif [ $$? -eq 124 ]; then printf "  WARN GPG check timed out (gpg-agent may be stuck)\n"; \
+	else printf "  MISS GPG key (run: make gpg-import)\n"; fi; \
 	echo ""; \
 	echo "=== Data Files ==="; \
 	P="$$PROJECTS_DIR"; \

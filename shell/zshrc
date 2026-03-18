@@ -11,6 +11,7 @@ alias dev="cd ~/trade-explorer && npm run dev"
 alias sites="bash ~/dotfiles/check-sites.sh"
 alias dr="make -C ~/dotfiles doctor"
 alias backup="make -C ~/dotfiles backup"
+alias start="make -C ~/dotfiles pull"
 
 # Project shortcuts
 alias tw="cd ~/trade-explorer"

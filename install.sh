@@ -97,15 +97,32 @@ if [ -d "$DOTFILES_DIR/claude/commands" ]; then
     echo "  $count commands available"
 fi
 
-# Deploy memory
+# Deploy memory (bidirectional merge: newer file wins)
 PROJECT_FOLDER=$(encode_claude_path "$HOME")
 PROJECT_MEMORY_DIR="$CLAUDE_DIR/projects/$PROJECT_FOLDER/memory"
 
 if [ -d "$DOTFILES_DIR/claude/memory" ]; then
     mkdir -p "$PROJECT_MEMORY_DIR"
-    cp -n "$DOTFILES_DIR/claude/memory/"*.md "$PROJECT_MEMORY_DIR/" 2>/dev/null || true
+    # Merge both directions: newer file wins
+    for f in "$DOTFILES_DIR/claude/memory/"*.md; do
+        [ -f "$f" ] || continue
+        base=$(basename "$f")
+        dest="$PROJECT_MEMORY_DIR/$base"
+        if [ ! -f "$dest" ] || [ "$f" -nt "$dest" ]; then
+            cp "$f" "$dest"
+        fi
+    done
+    # Pull back any files only in active memory
+    for f in "$PROJECT_MEMORY_DIR/"*.md; do
+        [ -f "$f" ] || continue
+        base=$(basename "$f")
+        src="$DOTFILES_DIR/claude/memory/$base"
+        if [ ! -f "$src" ] || [ "$f" -nt "$src" ]; then
+            cp "$f" "$src"
+        fi
+    done
     count=$(ls "$PROJECT_MEMORY_DIR/"*.md 2>/dev/null | wc -l | tr -d ' ')
-    echo "  memory -> deployed ($count files)"
+    echo "  memory -> merged ($count files)"
 fi
 
 # ── GPG key ──
