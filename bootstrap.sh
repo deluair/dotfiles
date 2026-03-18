@@ -73,6 +73,12 @@ elif [ "$OS" = "windows" ]; then
 fi
 
 # ── 4. Decrypt config.sh (age is now installed) ──
+# Refresh PATH: winget installs don't update current shell
+if [ "$OS" = "windows" ]; then
+    for p in "$HOME/bin" "$LOCALAPPDATA/Microsoft/WinGet/Links" "/c/Program Files/age" "/c/Program Files (x86)/age"; do
+        [ -d "$p" ] && export PATH="$p:$PATH"
+    done
+fi
 if [ ! -f "config.sh" ]; then
     if [ -f "config.sh.age" ] && command -v age &>/dev/null; then
         echo ""
