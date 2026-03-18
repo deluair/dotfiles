@@ -84,16 +84,16 @@ check_data() {
 
 echo "=== Data (symlinked to OneDrive) ==="
 P="$PROJECTS_DIR"
-check_data "trade.db" "$P/trade-explorer/data/trade.db" "$ONEDRIVE/db_backups/trade.db" true
-check_data "imf.db" "$P/trade-explorer/data/imf.db" "$ONEDRIVE/db_backups/tradeweave_imf_latest.db"
-check_data "app.db" "$P/trade-explorer/data/app.db" "$ONEDRIVE/db_backups/tradeweave_app_latest.db"
-check_data "bangladesh.db" "$P/bddata/backend/data/bangladesh.db" "$ONEDRIVE/db_backups/bddb_latest.sqlite"
-check_data "bdpolicy.db" "$P/omtt/data/bdpolicy.db" "$ONEDRIVE/db_backups/omtt_bdpolicy_latest.db"
-check_data "bangladesh.db (omtt)" "$P/omtt/data/bangladesh.db" "$ONEDRIVE/db_backups/omtt_bangladesh_latest.db"
-check_data "baci.db" "$P/omtt/data/baci.db" "$ONEDRIVE/db_backups/omtt_baci_latest.db"
+check_data "trade.db" "$P/tradeweave/data/trade.db" "$ONEDRIVE/db_backups/trade.db" true
+check_data "imf.db" "$P/tradeweave/data/imf.db" "$ONEDRIVE/db_backups/tradeweave_imf_latest.db"
+check_data "app.db" "$P/tradeweave/data/app.db" "$ONEDRIVE/db_backups/tradeweave_app_latest.db"
+check_data "bangladesh.db" "$P/bdfacts/backend/data/bangladesh.db" "$ONEDRIVE/db_backups/bddb_latest.sqlite"
+check_data "bdpolicy.db" "$P/bdpolicylab/data/bdpolicy.db" "$ONEDRIVE/db_backups/omtt_bdpolicy_latest.db"
+check_data "bangladesh.db (omtt)" "$P/bdpolicylab/data/bangladesh.db" "$ONEDRIVE/db_backups/omtt_bangladesh_latest.db"
+check_data "baci.db" "$P/bdpolicylab/data/baci.db" "$ONEDRIVE/db_backups/omtt_baci_latest.db"
 check_data "me.db" "$P/dulalratna/me.db" "$ONEDRIVE/db_backups/dulalratna_me_latest.db"
-check_data "gis outputs" "$P/omtt/bd_gis/outputs" "$ONEDRIVE/omtt_gis_data/outputs"
-check_data "gis local_data" "$P/omtt/bd_gis/local_data" "$ONEDRIVE/omtt_gis_data/local_data"
+check_data "gis outputs" "$P/bdpolicylab/bd_gis/outputs" "$ONEDRIVE/omtt_gis_data/outputs"
+check_data "gis local_data" "$P/bdpolicylab/bd_gis/local_data" "$ONEDRIVE/omtt_gis_data/local_data"
 echo ""
 
 echo "=== GDrive Redundancy ==="

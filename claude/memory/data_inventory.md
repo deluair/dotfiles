@@ -8,7 +8,7 @@ type: reference
 
 ## 1. BDFacts (bdfacts.org)
 
-### bangladesh.db (34 MB, ~/bddata/backend/data/)
+### bangladesh.db (34 MB, ~/bdfacts/backend/data/)
 
 Multi-source Bangladesh indicator database. 7 active sources, ~17K indicators, ~457K data points.
 
@@ -26,7 +26,7 @@ Multi-source Bangladesh indicator database. 7 active sources, ~17K indicators, ~
 
 **Fetcher**: `backend/bangladesh_fetch.py --source {wb|imf|who|unsdg|fao|ilo|fred} --stale-days 0`
 
-### baci.db (215 MB, ~/bddata/backend/data/)
+### baci.db (215 MB, ~/bdfacts/backend/data/)
 
 BACI bilateral trade database (copy from OMTT). HS92 revision.
 
@@ -39,13 +39,13 @@ BACI bilateral trade database (copy from OMTT). HS92 revision.
 | BGD export partners | 224 |
 | BGD export products | 4,569 |
 
-### wdi.db (56 KB, ~/bddata/backend/)
+### wdi.db (56 KB, ~/bdfacts/backend/)
 
 World Bank WDI specialized database. 4 WB sources (WDI, Governance, Debt, Gender).
 
 **Fetcher**: `backend/wdi_fetch.py`
 
-### analytics.db (1.2 MB, ~/bddata/backend/)
+### analytics.db (1.2 MB, ~/bdfacts/backend/)
 
 User sessions, events, feedback, crawler tracking. Auto-pruned at 90 days.
 
@@ -94,7 +94,7 @@ Sources: World Bank, IMF, WHO, ILO, FAO, UNESCO, BGMEA, BPDB, DSE, MoF, BB, BMET
 
 ## 2. OMTT (bdpolicylab.com)
 
-### bdpolicy.db (41 MB, ~/omtt/data/)
+### bdpolicy.db (41 MB, ~/bdpolicylab/data/)
 
 Policy think tank database. 136 publications, 11.7K series, 162K data points.
 
@@ -126,17 +126,17 @@ Policy think tank database. 136 publications, 11.7K series, 162K data points.
 **Collectors**: 23 registered, automated via APScheduler.
 **DataHouse**: `app/datahouse.py` with concept catalog, authority-weighted resolution, parquet for IMF WEO.
 
-### baci.db (215 MB, ~/omtt/data/)
+### baci.db (215 MB, ~/bdpolicylab/data/)
 
 Same as BDFacts copy. Source of truth.
 
-### OECD ICIO matrices (6.4 GB, ~/omtt/data/icio/v2025/)
+### OECD ICIO matrices (6.4 GB, ~/bdpolicylab/data/icio/v2025/)
 
 28 years (1995-2022) of Inter-Country Input-Output tables. 4 matrix types per year (Z, FD, VA, X).
 50 industries x 85 countries raw, aggregated to 13x9 for BD policy analysis.
 Used by: Caliendo-Parro CGE model, IO analysis, TiVA decomposition, GVC analysis.
 
-### Downloaded Raw Data (3.9 GB, ~/omtt/data/trade/)
+### Downloaded Raw Data (3.9 GB, ~/bdpolicylab/data/trade/)
 
 197 files of manually downloaded Bangladesh research data.
 
@@ -236,7 +236,7 @@ Location: `OneDrive/hossen_storage/omtt_raw_data/imf_csvs_2026-03-13/`
 - ESG finance, exchange rates
 - NSDP (National Summary Data Page)
 
-### IMF WEO parquet (~/omtt/data/imf_all.parquet)
+### IMF WEO parquet (~/bdpolicylab/data/imf_all.parquet)
 
 IMF World Economic Outlook indicators in parquet format. Dot notation (e.g., BGD.NGDP_RPCH.A).
 
@@ -244,7 +244,7 @@ IMF World Economic Outlook indicators in parquet format. Dot notation (e.g., BGD
 
 ## 3. TradeWeave (tradeweave.org)
 
-### trade.db (18 GB, ~/trade-explorer/data/)
+### trade.db (18 GB, ~/tradeweave/data/)
 
 Comprehensive global trade database. 51 tables.
 
@@ -264,7 +264,7 @@ Comprehensive global trade database. 51 tables.
 | countries | 238 | Country metadata |
 | products | 5,022 | HS product metadata |
 
-### app.db (36 KB, ~/trade-explorer/data/)
+### app.db (36 KB, ~/tradeweave/data/)
 
 Application state database.
 

@@ -3,9 +3,9 @@
 ## Active Projects
 | Project | Dir | Repo | DB File | DB Size |
 |---------|-----|------|---------|---------|
-| OMTT | ~/omtt | deluair/omtt | data/bdpolicy.db | ~31 MB |
-| BDFacts | ~/bddata | deluair/bddata | backend/data/ (no main db currently) | - |
-| TradeWeave | ~/trade-explorer | deluair/trade-explorer | data/trade.db | ~19 GB |
+| OMTT | ~/bdpolicylab | deluair/bdpolicylab | data/bdpolicy.db | ~31 MB |
+| BDFacts | ~/bdfacts | deluair/bdfacts | backend/data/ (no main db currently) | - |
+| TradeWeave | ~/tradeweave | deluair/tradeweave | data/trade.db | ~19 GB |
 | BDDB | ~/bddb | deluair/bddb (private) | data/bddb.sqlite | ~48 MB |
 | EconAI | ~/econai | deluair/econai | - | - |
 
@@ -23,6 +23,6 @@
 - TradeWeave trade.db also at `OneDrive/hossen_storage/trade.db`
 
 ## API Keys
-- Stored in `~/trade-explorer/.env` (master copy)
+- Stored in `~/tradeweave/.env` (master copy)
 - FRED, Comtrade, EIA, NOAA, BLS, Census keys available
 - BDDB `.env` configured from these

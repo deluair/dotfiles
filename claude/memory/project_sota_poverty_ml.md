@@ -8,7 +8,7 @@ SOTA satellite poverty mapping for Bangladesh using deep learning on Sentinel-2 
 
 **Why:** Current GIS poverty proxy uses district-level averages (64 units, 0.49-0.53 range, no discrimination). SOTA (Jean et al. 2016, Yeh et al. 2020) uses CNNs on satellite tiles at cluster/village level. This would be a publishable contribution.
 
-**How to apply:** When DHS approval comes through, start this project. Likely in a new repo or under ~/omtt/ml/.
+**How to apply:** When DHS approval comes through, start this project. Likely in a new repo or under ~/bdpolicylab/ml/.
 
 ## Status (as of 2026-03-16)
 - DHS Bangladesh 2017-18 GPS dataset: **registered, awaiting approval** (dhsprogram.com, 1-2 days)

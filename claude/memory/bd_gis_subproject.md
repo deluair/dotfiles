@@ -1,12 +1,12 @@
 ---
 name: BD GIS Sub-project in OMTT
-description: Bangladesh Comprehensive Geospatial Analysis Platform (bd_gis) in ~/omtt/bd_gis. 24 GIS modules + 3 utility modules, full OMTT integration, deployed to bdpolicylab.com.
+description: Bangladesh Comprehensive Geospatial Analysis Platform (bd_gis) in ~/bdpolicylab/bd_gis. 24 GIS modules + 3 utility modules, full OMTT integration, deployed to bdpolicylab.com.
 type: project
 ---
 
-## BD GIS (~/omtt/bd_gis)
+## BD GIS (~/bdpolicylab/bd_gis)
 
-- **Repo**: `deluair/bd_gis` cloned into `~/omtt/bd_gis` on 2026-03-15
+- **Repo**: `deluair/bd_gis` cloned into `~/bdpolicylab/bd_gis` on 2026-03-15
 - **Stack**: Python 3.9+, Google Earth Engine, flat layout, `run_pipeline.py` orchestrator
 - **GEE project**: `gen-lang-client-0432004086`
 - **GEE auth**: authenticated on Mac Mini M4 (2026-03-15)

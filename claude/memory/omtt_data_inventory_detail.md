@@ -4,7 +4,7 @@ description: Complete inventory of all databases, row counts, sources, and cover
 type: reference
 ---
 
-## OMTT Databases (~/omtt/data/)
+## OMTT Databases (~/bdpolicylab/data/)
 
 ### bdpolicy.db (41MB) -- OMTT's own collected data
 - `data_series`: 11,708 series
@@ -23,7 +23,7 @@ type: reference
 ### baci.db (215MB) -- BD trade flows
 - 1.9M rows, HS92, 1995-2024
 
-## BDFacts Databases (~/bddata/backend/)
+## BDFacts Databases (~/bdfacts/backend/)
 
 ### bangladesh.db (43MB) -- master copy
 - `indicators`: 14,706
@@ -35,7 +35,7 @@ type: reference
 
 ### wdi.db (56KB) -- empty, unused
 
-## bd_gis Outputs (~/omtt/bd_gis/outputs/)
+## bd_gis Outputs (~/bdpolicylab/bd_gis/outputs/)
 
 18 output directories with 70+ CSV files covering:
 water, floods, rivers, haors, changes, nightlights, urbanization, vegetation, landcover,
@@ -46,4 +46,4 @@ soil (empty), health (empty), energy (empty)
 
 BDFacts (bangladesh.db) -> copied to OMTT -> OMTT adds bdpolicy.db (HDX, zila SDG, collectors)
 TradeWeave (trade.db 18GB) -> BACI subset copied to OMTT baci.db (215MB, BD only)
-bd_gis (GEE satellite) -> CSV outputs in ~/omtt/bd_gis/outputs/ (NOT yet in any DB)
+bd_gis (GEE satellite) -> CSV outputs in ~/bdpolicylab/bd_gis/outputs/ (NOT yet in any DB)

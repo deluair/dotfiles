@@ -5,7 +5,7 @@
 | | BDFacts | TradeWeave | OMTT |
 |---|---|---|---|
 | **Domain** | bdfacts.org | tradeweave.org | bdpolicylab.com |
-| **Repo** | `~/bddata` | `~/trade-explorer` | `~/omtt` |
+| **Repo** | `~/bdfacts` | `~/tradeweave` | `~/bdpolicylab` |
 | **Stack** | React 19 + Vite + FastAPI | Next.js 16 + React 19 + TS | FastAPI + Jinja2 |
 | **Styling** | CSS vars + per-page CSS | Tailwind v4 + CSS vars | Tailwind CDN + inline |
 | **Theme** | Dark (glassmorphism) | Dark (glassmorphism) | Dark (glassmorphism, gold) |
