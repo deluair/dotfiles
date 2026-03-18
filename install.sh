@@ -164,14 +164,19 @@ echo "  $MACHINE_MARKER -> $MACHINE_NAME ($MACHINE_DESC)"
 # ── GPG key ──
 echo ""
 echo "GPG key:"
-if gpg --list-keys "$GPG_EMAIL" &>/dev/null; then
+# Clean stale gpg-agent/keyboxd sockets (common on Windows after sleep/restart)
+if [ "$OS" = "windows" ] && command -v gpgconf &>/dev/null; then
+    gpgconf --kill all 2>/dev/null
+    rm -f ~/.gnupg/S.* 2>/dev/null
+fi
+if timeout 5 gpg --batch --no-tty --list-keys "$GPG_EMAIL" &>/dev/null; then
     echo "  Already imported"
 else
     KEY=""
     [ -f "$ONEDRIVE/gpg_backup/${GPG_KEY_NAME}.asc" ] && KEY="$ONEDRIVE/gpg_backup/${GPG_KEY_NAME}.asc"
     [ -z "$KEY" ] && [ -n "$GDRIVE" ] && [ -f "$GDRIVE/../sensitive/gpg_backup/${GPG_KEY_NAME}.asc" ] && KEY="$GDRIVE/../sensitive/gpg_backup/${GPG_KEY_NAME}.asc"
     if [ -n "$KEY" ]; then
-        gpg --import "$KEY" 2>/dev/null && echo "  Imported from cloud storage" || echo "  Import failed (check passphrase)"
+        timeout 10 gpg --batch --no-tty --import "$KEY" 2>/dev/null && echo "  Imported from cloud storage" || echo "  Import failed (gpg hung or passphrase needed)"
     else
         echo "  Not found in cloud storage. Import manually:"
         echo "    gpg --import /path/to/${GPG_KEY_NAME}.asc"
