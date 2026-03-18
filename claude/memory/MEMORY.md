@@ -12,6 +12,7 @@
 - **GPG key**: `$GPG_EMAIL` (from `~/dotfiles/config.sh`). Backed up to OneDrive `gpg_backup/`.
 - **No git-lfs**: Decided against it. OneDrive is free via UTK, not worth $5/mo for LFS.
 - **"start" = pull + setup**: See [feedback_start_means_pull_and_make.md](feedback_start_means_pull_and_make.md). Git pull all repos, then run make setup for each.
+- **Always subagent-driven**: See [feedback_always_subagent_driven.md](feedback_always_subagent_driven.md). Never ask, always use option 1 (subagent-driven) for plan execution.
 - **All BD data to datahouse**: See [feedback_all_bd_data_to_datahouse.md](feedback_all_bd_data_to_datahouse.md). All Bangladesh data must be ingested into bdpolicy.db, never left as raw files only.
 
 ## OneDrive Data Backup Map
