@@ -104,7 +104,11 @@
       "Bash(textutil -convert txt -stdout \"/Users/mddeluairhossen/Library/CloudStorage/OneDrive-UniversityofTennessee/bd_data_repository/dhs.rtf\")",
       "Bash(pip install:*)",
       "Bash(uv pip:*)",
-      "Bash(gpg --version)"
+      "Bash(gpg --version)",
+      "Bash(bash -n bin/sit.sh)",
+      "Bash(bash -n bin/standup.sh)",
+      "Bash(bash -n backup-data.sh)",
+      "Bash(bash -n paths.sh)"
     ],
     "deny": [],
     "ask": []
