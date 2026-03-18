@@ -33,11 +33,11 @@ OMTT now shares the dark glassmorphism language: dark navy (#080c18), Playfair D
 
 ## Shared Infrastructure
 
-- **VPS**: OVH (`$VPS_HOST` from `~/dotfiles/config.sh`)
+- **VPS**: OVH `vps-45aafae5.vps.ovh.us` (40.160.2.223), user `ubuntu`
 - **Cloudflare**: All 3 domains proxied, Full (strict) SSL
   - bdfacts.org + bdpolicylab.com: Let's Encrypt origin certs
   - tradeweave.org: Cloudflare Origin Certificate (expires 2041)
-- **GitHub**: github.com/`$GITHUB_USER`
+- **GitHub**: github.com/deluair
 - **CI/CD**: All 3 have GitHub Actions deploy on push to main
 - **No mock data, no hallucination, no shady things** (all 3 projects)
 - **Secret signature**: 6-layer `del` watermark in all projects
@@ -46,9 +46,9 @@ OMTT now shares the dark glassmorphism language: dark navy (#080c18), Playfair D
 
 - **Security headers** (all 3): HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, CSP
 - **Rate limiting**: BDFacts (SlowAPI), OMTT (SlowAPI, 60/min), TradeWeave (Next.js built-in)
-- **DB backups**: Daily 3am UTC cron on VPS, 7-day retention. Pull to OneDrive: `make vps-pull`
-- **Health checks**: `make sites` (local), all 3 have /api/health endpoints
-- **Backup DBs on VPS**: `$VPS_BACKUP_PATH` (bdpolicy, bdfacts-analytics, bdfacts-bangladesh, tradeweave-app)
+- **DB backups**: Daily 3am UTC cron on VPS, 7-day retention. Pull to OneDrive: `~/scripts/pull-vps-backups.sh`
+- **Health checks**: `~/scripts/check-sites.sh` (local), all 3 have /api/health endpoints
+- **Backup DBs on VPS**: `/home/ubuntu/backups/` (bdpolicy, bdfacts-analytics, bdfacts-bangladesh, tradeweave-app)
 
 ## Cross-Referencing Status
 
@@ -61,7 +61,7 @@ Sites should link to each other in footers and about pages:
 
 - LinkedIn: https://www.linkedin.com/in/mddeluairhossen/
 - X: https://x.com/DeluairHossen
-- GitHub: https://github.com/`$GITHUB_USER`
+- GitHub: https://github.com/deluair
 
 ## Key Files Per Project
 

@@ -100,7 +100,10 @@
       "Bash(ps:*)",
       "Bash(pip3 install:*)",
       "Bash(du -sh /tmp/tmp*.tif)",
-      "Bash(make:*)"
+      "Bash(make:*)",
+      "Bash(textutil -convert txt -stdout \"/Users/mddeluairhossen/Library/CloudStorage/OneDrive-UniversityofTennessee/bd_data_repository/dhs.rtf\")",
+      "Bash(pip install:*)",
+      "Bash(uv pip:*)"
     ],
     "deny": [],
     "ask": []

@@ -19,3 +19,6 @@ alias om="cd ~/omtt"
 
 # Source machine-local overrides (untracked)
 [ -f ~/.zshrc.local ] && source ~/.zshrc.local
+
+# Added by Antigravity
+export PATH="/Users/mddeluairhossen/.antigravity/antigravity/bin:$PATH"

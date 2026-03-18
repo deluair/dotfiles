@@ -104,10 +104,49 @@ Utility modules: timelapse.py, change_alerts.py, run_divisions.py
 - 9/12 extended modules completed (landcover, slums, coastal hung)
 - Confirmed corrected scale values (dry: 6,594 km2, monsoon: 15,220 km2)
 
+### Poverty Ground Truth Integration (2026-03-17)
+
+**Data sources acquired:**
+- DHS Program: 227 zips (607MB), all BD survey rounds 1993-2023
+- IPUMS International: 30.2M person records, 66 cols, BD censuses 1991/2001/2011
+- HIES 2022: BBS Final Report PDF (8.7MB), official poverty statistics
+
+**New scripts:**
+- `hies_ground_truth.py`: Extracts HIES 2022 tables (HCR, income, facilities, poverty gap by division)
+- `ipums_poverty.py`: Builds MPI from IPUMS census data (housing/education/employment), 180 district-year cells
+- `dhs_wealth.py`: Extracts DHS wealth quintile distributions by division (5 surveys: 2007-2022)
+- `calibrate_poverty.py`: Satellite vs HIES calibration diagnostic
+
+**Key finding:** Satellite poverty index r=0.20 against HIES (useless). Division spread 0.01 vs real 12pp. Use HIES directly for division-level, satellite only for within-division spatial disaggregation.
+
+**Poverty outputs (13 CSVs in outputs/poverty/):**
+- hies_division_hcr.csv, hies_national_hcr_timeseries.csv, hies_division_poverty_gap.csv
+- hies_division_income.csv, hies_division_facilities.csv, hies_hcr_by_education.csv, hies_hcr_by_land.csv
+- ipums_district_mpi.csv (60 districts x 3 years)
+- dhs_wealth_by_division.csv (8 divisions x 5 surveys)
+- calibration_results.csv
+
+**OMTT integration updated:** GIS collector now ingests 1018 data points (was 872). Added HIES poverty, kilns, aquaculture, crops, groundwater registrations.
+
+### Fixes Applied (2026-03-17)
+
+- ESA WorldCover asset path: `v100` -> `v100/2020`, `v200` -> `v200/2021`
+- Crop detection pipeline: fixed result key mismatch (aman_timeseries/boro_timeseries vs rice_timeseries), now produces 4 CSVs
+
+### 6 New Modules Run (2026-03-17)
+
+All 6 new modules executed successfully:
+- kilns: 5 files (thermal hotspots, spectral area, density by district, timeseries, emissions)
+- aquaculture: 6 files (pond area, Cox's Bazar, Noakhali, timeseries, mangrove conversion, by district)
+- chars: 8 files (accretion timeseries, vulnerability, + Drive exports)
+- cyclones: 1 file (damage summary)
+- groundwater: 3 files (timeseries, spatial stats)
+- transportation: 6 files
+
 ### Remaining / Future Sessions
 
 1. Add `GOOGLE_APPLICATION_CREDENTIALS_JSON` GitHub secret for monthly cron
-2. Run 6 new modules: `--kilns --aquaculture --chars --cyclones --groundwater --transport`
+2. ~~Run 6 new modules~~ DONE
 3. Run `run_divisions.py` for per-division breakdowns
 4. Run `--timelapse` for animated GIFs
 5. Run `--alerts` for 2024 anomaly detection
@@ -116,5 +155,7 @@ Utility modules: timelapse.py, change_alerts.py, run_divisions.py
 8. Expand local_compute.py to use 6-band Landsat mosaics for full NDWI/MNDWI water classification
 9. Download more years from Planetary Computer (2000, 2010, 2024 full mosaics)
 10. Fix CHIRPS local rainfall (decompression/clipping issue)
-11. Fix landcover, slums, coastal GEE modules (reduce complexity or move to local compute)
-12. ESA WorldCover v200 asset path needs fixing
+11. Landcover/slums/coastal: running national 2026-03-17, may still timeout on GEE
+12. ~~ESA WorldCover v200 asset path~~ FIXED
+13. ~~Crops zero output~~ FIXED (key mismatch in run_pipeline.py)
+14. SOTA poverty mapping ML paper (DHS + IPUMS + satellite features)
