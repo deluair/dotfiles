@@ -1,70 +1,54 @@
 # Dotfiles Cheatsheet
 
-## First time on a new machine
+## Fresh machine
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/deluair/dotfiles/main/bootstrap.sh | bash
+cd ~/dotfiles && make unlock && make clone-all && make restore && make setup-all
+```
+
+If bootstrap fails midway (winget needs admin, etc.), finish manually:
+```bash
 cd ~/dotfiles
-make unlock           # decrypt config.sh (passphrase required)
-make clone-all        # clone all repos
-make restore          # pull databases from OneDrive/GDrive
-make setup-all        # install deps, decrypt secrets, verify builds
-make doctor           # verify everything
+age -d config.sh.age > config.sh
+bash install.sh
+make clone-all && make restore && make setup-all && make doctor
 ```
 
-On Windows, to enable `make` in CMD/PowerShell, copy the MSYS2 make.exe:
-```
-mkdir C:\tools   (if needed, add to PATH)
-copy C:\Users\%USERNAME%\.local\bin\make.exe C:\tools\make.exe
-```
-Create `C:\tools\make.cmd`:
-```
-@"C:\Program Files\Git\bin\bash.exe" -lc "make \"$@\"" _ %*
-```
-
-## Daily workflow
+## Daily
 
 ```bash
-# Sit down (any machine)
-make -C ~/dotfiles pull
-
-# Stand up (any machine)
-make -C ~/dotfiles push
+sit        # start of session (pull all repos, merge memory, restore data, doctor)
+standup    # end of session (sync memory, push all repos, backup to cloud)
 ```
-
-## Weekly
-
-```bash
-make -C ~/dotfiles backup
-```
-
-## Add a new project
-
-1. Edit `~/dotfiles/config.sh`, add repo name to REPOS:
-```bash
-REPOS="omtt bddata trade-explorer dulalratna pmgai econai hossen NEW-REPO"
-```
-
-2. Re-encrypt config: `make -C ~/dotfiles lock`
-
-3. If it has data files, add entries to:
-   - `~/dotfiles/backup-data.sh`
-   - `~/dotfiles/restore-data.sh`
 
 ## All commands
 
-| Command | Description |
-|---------|-------------|
-| `make doctor` | Verify everything (prereqs, cloud, configs, GPG, data, commands) |
-| `make pull` | Sit down: pull dotfiles + repos + restore data |
-| `make push` | Stand up: sync memory + push dotfiles + repos |
-| `make setup-all` | Install deps, decrypt secrets, verify builds for all projects |
-| `make clone-all` | Clone all project repos |
-| `make restore` | Restore data from cloud (OneDrive primary, GDrive fallback) |
-| `make backup` | Incremental backup to OneDrive + GDrive |
-| `make lock` | Encrypt config.sh with age |
-| `make unlock` | Decrypt config.sh.age with age |
+| Command | What |
+|---------|------|
+| `sit` | Start session: pull + merge memory + restore + doctor |
+| `standup` | End session: sync memory + push all + backup |
+| `make doctor` | Verify everything |
+| `make clone-all` | Clone all repos |
+| `make setup-all` | Install deps, decrypt secrets, verify builds |
+| `make restore` | Restore data from cloud |
+| `make backup` | Backup data to cloud |
+| `make lock` | Encrypt config.sh |
+| `make unlock` | Decrypt config.sh |
 | `make sites` | Health check all 3 sites |
 | `make gpg-import` | Import GPG key from cloud |
-| `make vps-pull` | Pull VPS database backups |
-| `make sync` | Sync Claude memory to dotfiles |
+
+## Machines (auto-detected)
+
+| Name | Machine | Storage |
+|------|---------|---------|
+| macmini | Mac Mini M4, 256GB | tight (skips 18GB trade.db) |
+| macair | MacBook Air M4, 256GB | tight (skips 18GB trade.db) |
+| galaxy | Samsung Galaxy Book Edge, 512GB | ok |
+| dell | Dell Precision 5560, 1TB | ok |
+
+## Add a new project
+
+1. Add repo name to REPOS in `config.sh`
+2. Re-encrypt: `make lock`
+3. If it has data files, add to `backup-data.sh` and `restore-data.sh`
