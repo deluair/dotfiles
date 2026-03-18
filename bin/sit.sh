@@ -21,12 +21,71 @@ for repo in $REPOS; do
     fi
 done
 
-# Pull all project repos
+# Pull all project repos (stash dirty trees, update submodules)
 echo "Pulling project repos..."
 for repo in $REPOS; do
     if [ -d "$HOME/$repo/.git" ]; then
         printf "  %-20s" "$repo"
-        cd "$HOME/$repo" && git pull --ff-only 2>/dev/null && printf "OK\n" || printf "CONFLICT (resolve manually)\n"
+        cd "$HOME/$repo"
+
+        # Check for uncommitted changes
+        DIRTY=false
+        if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+            DIRTY=true
+        fi
+
+        # Stash if dirty
+        STASHED=false
+        if $DIRTY; then
+            if git stash push -m "sit-auto-$(date +%s)" --include-untracked 2>/dev/null; then
+                STASHED=true
+            else
+                printf "DIRTY (stash failed, resolve manually)\n"
+                continue
+            fi
+        fi
+
+        # Pull
+        PULL_OK=false
+        if git pull --ff-only 2>/dev/null; then
+            PULL_OK=true
+        elif git pull 2>/dev/null; then
+            PULL_OK=true
+        fi
+
+        # Update submodules if any
+        if [ -f ".gitmodules" ]; then
+            git submodule update --init --recursive 2>/dev/null || true
+        fi
+
+        # Pop stash
+        if $STASHED; then
+            if git stash pop 2>/dev/null; then
+                if $PULL_OK; then
+                    printf "OK (stashed + restored)\n"
+                else
+                    printf "DIVERGED (stash restored, merge manually)\n"
+                fi
+            else
+                printf "CONFLICT (changes in stash@{0}, resolve manually)\n"
+                continue
+            fi
+        else
+            if $PULL_OK; then
+                printf "OK\n"
+            else
+                printf "DIVERGED (merge manually)\n"
+            fi
+        fi
+    fi
+done
+echo ""
+
+# Clean stale WAL/SHM files from data directories
+echo "Cleaning stale WAL/SHM..."
+for repo in $REPOS; do
+    if [ -d "$HOME/$repo" ]; then
+        find "$HOME/$repo" -maxdepth 3 \( -name "*.db-wal" -o -name "*.db-shm" \) -print -delete 2>/dev/null || true
     fi
 done
 echo ""

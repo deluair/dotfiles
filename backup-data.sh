@@ -47,7 +47,8 @@ sync_dir() {
     if command -v rsync &>/dev/null; then
         rsync -au --delete "$src/" "$dest/" 2>/dev/null || { echo "  FAIL  $label"; ERRORS=$((ERRORS + 1)); return; }
     else
-        cp -ru "$src/"* "$dest/" 2>/dev/null || { echo "  FAIL  $label"; ERRORS=$((ERRORS + 1)); return; }
+        # cp -u not available on macOS; use rsync (installed via Brewfile) or plain cp
+        cp -R "$src/"* "$dest/" 2>/dev/null || { echo "  FAIL  $label"; ERRORS=$((ERRORS + 1)); return; }
     fi
     echo "  OK    $label"
 }

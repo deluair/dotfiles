@@ -87,7 +87,7 @@ copy_with_progress() {
     if command -v rsync &>/dev/null; then
         rsync -u --progress "$src" "$dest"
     else
-        cp -u "$src" "$dest" 2>/dev/null || cp "$src" "$dest"
+        cp "$src" "$dest"
         echo "  copied $(basename "$src")"
     fi
 }
@@ -96,11 +96,17 @@ copy_with_progress() {
 if [ -z "$MACHINE_NAME" ] || [ "$MACHINE_NAME" = "unknown" ]; then
     if [ "$OS" = "macos" ]; then
         _hw=$(sysctl -n hw.model 2>/dev/null || echo "")
-        case "$_hw" in
-            Mac[Mm]ini*)   MACHINE_NAME="macmini" ;;
-            MacBookAir*)   MACHINE_NAME="macair" ;;
-            *)             MACHINE_NAME="unknown-mac" ;;
-        esac
+        _sp=""
+        if command -v system_profiler &>/dev/null; then
+            _sp=$(system_profiler SPHardwareDataType 2>/dev/null | grep "Model Name" || true)
+        fi
+        if echo "$_hw" | grep -qi "macmini" || echo "$_sp" | grep -qi "mac mini"; then
+            MACHINE_NAME="macmini"
+        elif echo "$_hw" | grep -qi "macbookair" || echo "$_sp" | grep -qi "macbook air"; then
+            MACHINE_NAME="macair"
+        else
+            MACHINE_NAME="unknown-mac"
+        fi
     elif [ "$OS" = "windows" ]; then
         _mfg=$(powershell -NoProfile -Command "(Get-CimInstance Win32_ComputerSystem).Manufacturer" 2>/dev/null | tr -d '\r' || echo "")
         _cpu=$(powershell -NoProfile -Command "(Get-CimInstance Win32_Processor).Name" 2>/dev/null | tr -d '\r' || echo "")

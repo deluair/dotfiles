@@ -11,10 +11,11 @@ echo ""
 bash "$DOTFILES_DIR/sync-memory.sh"
 echo ""
 
-# Push dotfiles
+# Push dotfiles (only tracked content: memory, commands, claude configs)
 echo "dotfiles:"
 cd "$DOTFILES_DIR"
-git add -A && git diff --cached --quiet || git commit -m "sync memory"
+git add claude/ shell/ bin/ *.sh Makefile Brewfile 2>/dev/null || true
+git diff --cached --quiet || git commit -m "sync memory"
 git push 2>/dev/null && echo "  OK" || echo "  already up to date"
 echo ""
 
