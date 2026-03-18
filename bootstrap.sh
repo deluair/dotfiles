@@ -75,6 +75,15 @@ elif [ "$OS" = "windows" ]; then
     winget install -e --id Microsoft.OneDrive --accept-package-agreements 2>/dev/null || true
     winget install -e --id FiloSottile.age --accept-package-agreements 2>/dev/null || true
     echo ""
+    # Install make (not in winget, download standalone binary)
+    if ! command -v make &>/dev/null; then
+        echo "Installing GNU Make..."
+        mkdir -p "$HOME/.local/bin"
+        curl -fsSL "https://raw.githubusercontent.com/deluair/dotfiles/main/bin/make.exe" -o "$HOME/.local/bin/make.exe"
+        chmod +x "$HOME/.local/bin/make.exe"
+        export PATH="$HOME/.local/bin:$PATH"
+        echo "  Installed make to ~/.local/bin/"
+    fi
     make install
 else
     make install
