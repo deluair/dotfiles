@@ -45,26 +45,12 @@ if [ ! -d "$HOME/dotfiles" ]; then
     git clone https://github.com/deluair/dotfiles.git "$HOME/dotfiles"
 fi
 
-# ── 3. Decrypt or create config.sh ──
+# ── 3. Install system deps FIRST (need age before decryption) ──
 cd "$HOME/dotfiles"
-if [ ! -f "config.sh" ]; then
-    if [ -f "config.sh.age" ] && command -v age &>/dev/null; then
-        echo "Decrypting config.sh from config.sh.age..."
-        age -d config.sh.age > config.sh
-    else
-        cp config.sh.example config.sh
-        echo "Created config.sh from template. Edit it with your values:"
-        echo "  $HOME/dotfiles/config.sh"
-    fi
-    echo ""
-fi
-
-# ── 4. Install system deps + configs ──
 
 if [ "$OS" = "macos" ]; then
-    make all
+    brew bundle --file=Brewfile
 elif [ "$OS" = "windows" ]; then
-    # Install deps via winget (idempotent, skips already installed)
     echo "Installing dependencies via winget..."
     winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements 2>/dev/null || true
     winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements 2>/dev/null || true
@@ -75,7 +61,7 @@ elif [ "$OS" = "windows" ]; then
     winget install -e --id Microsoft.OneDrive --accept-package-agreements 2>/dev/null || true
     winget install -e --id FiloSottile.age --accept-package-agreements 2>/dev/null || true
     echo ""
-    # Install make (not in winget, download standalone binary)
+    # Install make (not in winget)
     if ! command -v make &>/dev/null; then
         echo "Installing GNU Make..."
         mkdir -p "$HOME/.local/bin"
@@ -84,19 +70,36 @@ elif [ "$OS" = "windows" ]; then
         export PATH="$HOME/.local/bin:$PATH"
         echo "  Installed make to ~/.local/bin/"
     fi
-    make install
-else
-    make install
 fi
+
+# ── 4. Decrypt config.sh (age is now installed) ──
+if [ ! -f "config.sh" ]; then
+    if [ -f "config.sh.age" ] && command -v age &>/dev/null; then
+        echo ""
+        echo "Decrypting config.sh..."
+        age -d config.sh.age > config.sh
+        echo "  Done."
+    else
+        cp config.sh.example config.sh
+        echo ""
+        echo "WARNING: age not available. Created config.sh from template."
+        echo "  Edit $HOME/dotfiles/config.sh with your values, then re-run."
+        exit 1
+    fi
+fi
+echo ""
+
+# ── 5. Install configs ──
+make install
 
 echo ""
 echo "=== Bootstrap complete ==="
 echo ""
 echo "Next steps:"
-echo "  1. Sign into Google Drive and OneDrive"
+echo "  1. Sign into Google Drive and OneDrive (if not already)"
 echo "  2. Wait for cloud storage to sync/mount"
-echo "  3. Import GPG key:  make gpg-import"
-echo "  4. Clone projects:  make clone-all"
-echo "  5. Restore data:    make restore"
-echo "  6. Setup projects:  make setup-all"
-echo "  7. Verify:          make doctor"
+echo "  3. make gpg-import"
+echo "  4. make clone-all"
+echo "  5. make restore"
+echo "  6. make setup-all"
+echo "  7. make doctor"
