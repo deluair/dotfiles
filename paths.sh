@@ -88,8 +88,33 @@ copy_with_progress() {
     fi
 }
 
-# ── Machine identity ──
-MACHINE_NAME="${MACHINE_NAME:-unknown}"
+# ── Machine identity (auto-detect if not set in config.sh) ──
+if [ -z "$MACHINE_NAME" ] || [ "$MACHINE_NAME" = "unknown" ]; then
+    if [ "$OS" = "macos" ]; then
+        _hw=$(sysctl -n hw.model 2>/dev/null || echo "")
+        case "$_hw" in
+            Mac[Mm]ini*)   MACHINE_NAME="macmini" ;;
+            MacBookAir*)   MACHINE_NAME="macair" ;;
+            *)             MACHINE_NAME="unknown-mac" ;;
+        esac
+    elif [ "$OS" = "windows" ]; then
+        _mfg=$(powershell -NoProfile -Command "(Get-CimInstance Win32_ComputerSystem).Manufacturer" 2>/dev/null | tr -d '\r' || echo "")
+        _cpu=$(powershell -NoProfile -Command "(Get-CimInstance Win32_Processor).Name" 2>/dev/null | tr -d '\r' || echo "")
+        if echo "$_mfg" | grep -qi "samsung"; then
+            MACHINE_NAME="galaxy"
+        elif echo "$_mfg" | grep -qi "dell"; then
+            MACHINE_NAME="dell"
+        elif echo "$_cpu" | grep -qi "snapdragon\|qualcomm"; then
+            MACHINE_NAME="galaxy"
+        elif echo "$_cpu" | grep -qi "xeon\|core"; then
+            MACHINE_NAME="dell"
+        else
+            MACHINE_NAME="unknown-win"
+        fi
+    else
+        MACHINE_NAME="unknown"
+    fi
+fi
 
 # Machine specs lookup (for scripts and doctor)
 case "$MACHINE_NAME" in
