@@ -32,8 +32,11 @@ if [ "$OS" = "macos" ]; then
         eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
 elif [ "$OS" = "windows" ]; then
-    # winget is built into Windows 11. Verify it exists.
-    if ! command -v winget &>/dev/null; then
+    # winget lives in WindowsApps, which Git Bash often misses in PATH
+    for p in "$LOCALAPPDATA/Microsoft/WindowsApps" "$LOCALAPPDATA/Microsoft/WinGet/Links"; do
+        [ -d "$p" ] && export PATH="$p:$PATH"
+    done
+    if ! command -v winget &>/dev/null && ! command -v winget.exe &>/dev/null; then
         echo "winget not found. Install 'App Installer' from Microsoft Store, then re-run."
         exit 1
     fi
@@ -52,14 +55,14 @@ if [ "$OS" = "macos" ]; then
     brew bundle --file=Brewfile
 elif [ "$OS" = "windows" ]; then
     echo "Installing dependencies via winget..."
-    winget install -e --id Git.Git --accept-package-agreements --accept-source-agreements 2>/dev/null || true
-    winget install -e --id OpenJS.NodeJS.LTS --accept-package-agreements 2>/dev/null || true
-    winget install -e --id astral-sh.uv --accept-package-agreements 2>/dev/null || true
-    winget install -e --id GnuPG.GnuPG --accept-package-agreements 2>/dev/null || true
-    winget install -e --id GitHub.cli --accept-package-agreements 2>/dev/null || true
-    winget install -e --id Google.GoogleDrive --accept-package-agreements 2>/dev/null || true
-    winget install -e --id Microsoft.OneDrive --accept-package-agreements 2>/dev/null || true
-    winget install -e --id FiloSottile.age --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id Git.Git --accept-package-agreements --accept-source-agreements 2>/dev/null || true
+    winget.exe install -e --id OpenJS.NodeJS.LTS --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id astral-sh.uv --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id GnuPG.GnuPG --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id GitHub.cli --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id Google.GoogleDrive --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id Microsoft.OneDrive --accept-package-agreements 2>/dev/null || true
+    winget.exe install -e --id FiloSottile.age --accept-package-agreements 2>/dev/null || true
     echo ""
 fi
 
