@@ -13,7 +13,11 @@ fi
 
 case "$OSTYPE" in
     darwin*)  OS="macos" ;;
-    msys*|cygwin*|mingw*) OS="windows" ;;
+    msys*|cygwin*|mingw*)
+        OS="windows"
+        # Enable native NTFS symlinks in Git Bash (requires Developer Mode)
+        export MSYS=winsymlinks:nativestrict
+        ;;
     linux*)   OS="linux" ;;
     *)        OS="unknown" ;;
 esac
@@ -173,10 +177,12 @@ link_data() {
         return
     fi
 
-    # Local file/dir exists (not symlink), warn
+    # Local file/dir exists (not symlink), replace with symlink
     if [ -e "$dest" ] && [ ! -L "$dest" ]; then
-        echo "  WARN  $label (local copy exists, remove to symlink)"
-        return
+        if ! rm -rf "$dest" 2>/dev/null; then
+            echo "  WARN  $label (locked, close apps using it then re-run)"
+            return
+        fi
     fi
 
     mkdir -p "$(dirname "$dest")"
