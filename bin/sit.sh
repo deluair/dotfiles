@@ -13,6 +13,12 @@ cd "$DOTFILES_DIR"
 git pull --ff-only 2>/dev/null || git pull
 echo ""
 
+# One-time repo rename migration (safe to re-run)
+if [ -f "$DOTFILES_DIR/bin/migrate-repo-names.sh" ]; then
+    bash "$DOTFILES_DIR/bin/migrate-repo-names.sh"
+    echo ""
+fi
+
 # Clone any missing repos
 for repo in $REPOS; do
     if [ ! -d "$HOME/$repo" ]; then
