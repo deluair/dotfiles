@@ -13,10 +13,6 @@ cd "$DOTFILES_DIR"
 git pull --ff-only 2>/dev/null || git pull
 echo ""
 
-# Install configs + data symlinks + memory
-bash "$DOTFILES_DIR/install.sh"
-echo ""
-
 # Clone any missing repos
 for repo in $REPOS; do
     if [ ! -d "$HOME/$repo" ]; then
@@ -35,9 +31,8 @@ for repo in $REPOS; do
 done
 echo ""
 
-# Re-run install to symlink data for newly cloned repos
-echo "Linking data for newly cloned repos..."
-bash "$DOTFILES_DIR/install.sh" 2>/dev/null | grep -E "^  (LINK|MISS)" || true
+# Install configs + data symlinks + memory (runs once, after all repos cloned)
+bash "$DOTFILES_DIR/install.sh"
 echo ""
 
 # Doctor
