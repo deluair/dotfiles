@@ -103,7 +103,8 @@
       "Bash(make:*)",
       "Bash(textutil -convert txt -stdout \"/Users/mddeluairhossen/Library/CloudStorage/OneDrive-UniversityofTennessee/bd_data_repository/dhs.rtf\")",
       "Bash(pip install:*)",
-      "Bash(uv pip:*)"
+      "Bash(uv pip:*)",
+      "Bash(gpg --version)"
     ],
     "deny": [],
     "ask": []
