@@ -78,4 +78,4 @@ jobs:
           echo "PASS: $MEM memory files deployed"
 
       - name: Run doctor (partial, no cloud/data)
-        run: make doctor || true
+        run: bash bin/doctor.sh || true

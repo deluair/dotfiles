@@ -1,5 +1,5 @@
 #!/bin/bash
-# Start of session: pull everything, merge memory, restore data, verify.
+# Start of session: pull everything, deploy configs + data symlinks, verify.
 set -e
 DOTFILES_DIR="${HOME}/dotfiles"
 source "$DOTFILES_DIR/paths.sh"
@@ -13,9 +13,17 @@ cd "$DOTFILES_DIR"
 git pull --ff-only 2>/dev/null || git pull
 echo ""
 
-# Install/merge configs + memory
+# Install configs + data symlinks + memory
 bash "$DOTFILES_DIR/install.sh"
 echo ""
+
+# Clone any missing repos
+for repo in $REPOS; do
+    if [ ! -d "$HOME/$repo" ]; then
+        echo "Cloning $repo..."
+        git clone "https://github.com/$GITHUB_USER/$repo.git" "$HOME/$repo"
+    fi
+done
 
 # Pull all project repos
 echo "Pulling project repos..."
@@ -27,8 +35,9 @@ for repo in $REPOS; do
 done
 echo ""
 
-# Restore data
-bash "$DOTFILES_DIR/restore-data.sh"
+# Re-run install to symlink data for newly cloned repos
+echo "Linking data for newly cloned repos..."
+bash "$DOTFILES_DIR/install.sh" 2>/dev/null | grep -E "^  (LINK|MISS)" || true
 echo ""
 
 # Doctor

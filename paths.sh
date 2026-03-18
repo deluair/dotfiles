@@ -1,6 +1,6 @@
 #!/bin/bash
 # Cross-platform path resolution. Source this from all scripts.
-# Sets: OS, ONEDRIVE, GDRIVE, PROJECTS_DIR, SHELL_RC, LINK_CMD
+# Sets: OS, ONEDRIVE, GDRIVE, PROJECTS_DIR, SHELL_RC
 # Sources config.sh for machine-specific values (identity, VPS, repos).
 
 DOTFILES_DIR="${DOTFILES_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)}"
@@ -130,6 +130,62 @@ case "$MACHINE_NAME" in
     macmini|macair) STORAGE_TIGHT=true ;;
     *)              STORAGE_TIGHT=false ;;
 esac
+
+# ── Data symlink helper ──
+# Creates symlink from project path → OneDrive path.
+# Uses directory listings to check OneDrive (avoids Files On-Demand downloads).
+# Usage: link_data "onedrive_rel" "local_rel" "label" [skip_if_tight]
+link_data() {
+    local src="$ONEDRIVE/$1"
+    local dest="$PROJECTS_DIR/$2"
+    local label="$3"
+    local skip_tight="${4:-false}"
+
+    if [ "$skip_tight" = "true" ] && [ "$STORAGE_TIGHT" = "true" ]; then
+        echo "  SKIP  $label (storage-tight machine)"
+        return
+    fi
+
+    # Skip if project not cloned yet
+    local project_dir="${2%%/*}"
+    if [ ! -d "$PROJECTS_DIR/$project_dir" ]; then
+        return
+    fi
+
+    # Already correct symlink
+    if [ -L "$dest" ]; then
+        local target
+        target=$(readlink "$dest" 2>/dev/null || true)
+        if [ "$target" = "$src" ]; then
+            echo "  OK    $label"
+            return
+        fi
+        # Wrong target, remove and relink
+        rm "$dest"
+    fi
+
+    # Check source exists via directory listing (avoids OneDrive download trigger)
+    local src_dir src_name
+    src_dir=$(dirname "$src")
+    src_name=$(basename "$src")
+    if [ ! -d "$src_dir" ] || ! ls "$src_dir" 2>/dev/null | grep -qx "$src_name"; then
+        echo "  MISS  $label (not in OneDrive)"
+        return
+    fi
+
+    # Local file/dir exists (not symlink), warn
+    if [ -e "$dest" ] && [ ! -L "$dest" ]; then
+        echo "  WARN  $label (local copy exists, remove to symlink)"
+        return
+    fi
+
+    mkdir -p "$(dirname "$dest")"
+    if ln -sf "$src" "$dest" 2>/dev/null; then
+        echo "  LINK  $label -> OneDrive"
+    else
+        echo "  FAIL  $label (enable Developer Mode for symlinks)"
+    fi
+}
 
 export OS ONEDRIVE GDRIVE PROJECTS_DIR SHELL_RC SHELL_RC_NAME
 export GIT_USER_NAME GIT_USER_EMAIL GPG_EMAIL GITHUB_USER VPS_HOST VPS_BACKUP_PATH REPOS

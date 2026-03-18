@@ -125,6 +125,35 @@ if [ -d "$DOTFILES_DIR/claude/memory" ]; then
     echo "  memory -> merged ($count files)"
 fi
 
+# ── Data symlinks (OneDrive is source of truth) ──
+echo ""
+echo "Data symlinks:"
+if [ -d "$ONEDRIVE" ]; then
+    link_data "db_backups/trade.db" \
+        "trade-explorer/data/trade.db" "trade.db (18GB)" true
+    link_data "db_backups/tradeweave_imf_latest.db" \
+        "trade-explorer/data/imf.db" "imf.db"
+    link_data "db_backups/tradeweave_app_latest.db" \
+        "trade-explorer/data/app.db" "app.db"
+    link_data "db_backups/bddb_latest.sqlite" \
+        "bddata/backend/data/bangladesh.db" "bangladesh.db"
+    link_data "db_backups/omtt_bdpolicy_latest.db" \
+        "omtt/data/bdpolicy.db" "bdpolicy.db"
+    link_data "db_backups/omtt_bangladesh_latest.db" \
+        "omtt/data/bangladesh.db" "bangladesh.db (omtt)"
+    link_data "db_backups/omtt_baci_latest.db" \
+        "omtt/data/baci.db" "baci.db"
+    link_data "db_backups/dulalratna_me_latest.db" \
+        "dulalratna/me.db" "me.db"
+    # Directory symlinks
+    link_data "omtt_gis_data/outputs" \
+        "omtt/bd_gis/outputs" "gis outputs"
+    link_data "omtt_gis_data/local_data" \
+        "omtt/bd_gis/local_data" "gis local_data (5GB+)" true
+else
+    echo "  SKIP  OneDrive not available (sign in first)"
+fi
+
 # ── Machine identity for Claude ──
 echo ""
 echo "Machine identity:"
@@ -150,4 +179,4 @@ else
 fi
 
 echo ""
-echo "Done. Run 'make doctor' to verify."
+echo "Done. Run 'dr' (or 'bash ~/dotfiles/bin/doctor.sh') to verify."

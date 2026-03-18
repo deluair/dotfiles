@@ -6,31 +6,26 @@ type: reference
 
 ## New Machine Bootstrap Workflow
 
-**Prerequisites**: Git, Python 3.11+, uv, Node.js, GPG
+**One command from zero:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/deluair/dotfiles/main/bootstrap.sh | bash
+```
 
-**Steps**:
+Then sign into OneDrive + GDrive, reopen terminal, and run:
+```bash
+sit
+```
 
-1. **Clone and install dotfiles**
-   ```
-   git clone https://github.com/deluair/dotfiles.git ~/dotfiles
-   cd ~/dotfiles && make install
-   ```
+`sit` will: pull dotfiles, install configs, clone all repos, symlink data from OneDrive, run doctor.
 
-2. **Setup projects** (repeat per project)
-   ```
-   cd ~/omtt && make setup
-   cd ~/bddata && make setup
-   cd ~/trade-explorer && make setup
-   cd ~/dulalratna && make setup
-   cd ~/pmgai && make setup
-   cd ~/econai && make setup
-   ```
+**Daily workflow:**
+```bash
+sit        # start of session
+standup    # end of session
+```
 
-3. **After each Claude session**, push dotfiles changes:
-   ```
-   cd ~/dotfiles && make push
-   ```
+**Machine auto-detection:** `paths.sh` detects macmini, macair, galaxy, dell from hardware. Storage-tight machines (256GB Macs) automatically skip large data files.
 
-**Why:** Enables machineless portability. Clone + make setup = running on any machine.
+**Why:** Enables true machineless portability. Bootstrap + sign into cloud = running on any machine.
 
-**How to apply:** When setting up a new machine or helping recover from a fresh install, follow this sequence. Dotfiles go first (shell config, GPG, git), then individual projects.
+**How to apply:** When setting up a new machine or helping recover from a fresh install, the bootstrap script handles everything. No manual steps beyond signing into cloud storage.

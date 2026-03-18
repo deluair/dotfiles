@@ -31,23 +31,79 @@ else printf "  WARN $SHELL_RC_NAME (not managed, run bash install.sh)\n"; fi
 echo ""
 
 echo "=== GPG ==="
-if timeout 5 gpg --list-keys "$GPG_EMAIL" >/dev/null 2>&1; then printf "  OK   GPG key imported\n"
-elif [ $? -eq 124 ]; then printf "  WARN GPG check timed out (gpg-agent may be stuck)\n"
-else printf "  MISS GPG key (run: bash ~/dotfiles/bin/gpg-import.sh)\n"; fi
+if command -v timeout &>/dev/null; then
+    timeout 5 gpg --list-keys "$GPG_EMAIL" >/dev/null 2>&1
+else
+    gpg --list-keys "$GPG_EMAIL" >/dev/null 2>&1
+fi
+GPG_RC=$?
+if [ $GPG_RC -eq 0 ]; then printf "  OK   GPG key imported\n"
+elif [ $GPG_RC -eq 124 ]; then printf "  WARN GPG check timed out (gpg-agent may be stuck)\n"
+else printf "  MISS GPG key (run: bash ~/dotfiles/install.sh)\n"; fi
 echo ""
 
-echo "=== Data Files ==="
+# Check data symlinks (OneDrive is source of truth)
+# Uses directory listings to avoid triggering OneDrive Files On-Demand downloads.
+check_data() {
+    local label="$1" link_path="$2" onedrive_path="$3" skip_tight="${4:-false}"
+
+    if [ "$skip_tight" = "true" ] && [ "$STORAGE_TIGHT" = "true" ]; then
+        printf "  SKIP %s (storage-tight)\n" "$label"
+        return
+    fi
+
+    # Skip if project not cloned
+    local project_dir="${2#$PROJECTS_DIR/}"
+    project_dir="${project_dir%%/*}"
+    if [ ! -d "$PROJECTS_DIR/$project_dir" ]; then
+        return
+    fi
+
+    # Check OneDrive source via directory listing (avoids download trigger)
+    local src_dir src_name in_onedrive=false
+    src_dir=$(dirname "$onedrive_path")
+    src_name=$(basename "$onedrive_path")
+    if [ -d "$src_dir" ] && ls "$src_dir" 2>/dev/null | grep -qx "$src_name"; then
+        in_onedrive=true
+    fi
+
+    if [ -L "$link_path" ]; then
+        if $in_onedrive; then
+            printf "  OK   %s (symlinked)\n" "$label"
+        else
+            printf "  WARN %s (symlink but source missing in OneDrive)\n" "$label"
+        fi
+    elif [ -e "$link_path" ]; then
+        printf "  WARN %s (local copy, not symlinked)\n" "$label"
+    elif $in_onedrive; then
+        printf "  MISS %s (in OneDrive but not symlinked, run: bash install.sh)\n" "$label"
+    else
+        printf "  MISS %s (not in OneDrive)\n" "$label"
+    fi
+}
+
+echo "=== Data (symlinked to OneDrive) ==="
 P="$PROJECTS_DIR"
-[ -f "$P/trade-explorer/data/trade.db" ]     && printf "  OK   trade.db\n"      || printf "  MISS trade.db\n"
-[ -f "$P/bddata/backend/data/bangladesh.db" ] && printf "  OK   bangladesh.db\n" || printf "  MISS bangladesh.db\n"
-[ -f "$P/omtt/data/bdpolicy.db" ]             && printf "  OK   bdpolicy.db\n"   || printf "  MISS bdpolicy.db\n"
-[ -f "$P/omtt/data/baci.db" ]                 && printf "  OK   baci.db\n"       || printf "  MISS baci.db\n"
-[ -f "$P/dulalratna/me.db" ]                  && printf "  OK   me.db\n"         || printf "  MISS me.db\n"
+check_data "trade.db" "$P/trade-explorer/data/trade.db" "$ONEDRIVE/db_backups/trade.db" true
+check_data "imf.db" "$P/trade-explorer/data/imf.db" "$ONEDRIVE/db_backups/tradeweave_imf_latest.db"
+check_data "app.db" "$P/trade-explorer/data/app.db" "$ONEDRIVE/db_backups/tradeweave_app_latest.db"
+check_data "bangladesh.db" "$P/bddata/backend/data/bangladesh.db" "$ONEDRIVE/db_backups/bddb_latest.sqlite"
+check_data "bdpolicy.db" "$P/omtt/data/bdpolicy.db" "$ONEDRIVE/db_backups/omtt_bdpolicy_latest.db"
+check_data "bangladesh.db (omtt)" "$P/omtt/data/bangladesh.db" "$ONEDRIVE/db_backups/omtt_bangladesh_latest.db"
+check_data "baci.db" "$P/omtt/data/baci.db" "$ONEDRIVE/db_backups/omtt_baci_latest.db"
+check_data "me.db" "$P/dulalratna/me.db" "$ONEDRIVE/db_backups/dulalratna_me_latest.db"
+check_data "gis outputs" "$P/omtt/bd_gis/outputs" "$ONEDRIVE/omtt_gis_data/outputs"
+check_data "gis local_data" "$P/omtt/bd_gis/local_data" "$ONEDRIVE/omtt_gis_data/local_data"
 echo ""
 
-echo "=== Backup Redundancy ==="
-[ -f "$ONEDRIVE/db_backups/trade.db" ] && printf "  OK   trade.db in OneDrive\n" || printf "  MISS trade.db in OneDrive\n"
-if [ -n "$GDRIVE" ] && [ -f "$GDRIVE/db_backups/trade.db" ]; then printf "  OK   trade.db in GDrive\n"; else printf "  MISS trade.db in GDrive\n"; fi
+echo "=== GDrive Redundancy ==="
+if [ -n "$GDRIVE" ] && [ -d "$(dirname "$GDRIVE")" ]; then
+    GDRIVE_DBS=$(ls "$GDRIVE/db_backups/" 2>/dev/null || true)
+    echo "$GDRIVE_DBS" | grep -qx "trade.db" && printf "  OK   trade.db\n" || printf "  MISS trade.db (run: standup)\n"
+    echo "$GDRIVE_DBS" | grep -qx "bddb_latest.sqlite" && printf "  OK   bangladesh.db\n" || printf "  MISS bangladesh.db\n"
+else
+    printf "  SKIP GDrive not available\n"
+fi
 echo ""
 
 echo "=== Claude Code ==="

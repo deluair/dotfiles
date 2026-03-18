@@ -1,5 +1,5 @@
 #!/bin/bash
-# End of session: sync memory, push everything, backup data.
+# End of session: sync memory, push everything, sync GDrive redundancy.
 set -e
 DOTFILES_DIR="${HOME}/dotfiles"
 source "$DOTFILES_DIR/paths.sh"
@@ -33,5 +33,5 @@ for repo in $REPOS; do
 done
 echo ""
 
-# Backup data
+# GDrive redundancy sync (OneDrive -> GDrive)
 bash "$DOTFILES_DIR/backup-data.sh"
