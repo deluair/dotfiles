@@ -20,5 +20,9 @@ GDRIVE_FOLDER="dev_backups"
 VPS_HOST="user@your-vps-ip"
 VPS_BACKUP_PATH="/home/user/backups"
 
+# ── Machine identity ──
+# One of: macmini, macair, galaxy, dell
+MACHINE_NAME="macmini"
+
 # ── Projects to manage ──
 REPOS="repo1 repo2 repo3"

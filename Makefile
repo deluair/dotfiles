@@ -127,6 +127,7 @@ unlock:
 doctor:
 	@bash -c '\
 	source paths.sh; \
+	echo "=== $$MACHINE_NAME ($$MACHINE_DESC) ==="; \
 	echo "=== Platform: $$OS ==="; \
 	echo ""; \
 	echo "=== Prerequisites ==="; \

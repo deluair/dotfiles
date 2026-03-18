@@ -125,6 +125,13 @@ if [ -d "$DOTFILES_DIR/claude/memory" ]; then
     echo "  memory -> merged ($count files)"
 fi
 
+# ── Machine identity for Claude ──
+echo ""
+echo "Machine identity:"
+MACHINE_MARKER="$CLAUDE_DIR/.machine"
+echo "$MACHINE_NAME" > "$MACHINE_MARKER"
+echo "  $MACHINE_MARKER -> $MACHINE_NAME ($MACHINE_DESC)"
+
 # ── GPG key ──
 echo ""
 echo "GPG key:"

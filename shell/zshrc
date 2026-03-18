@@ -3,6 +3,10 @@
 
 export PATH="$HOME/.local/bin:$PATH"
 
+# Load machine identity
+[ -f "$HOME/dotfiles/config.sh" ] && source "$HOME/dotfiles/config.sh"
+export MACHINE_NAME="${MACHINE_NAME:-unknown}"
+
 # uv (Python)
 export PATH="$HOME/.cargo/bin:$PATH"
 

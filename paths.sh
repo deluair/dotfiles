@@ -88,5 +88,24 @@ copy_with_progress() {
     fi
 }
 
+# ── Machine identity ──
+MACHINE_NAME="${MACHINE_NAME:-unknown}"
+
+# Machine specs lookup (for scripts and doctor)
+case "$MACHINE_NAME" in
+    macmini)  MACHINE_DESC="Mac Mini M4, 256GB, macOS" ;;
+    macair)   MACHINE_DESC="MacBook Air M4, 256GB, macOS" ;;
+    galaxy)   MACHINE_DESC="Samsung Galaxy Book Edge, Snapdragon, 512GB, Windows" ;;
+    dell)     MACHINE_DESC="Dell Precision 5560, 32GB RAM, 1TB, Windows" ;;
+    *)        MACHINE_DESC="Unknown machine (set MACHINE_NAME in config.sh)" ;;
+esac
+
+# Storage constraints (256GB Macs are tight with 18GB trade.db)
+case "$MACHINE_NAME" in
+    macmini|macair) STORAGE_TIGHT=true ;;
+    *)              STORAGE_TIGHT=false ;;
+esac
+
 export OS ONEDRIVE GDRIVE PROJECTS_DIR SHELL_RC SHELL_RC_NAME
 export GIT_USER_NAME GIT_USER_EMAIL GPG_EMAIL GITHUB_USER VPS_HOST VPS_BACKUP_PATH REPOS
+export MACHINE_NAME MACHINE_DESC STORAGE_TIGHT

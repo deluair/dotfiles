@@ -32,17 +32,23 @@ restore() {
     copy_with_progress "$src" "$dest"
 }
 
-echo "Restoring project data ($OS)..."
+echo "Restoring project data ($OS, machine: $MACHINE_NAME)..."
 echo ""
 
 # No size estimation here -- accessing OneDrive files triggers Files On-Demand downloads.
 
 P="$PROJECTS_DIR"
 
-restore "trade.db (18GB, may take a while)" \
-    "$P/trade-explorer/data/trade.db" \
-    "$ONEDRIVE/db_backups/trade.db" \
-    "$GDRIVE/db_backups/trade.db"
+if [ "$STORAGE_TIGHT" = "true" ]; then
+    echo "  NOTE  Storage-tight machine ($MACHINE_NAME, 256GB). Skipping trade.db (18GB)."
+    echo "        To force: STORAGE_TIGHT=false bash restore-data.sh"
+    echo ""
+else
+    restore "trade.db (18GB, may take a while)" \
+        "$P/trade-explorer/data/trade.db" \
+        "$ONEDRIVE/db_backups/trade.db" \
+        "$GDRIVE/db_backups/trade.db"
+fi
 
 restore "tradeweave imf.db (691MB)" \
     "$P/trade-explorer/data/imf.db" \

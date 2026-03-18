@@ -8,7 +8,9 @@
 - **Primary language**: Python. Default to Python unless the project dictates otherwise.
 
 ## Environment
-- **Primary OS**: Windows (Git Bash / MSYS2). Do not suggest Unix-only tools (ssh-copy-id, xdg-open, pbcopy) without checking availability first.
+- **Current machine**: Read `~/.claude/.machine` for machine name, then check `~/dotfiles/config.sh` for `MACHINE_NAME`.
+- **Machines**: macmini (Mac Mini M4, 256GB), macair (MacBook Air M4, 256GB), galaxy (Samsung Galaxy Book Edge, Snapdragon, 512GB), dell (Dell Precision 5560, 32GB RAM, 1TB).
+- **Storage-tight**: macmini and macair have only 256GB. Skip 18GB trade.db restore. Warn before large file operations.
 - **Cross-platform**: All scripts must work on macOS, Windows (Git Bash), and Linux. Use OS detection from `~/dotfiles/paths.sh`.
 - **Machine config**: All machine-specific values live in `~/dotfiles/config.sh` (gitignored). Never hardcode usernames, IPs, or absolute paths in committed files.
 
