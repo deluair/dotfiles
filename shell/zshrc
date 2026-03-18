@@ -13,10 +13,10 @@ export PATH="$HOME/.cargo/bin:$PATH"
 # Aliases
 alias dev="cd ~/trade-explorer && npm run dev"
 alias sites="bash ~/dotfiles/check-sites.sh"
-alias dr="make -C ~/dotfiles doctor"
-alias backup="make -C ~/dotfiles backup"
-alias sit="make -C ~/dotfiles pull"
-alias standup="make -C ~/dotfiles push && make -C ~/dotfiles backup"
+alias backup="bash ~/dotfiles/backup-data.sh"
+alias sit="bash ~/dotfiles/bin/sit.sh"
+alias standup="bash ~/dotfiles/bin/standup.sh"
+alias dr="bash ~/dotfiles/bin/doctor.sh"
 
 # Project shortcuts
 alias tw="cd ~/trade-explorer"

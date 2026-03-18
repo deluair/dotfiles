@@ -4,39 +4,31 @@
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/deluair/dotfiles/main/bootstrap.sh | bash
-cd ~/dotfiles && make unlock && make clone-all && make restore && make setup-all
 ```
 
-If bootstrap fails midway (winget needs admin, etc.), finish manually:
+Then close and reopen Git Bash, then:
+```bash
+sit
+```
+
+If bootstrap fails midway:
 ```bash
 cd ~/dotfiles
 age -d config.sh.age > config.sh
 bash install.sh
-make clone-all && make restore && make setup-all && make doctor
+bash bin/clone-all.sh
+bash restore-data.sh
+bash setup-projects.sh
+bash bin/doctor.sh
 ```
 
 ## Daily
 
 ```bash
-sit        # start of session (pull all repos, merge memory, restore data, doctor)
-standup    # end of session (sync memory, push all repos, backup to cloud)
+sit        # start of session
+standup    # end of session
+dr         # quick health check
 ```
-
-## All commands
-
-| Command | What |
-|---------|------|
-| `sit` | Start session: pull + merge memory + restore + doctor |
-| `standup` | End session: sync memory + push all + backup |
-| `make doctor` | Verify everything |
-| `make clone-all` | Clone all repos |
-| `make setup-all` | Install deps, decrypt secrets, verify builds |
-| `make restore` | Restore data from cloud |
-| `make backup` | Backup data to cloud |
-| `make lock` | Encrypt config.sh |
-| `make unlock` | Decrypt config.sh |
-| `make sites` | Health check all 3 sites |
-| `make gpg-import` | Import GPG key from cloud |
 
 ## Machines (auto-detected)
 
@@ -50,5 +42,5 @@ standup    # end of session (sync memory, push all repos, backup to cloud)
 ## Add a new project
 
 1. Add repo name to REPOS in `config.sh`
-2. Re-encrypt: `make lock`
+2. Re-encrypt: `cd ~/dotfiles && age -p config.sh > config.sh.age`
 3. If it has data files, add to `backup-data.sh` and `restore-data.sh`

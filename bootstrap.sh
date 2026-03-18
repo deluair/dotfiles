@@ -61,15 +61,6 @@ elif [ "$OS" = "windows" ]; then
     winget install -e --id Microsoft.OneDrive --accept-package-agreements 2>/dev/null || true
     winget install -e --id FiloSottile.age --accept-package-agreements 2>/dev/null || true
     echo ""
-    # Install make (not in winget)
-    if ! command -v make &>/dev/null; then
-        echo "Installing GNU Make..."
-        mkdir -p "$HOME/.local/bin"
-        curl -fsSL "https://raw.githubusercontent.com/deluair/dotfiles/main/bin/make.exe" -o "$HOME/.local/bin/make.exe"
-        chmod +x "$HOME/.local/bin/make.exe"
-        export PATH="$HOME/.local/bin:$PATH"
-        echo "  Installed make to ~/.local/bin/"
-    fi
 fi
 
 # ── 4. Decrypt config.sh (age is now installed) ──
@@ -96,7 +87,7 @@ fi
 echo ""
 
 # ── 5. Install configs ──
-make install
+bash install.sh
 
 echo ""
 echo "=== Bootstrap complete ==="
@@ -104,8 +95,11 @@ echo ""
 echo "Next steps:"
 echo "  1. Sign into Google Drive and OneDrive (if not already)"
 echo "  2. Wait for cloud storage to sync/mount"
-echo "  3. make gpg-import"
-echo "  4. make clone-all"
-echo "  5. make restore"
-echo "  6. make setup-all"
-echo "  7. make doctor"
+echo "  3. Close and reopen Git Bash (to load aliases)"
+echo "  4. Run: sit"
+echo ""
+echo "Or manually:"
+echo "  bash ~/dotfiles/bin/clone-all.sh"
+echo "  bash ~/dotfiles/restore-data.sh"
+echo "  bash ~/dotfiles/setup-projects.sh"
+echo "  bash ~/dotfiles/bin/doctor.sh"
