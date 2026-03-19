@@ -1,6 +1,6 @@
 ---
 name: User profile and career context
-description: Career situation, priorities, strategic direction. Postdoc ending soon, OMTT is the primary bet.
+description: Career situation, priorities, strategic direction. Postdoc ending soon, BDPolicyLab is the primary bet.
 type: user
 ---
 
@@ -16,10 +16,10 @@ type: user
 - **The 3 projects ARE the portfolio.** They demonstrate at production scale:
   - **BDFacts**: Full-stack (React 19 + FastAPI), 69 routes, 40 simulators, 100 data narratives. Data engineering at scale.
   - **TradeWeave**: 19GB trade DB, 238 countries, 5,022 products, 135 API routes, D3/Deck.gl viz. Serious data infrastructure.
-  - **OMTT**: 18 GEE satellite modules, 32 data collectors, CGE trade models, publication pipeline. AI-augmented policy research.
+  - **BDPolicyLab**: 18 GEE satellite modules, 32 data collectors, CGE trade models, publication pipeline. AI-augmented policy research.
 - These aren't hobby sites. They're production systems that prove: data pipelines, ML, full-stack, domain expertise, and delivery.
 - **The ML poverty paper** adds peer-reviewed credibility for industry roles. Not for tenure, for the resume.
-- **OMTT consulting** (World Bank, UNDP, INGOs) is a parallel income path.
+- **BDPolicyLab consulting** (World Bank, UNDP, INGOs) is a parallel income path.
 
 ## Value Hierarchy
 1. Greater good for all of humanity (highest)

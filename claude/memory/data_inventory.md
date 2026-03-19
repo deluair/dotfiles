@@ -1,6 +1,6 @@
 ---
 name: data_inventory
-description: Complete data inventory across all projects (BDFacts, OMTT, TradeWeave). Databases, sources, row counts, coverage, freshness, gaps.
+description: Complete data inventory across all projects (BDFacts, BDPolicyLab, TradeWeave). Databases, sources, row counts, coverage, freshness, gaps.
 type: reference
 ---
 
@@ -28,7 +28,7 @@ Multi-source Bangladesh indicator database. 7 active sources, ~17K indicators, ~
 
 ### baci.db (215 MB, ~/bdfacts/backend/data/)
 
-BACI bilateral trade database (copy from OMTT). HS92 revision.
+BACI bilateral trade database (copy from BDPolicyLab). HS92 revision.
 
 | Metric | Value |
 |--------|-------|
@@ -85,14 +85,14 @@ Authority chain: bangladesh.db > wdi.db > BACI > hardcoded arrays.
 85 charts: 58 filled by live API (bangladesh.db), 27 static with real data.
 Sources: World Bank, IMF, WHO, ILO, FAO, UNESCO, BGMEA, BPDB, DSE, MoF, BB, BMET, ICC, Petrobangla, IDCOL, TI, UNDP, EC.
 
-### New OMTT Collectors (added 2026-03-14)
+### New BDPolicyLab Collectors (added 2026-03-14)
 
 - **WITS** (`app/collectors/wits.py`): 24 BD tariff series (MFN, applied, sector, preferential by partner). SDMX API, no auth.
 - **UNCTAD** (`app/collectors/unctad.py`): 21 indicators via WB API (FDI, trade composition, tech exports). UNCTADstat API undocumented, uses WB fallback.
 
 ---
 
-## 2. OMTT (bdpolicylab.com)
+## 2. BDPolicyLab (bdpolicylab.com)
 
 ### bdpolicy.db (41 MB, ~/bdpolicylab/data/)
 
@@ -224,7 +224,7 @@ Used by: Caliendo-Parro CGE model, IO analysis, TiVA decomposition, GVC analysis
 
 ### IMF Bulk CSVs (OneDrive, 65 files)
 
-Location: `OneDrive/hossen_storage/omtt_raw_data/imf_csvs_2026-03-13/`
+Location: `OneDrive/hossen_storage/bdpolicylab_raw_data/imf_csvs_2026-03-13/`
 
 65 CSV files downloaded from IMF SDMX/data center on 2026-03-13. Covers:
 - IFS (International Financial Statistics)
@@ -276,18 +276,18 @@ Base: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
 
 | Backup | Size | Last Updated |
 |--------|------|-------------|
-| db_backups/omtt_bdpolicy_latest.db | 40 MB | 2026-03-14 |
+| db_backups/bdpolicylab_bdpolicy_latest.db | 40 MB | 2026-03-14 |
 | db_backups/bddb_latest.sqlite | 43 MB | 2026-03-14 |
 | db_backups/bddb_analytics_latest.db | 1.2 MB | 2026-03-14 |
 | db_backups/bddb_wdi_latest.db | 56 KB | 2026-03-14 |
-| db_backups/omtt_baci_latest.db | 215 MB | 2026-03-10 |
-| db_backups/omtt_bangladesh_latest.db | 43 MB | 2026-03-10 |
+| db_backups/bdpolicylab_baci_latest.db | 215 MB | 2026-03-10 |
+| db_backups/bdpolicylab_bangladesh_latest.db | 43 MB | 2026-03-10 |
 | db_backups/trade.db | 18 GB | 2026-03-09 |
 | db_backups/tradeweave_app_latest.db | 36 KB | 2026-03-14 |
 | db_backups/dulalratna_me_latest.db | 560 KB | 2026-03-14 |
 | trade_backup/baci_zips/ | ~10 GB | BACI_HS92 (2.3G), HS96 (2.2G), HS02 (1.9G), HS07 (1.6G), HS12 (1.2G), HS17 (758M), HS22 (287M) -- V202601 |
-| omtt_trade_data/trade/ | 3.9 GB | 197 research files |
-| omtt_trade_data/papers/ | 44 KB | Research papers |
+| bdpolicylab_trade_data/trade/ | 3.9 GB | 197 research files |
+| bdpolicylab_trade_data/papers/ | 44 KB | Research papers |
 | pmgai_data/paper_output/ | 125 MB | SCN paper + DOCX |
 | gpg_backup/ | 7.2 KB | Private key |
 
@@ -299,8 +299,8 @@ Base: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
 
 | Source | For | Status |
 |--------|-----|--------|
-| UNCTAD (21 indicators) | OMTT | Collector built (WB API fallback) |
-| WITS/TRAINS (24 tariff series) | OMTT | Collector built, SDMX API |
+| UNCTAD (21 indicators) | BDPolicyLab | Collector built (WB API fallback) |
+| WITS/TRAINS (24 tariff series) | BDPolicyLab | Collector built, SDMX API |
 | DataHouse (97 concepts) | BDFacts | Done, 15 domains |
 | BACI (1.9M rows) | BDFacts | Integrated via baci_db.py |
 | IMF (12 concepts + projections) | BDFacts | In DataHouse catalog |
@@ -313,8 +313,8 @@ Base: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
 
 | Source | For | Notes |
 |--------|-----|-------|
-| OECD DAC (aid flows) | OMTT | API confirmed working, no auth, JSON. Ready to build. |
-| WTO Tariff API | OMTT | Needs free API key registration at apiportal.wto.org |
+| OECD DAC (aid flows) | BDPolicyLab | API confirmed working, no auth, JSON. Ready to build. |
+| WTO Tariff API | BDPolicyLab | Needs free API key registration at apiportal.wto.org |
 | Bangladesh Bank Monthly | Both | Excel/PDF scraping, granular monetary data |
 | BBS National Accounts | Both | Quarterly GDP, sectoral VA |
 
@@ -322,7 +322,7 @@ Base: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
 
 | Source | For | Notes |
 |--------|-----|-------|
-| CRU/NOAA climate | OMTT | Monthly temp/precip for BD |
+| CRU/NOAA climate | BDPolicyLab | Monthly temp/precip for BD |
 | Nightlights (VIIRS) | Both | Subnational economic proxy |
 | MPI (Multidimensional Poverty) | Both | OPHI/UNDP |
 | Sovereign credit ratings | Both | S&P/Moody's/Fitch history |
@@ -338,7 +338,7 @@ Base: `~/Library/CloudStorage/OneDrive-UniversityofTennessee/hossen_storage/`
                            |
 BACI zips (10GB) --> baci.db (215MB) --> BDFacts DataHouse
                            |                    ^
-                      OMTT bdpolicy.db          |
+                      BDPolicyLab bdpolicy.db          |
                       (23 collectors)     bangladesh.db
                            |              (7 sources)
                       [publications]            |
@@ -350,8 +350,8 @@ TradeWeave trade.db (18GB) --> tradeweave.org
 ```
 
 **Source of truth**:
-- OMTT bdpolicy.db: VPS (collectors run there), push from local for publications
+- BDPolicyLab bdpolicy.db: VPS (collectors run there), push from local for publications
 - BDFacts bangladesh.db: local (fetcher scripts), deploy to VPS
-- baci.db: OMTT is canonical, copied to BDFacts
+- baci.db: BDPolicyLab is canonical, copied to BDFacts
 - trade.db: local, backed up to OneDrive
 - ICIO matrices: local only, derivable from OECD downloads

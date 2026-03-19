@@ -4,7 +4,7 @@ description: GTAP-type CGE model for Bangladesh trade policy analysis — progre
 type: project
 ---
 
-## GTAP CGE Model for Bangladesh (OMTT)
+## GTAP CGE Model for Bangladesh (BDPolicyLab)
 
 **Branch:** `feat/cge-model` on `D:/bdpolicylab`
 **Plan:** `D:/bdpolicylab/docs/superpowers/plans/2026-03-11-gtap-cge-model.md`
@@ -31,7 +31,7 @@ type: project
 - `tests/test_cge.py` — 12/12 tests passing
 - 3 commits pushed to `origin/feat/cge-model`
 
-### Remaining (Tasks 11-15, Chunk 4: OMTT Integration)
+### Remaining (Tasks 11-15, Chunk 4: BDPolicyLab Integration)
 - **Task 11:** Public API exports in `app/cge/__init__.py`
 - **Task 12:** CLI commands (`cge-extract`, `cge-simulate`) in `app/cli.py`
 - **Task 13:** API router at `app/api/cge.py`, register in main.py

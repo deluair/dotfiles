@@ -1,6 +1,6 @@
 ---
-name: BD GIS Sub-project in OMTT
-description: Bangladesh Comprehensive Geospatial Analysis Platform (bd_gis) in ~/bdpolicylab/bd_gis. 24 GIS modules + 3 utility modules, full OMTT integration, deployed to bdpolicylab.com.
+name: BD GIS Sub-project in BDPolicyLab
+description: Bangladesh Comprehensive Geospatial Analysis Platform (bd_gis) in ~/bdpolicylab/bd_gis. 24 GIS modules + 3 utility modules, full BDPolicyLab integration, deployed to bdpolicylab.com.
 type: project
 ---
 
@@ -39,7 +39,7 @@ Utility modules: timelapse.py, change_alerts.py, run_divisions.py
 - Thread-safe timeouts throughout (concurrent.futures, not signal.SIGALRM)
 - Confirmed working: test run showed 6,594 km2 dry / 15,220 km2 monsoon (was 40/82 before fixes)
 
-### OMTT Integration (all 3 phases DONE)
+### BDPolicyLab Integration (all 3 phases DONE)
 
 **Phase A -- Data Bridge** (DONE):
 - `app/collectors/gis.py`: GisCollector with 5 CSV extraction patterns
@@ -71,7 +71,7 @@ Utility modules: timelapse.py, change_alerts.py, run_divisions.py
 
 ### BDFacts Integration (DONE)
 
-- `bdfacts/scripts/ingest-gis.py`: 14 satellite indicators, 185 data values in bangladesh.db
+- `bddata/scripts/ingest-gis.py`: 14 satellite indicators, 185 data values in bangladesh.db
 
 ### Academic Paper
 
@@ -126,7 +126,7 @@ Utility modules: timelapse.py, change_alerts.py, run_divisions.py
 - dhs_wealth_by_division.csv (8 divisions x 5 surveys)
 - calibration_results.csv
 
-**OMTT integration updated:** GIS collector now ingests 1018 data points (was 872). Added HIES poverty, kilns, aquaculture, crops, groundwater registrations.
+**BDPolicyLab integration updated:** GIS collector now ingests 1018 data points (was 872). Added HIES poverty, kilns, aquaculture, crops, groundwater registrations.
 
 ### Fixes Applied (2026-03-17)
 

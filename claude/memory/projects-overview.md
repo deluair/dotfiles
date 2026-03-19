@@ -2,7 +2,7 @@
 
 ## Three Projects at a Glance
 
-| | BDFacts | TradeWeave | OMTT |
+| | BDFacts | TradeWeave | BDPolicyLab |
 |---|---|---|---|
 | **Domain** | bdfacts.org | tradeweave.org | bdpolicylab.com |
 | **Repo** | `~/bdfacts` | `~/tradeweave` | `~/bdpolicylab` |
@@ -29,7 +29,7 @@ Both share a dark glassmorphism design language:
 - Mobile-first responsive, bottom nav on mobile
 - Framer Motion / CSS keyframe animations
 
-OMTT now shares the dark glassmorphism language: dark navy (#080c18), Playfair Display serif headings, gold accent (#c4a35a), glass-card effects.
+BDPolicyLab now shares the dark glassmorphism language: dark navy (#080c18), Playfair Display serif headings, gold accent (#c4a35a), glass-card effects.
 
 ## Shared Infrastructure
 
@@ -45,7 +45,7 @@ OMTT now shares the dark glassmorphism language: dark navy (#080c18), Playfair D
 ## Security & Ops
 
 - **Security headers** (all 3): HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, CSP
-- **Rate limiting**: BDFacts (SlowAPI), OMTT (SlowAPI, 60/min), TradeWeave (Next.js built-in)
+- **Rate limiting**: BDFacts (SlowAPI), BDPolicyLab (SlowAPI, 60/min), TradeWeave (Next.js built-in)
 - **DB backups**: Daily 3am UTC cron on VPS, 7-day retention. Pull to OneDrive: `~/scripts/pull-vps-backups.sh`
 - **Health checks**: `~/scripts/check-sites.sh` (local), all 3 have /api/health endpoints
 - **Backup DBs on VPS**: `/home/ubuntu/backups/` (bdpolicy, bdfacts-analytics, bdfacts-bangladesh, tradeweave-app)
@@ -53,9 +53,9 @@ OMTT now shares the dark glassmorphism language: dark navy (#080c18), Playfair D
 ## Cross-Referencing Status
 
 Sites should link to each other in footers and about pages:
-- BDFacts footer/about should link to TradeWeave and OMTT
-- TradeWeave footer/about should link to BDFacts and OMTT
-- OMTT footer/about should link to BDFacts and TradeWeave
+- BDFacts footer/about should link to TradeWeave and BDPolicyLab
+- TradeWeave footer/about should link to BDFacts and BDPolicyLab
+- BDPolicyLab footer/about should link to BDFacts and TradeWeave
 
 ## Social Links
 
@@ -79,7 +79,7 @@ Sites should link to each other in footers and about pages:
 - Footer: `src/components/layout/Footer.tsx`
 - Colors: `src/lib/colors.ts`
 
-### OMTT
+### BDPolicyLab
 - Templates: `app/web/templates/` (Jinja2)
 - Base layout: `app/web/templates/base.html` (Tailwind config, nav, footer)
 - Homepage: `app/web/templates/index.html`

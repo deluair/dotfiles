@@ -1,12 +1,12 @@
 ---
 name: cross_project_lessons
-description: Shared lessons across BDFacts, TradeWeave, and OMTT that apply to all three projects
+description: Shared lessons across BDFacts, TradeWeave, and BDPolicyLab that apply to all three projects
 type: feedback
 ---
 
 # Cross-Project Shared Lessons
 
-These patterns apply to all three projects (BDFacts, TradeWeave, OMTT). Per-project lessons are in each project's `tasks/lessons.md`.
+These patterns apply to all three projects (BDFacts, TradeWeave, BDPolicyLab). Per-project lessons are in each project's `tasks/lessons.md`.
 
 ## Data Integrity (CRITICAL)
 
@@ -34,7 +34,7 @@ These patterns apply to all three projects (BDFacts, TradeWeave, OMTT). Per-proj
 ## Branding
 
 - [HIGH] **Signature watermarks (6-layer) are in place** across all three projects. The `del` marker is the common thread. Do not remove or modify without explicit request.
-- [HIGH] **Cross-reference footer links** between BDFacts, TradeWeave, and OMTT. Keep in sync when any project's URL or branding changes.
+- [HIGH] **Cross-reference footer links** between BDFacts, TradeWeave, and BDPolicyLab. Keep in sync when any project's URL or branding changes.
 
 ## Workflow
 

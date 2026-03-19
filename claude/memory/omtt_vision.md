@@ -1,10 +1,10 @@
 ---
 name: bdpolicylab_vision
-description: OMTT/BDPolicy Lab strategic vision, McKinsey-grade consultancy research platform for Bangladesh
+description: BDPolicyLab/BDPolicy Lab strategic vision, McKinsey-grade consultancy research platform for Bangladesh
 type: project
 ---
 
-OMTT is evolving from auto-generated policy briefs to deep, McKinsey-grade research publications.
+BDPolicyLab is evolving from auto-generated policy briefs to deep, McKinsey-grade research publications.
 
 **Why:** User views BDPolicy Lab as a think tank + consultancy, not a dashboard. Each topic should produce consultancy-grade research with deep data analysis, econometrics, many charts, and actionable strategy.
 

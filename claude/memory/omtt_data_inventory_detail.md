@@ -1,12 +1,12 @@
 ---
-name: OMTT Detailed Data Inventory
-description: Complete inventory of all databases, row counts, sources, and coverage in OMTT and BDFacts as of 2026-03-15. Use when planning cross-data integrations.
+name: BDPolicyLab Detailed Data Inventory
+description: Complete inventory of all databases, row counts, sources, and coverage in BDPolicyLab and BDFacts as of 2026-03-15. Use when planning cross-data integrations.
 type: reference
 ---
 
-## OMTT Databases (~/bdpolicylab/data/)
+## BDPolicyLab Databases (~/bdpolicylab/data/)
 
-### bdpolicy.db (41MB) -- OMTT's own collected data
+### bdpolicy.db (41MB) -- BDPolicyLab's own collected data
 - `data_series`: 11,708 series
 - `data_points`: 162,359 points
 - `publications`: 136 (100 narratives, 17 brief types with 2 each, 1 trade flagship, 1 paper)
@@ -28,7 +28,7 @@ type: reference
 ### bangladesh.db (43MB) -- master copy
 - `indicators`: 14,706
 - `data_values`: 423,378
-- Same 9 sources as OMTT copy but fewer indicators (OMTT copy has more recent fetches)
+- Same 9 sources as BDPolicyLab copy but fewer indicators (BDPolicyLab copy has more recent fetches)
 
 ### analytics.db (1.2MB) -- site analytics
 - 78 sessions, 333 events, 3,792 crawler visits
@@ -44,6 +44,6 @@ soil (empty), health (empty), energy (empty)
 
 ## Cross-Project Data Flow
 
-BDFacts (bangladesh.db) -> copied to OMTT -> OMTT adds bdpolicy.db (HDX, zila SDG, collectors)
-TradeWeave (trade.db 18GB) -> BACI subset copied to OMTT baci.db (215MB, BD only)
+BDFacts (bangladesh.db) -> copied to BDPolicyLab -> BDPolicyLab adds bdpolicy.db (HDX, zila SDG, collectors)
+TradeWeave (trade.db 18GB) -> BACI subset copied to BDPolicyLab baci.db (215MB, BD only)
 bd_gis (GEE satellite) -> CSV outputs in ~/bdpolicylab/bd_gis/outputs/ (NOT yet in any DB)

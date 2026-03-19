@@ -1,10 +1,10 @@
 ---
 name: feedback_all_bd_data_to_datahouse
-description: All Bangladesh data from any source must be ingested into OMTT datahouse (bdpolicy.db), never left as raw files only
+description: All Bangladesh data from any source must be ingested into BDPolicyLab datahouse (bdpolicy.db), never left as raw files only
 type: feedback
 ---
 
-All Bangladesh-related data, wherever it exists (OneDrive, raw CSVs, HDX, DHS, HIES, BBS, IPUMS, SDG, any source), must always be ingested into the OMTT datahouse (bdpolicy.db) via the collector pipeline.
+All Bangladesh-related data, wherever it exists (OneDrive, raw CSVs, HDX, DHS, HIES, BBS, IPUMS, SDG, any source), must always be ingested into the BDPolicyLab datahouse (bdpolicy.db) via the collector pipeline.
 
 **Why:** The datahouse is the single source of truth for all BD policy analysis. Raw files sitting in OneDrive or bd_gis/outputs without DB ingestion are invisible to the publication pipeline, API, and narratives.
 
