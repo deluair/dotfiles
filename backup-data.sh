@@ -91,13 +91,7 @@ sync_file "me.db" \
 
 echo ""
 echo "GIS directories..."
-sync_dir "gis outputs" \
-    "$ONEDRIVE/omtt_gis_data/outputs" \
-    "$GDRIVE/omtt_gis_data/outputs"
-
-sync_dir "gis local_data (5GB+)" \
-    "$ONEDRIVE/omtt_gis_data/local_data" \
-    "$GDRIVE/omtt_gis_data/local_data"
+echo "  SKIP  gis (removed from standup, sync manually if needed)"
 
 echo ""
 echo "Sensitive files..."
