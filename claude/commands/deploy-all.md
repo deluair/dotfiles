@@ -6,7 +6,7 @@ Deploy one or all projects to the OVH VPS.
 If user says "deploy bdfacts":
 - `cd ~/bdfacts && bash scripts/deploy.sh`
 
-If user says "deploy bdpolicylab" or "deploy omtt":
+If user says "deploy bdpolicylab":
 - `cd ~/bdpolicylab` and follow OMTT deploy process
 
 If user says "deploy tradeweave":

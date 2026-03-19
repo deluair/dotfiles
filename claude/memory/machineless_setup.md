@@ -4,7 +4,7 @@ description: SOTA machineless dev setup - dotfiles repo with symlinked configs, 
 type: feedback
 ---
 
-All 6 projects must be machineless: git clone + sign into cloud + one command = running on any machine.
+All 4 projects must be machineless: git clone + sign into cloud + one command = running on any machine.
 
 **Why:** User wants full portability. No manual file copying, no forgotten secrets, no "works on my machine" issues.
 
@@ -65,4 +65,4 @@ dr         # quick health check
 
 ## Projects with git-secret (5/6)
 
-dulalratna, bdpolicylab, bdfacts, tradeweave, econai (pmgai has no .env)
+dulalratna, bdpolicylab, bdfacts, tradeweave
