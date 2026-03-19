@@ -59,6 +59,8 @@
 ## Infra
 - OVH VPS, Ubuntu, Nginx. PM2 (Node) / systemd (Python). Cloudflare DNS/SSL
 - Dotfiles: `~/dotfiles` synced to GitHub
+- VPS trade.db (19GB) is IMMUTABLE (`chmod 444` + `chattr +i`). Never modify, delete, or replace without explicit permission. To unlock: `sudo chattr -i`, then re-lock after
+- VPS trade.db backup: Google Drive root (`trade.db`), not OneDrive. Restore via rclone on VPS
 
 ## Deploy
 - VPS: `npm install` not `npm ci`. Remove WAL/SHM before/after DB ops
