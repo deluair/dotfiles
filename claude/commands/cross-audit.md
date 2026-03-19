@@ -1,4 +1,4 @@
-Audit all 3 projects (bddata, trade-explorer, omtt) for cross-project consistency. Use subagents to check each project in parallel.
+Audit all 3 projects (bdfacts, tradeweave, bdpolicylab) for cross-project consistency. Use subagents to check each project in parallel.
 
 ## Visual Consistency
 - Verify shared design DNA: dark glassmorphism, glass-card effects, consistent accent colors per project.

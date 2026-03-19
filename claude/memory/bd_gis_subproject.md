@@ -71,7 +71,7 @@ Utility modules: timelapse.py, change_alerts.py, run_divisions.py
 
 ### BDFacts Integration (DONE)
 
-- `bddata/scripts/ingest-gis.py`: 14 satellite indicators, 185 data values in bangladesh.db
+- `bdfacts/scripts/ingest-gis.py`: 14 satellite indicators, 185 data values in bangladesh.db
 
 ### Academic Paper
 

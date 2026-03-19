@@ -1,6 +1,6 @@
 Deploy $ARGUMENTS to VPS. Follow this checklist strictly, report status at each step:
 
-1. **Pre-flight**: Identify the project (trade-explorer, bddata, omtt). Read its deploy.sh.
+1. **Pre-flight**: Identify the project (tradeweave, bdfacts, bdpolicylab). Read its deploy.sh.
 2. **Local build**: Run the project's build command (`npm run build` or equivalent). Fix any errors before proceeding.
 3. **Grep for stale refs**: After any recent refactors, grep for removed/renamed variables or imports. Fix before deploying.
 4. **SSH check**: Verify SSH connectivity to VPS (`$VPS_HOST` from `~/dotfiles/config.sh`). If it fails, stop and report.

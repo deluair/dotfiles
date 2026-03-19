@@ -55,7 +55,7 @@ dr         # quick health check
 - After modifying `.env`: pre-commit hook handles encryption automatically
 - New data files: add symlink mapping to `install.sh`, checks to `bin/doctor.sh`, GDrive sync to `backup-data.sh`
 - Never use git-lfs (decided against it, OneDrive is free and sufficient)
-- Large data (>2GB) stays cloud-only: omtt trade data (3.9GB), tradeweave trade.db (18GB)
+- Large data (>2GB) stays cloud-only: bdpolicylab trade data (3.9GB), tradeweave trade.db (18GB)
 
 ## Dual cloud backup
 
@@ -65,4 +65,4 @@ dr         # quick health check
 
 ## Projects with git-secret (5/6)
 
-dulalratna, omtt, bddata, trade-explorer, econai (pmgai has no .env)
+dulalratna, bdpolicylab, bdfacts, tradeweave, econai (pmgai has no .env)

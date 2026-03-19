@@ -5,7 +5,7 @@ type: feedback
 ---
 
 When user says "start", do both:
-1. `git pull` all repos (dotfiles, omtt, bddata, trade-explorer, dulalratna, econai, hossen, pmgai if present)
+1. `git pull` all repos (dotfiles, bdpolicylab, bdfacts, tradeweave, dulalratna, econai, hossen, pmgai if present)
 2. Run `make setup` (or equivalent setup target) for each project after pulling
 
 **Why:** Machineless workflow. Pulling code is only half the job; deps and secrets also need syncing.

@@ -1,5 +1,5 @@
 ---
-name: omtt_vision
+name: bdpolicylab_vision
 description: OMTT/BDPolicy Lab strategic vision, McKinsey-grade consultancy research platform for Bangladesh
 type: project
 ---

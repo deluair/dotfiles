@@ -56,9 +56,9 @@ Base path: `$ONEDRIVE` (resolved per-platform by `~/dotfiles/paths.sh`)
 
 | Project | Repo / Dir | Domain | Purpose | Stack |
 |---------|-----------|--------|---------|-------|
-| **BDFacts** | `$GITHUB_USER/bddata` (`~/bdfacts`) | bdfacts.org | Charity: BD open data dissemination | React 19 + FastAPI + SQLite |
-| **TradeWeave** | `$GITHUB_USER/trade-explorer` (`~/tradeweave`) | tradeweave.org | Job/skill: International trade analytics | Full-stack, D3/Deck.gl, BACI data |
-| **OMTT** | `$GITHUB_USER/omtt` (`~/bdpolicylab`) | bdpolicylab.com | Future business: pure think tank, consultancy | Policy-first, AI-augmented |
+| **BDFacts** | `$GITHUB_USER/bdfacts` (`~/bdfacts`) | bdfacts.org | Charity: BD open data dissemination | React 19 + FastAPI + SQLite |
+| **TradeWeave** | `$GITHUB_USER/tradeweave` (`~/tradeweave`) | tradeweave.org | Job/skill: International trade analytics | Full-stack, D3/Deck.gl, BACI data |
+| **OMTT** | `$GITHUB_USER/bdpolicylab` (`~/bdpolicylab`) | bdpolicylab.com | Future business: pure think tank, consultancy | Policy-first, AI-augmented |
 
 - All hosted on OVH VPS (`$VPS_HOST` from `~/dotfiles/config.sh`)
 
@@ -148,10 +148,10 @@ Global slash commands (`~/.claude/commands/`):
 - `/deploy-all` - deploy one or all projects
 
 Project skills created:
-- `bddata/.claude/skills/audit-data/` - BDFacts-specific data audit
-- `bddata/.claude/skills/narrative-fix/` - debug narrative rendering
-- `trade-explorer/.claude/skills/audit-trade-data/` - trade data unit/calc validation
-- `trade-explorer/.claude/skills/add-research-page/` - scaffold new research pages
+- `bdfacts/.claude/skills/audit-data/` - BDFacts-specific data audit
+- `bdfacts/.claude/skills/narrative-fix/` - debug narrative rendering
+- `tradeweave/.claude/skills/audit-trade-data/` - trade data unit/calc validation
+- `tradeweave/.claude/skills/add-research-page/` - scaffold new research pages
 
 ### Agent Limits
 - [Max 15 parallel agents](feedback_max_agents.md): Never launch more than 15 agents at once. Batch in waves, write results to /tmp.

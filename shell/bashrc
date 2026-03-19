@@ -11,7 +11,7 @@ export MACHINE_NAME="${MACHINE_NAME:-unknown}"
 export PATH="$HOME/.cargo/bin:$PATH"
 
 # Aliases
-alias dev="cd ~/trade-explorer && npm run dev"
+alias dev="cd ~/tradeweave && npm run dev"
 alias sites="bash ~/dotfiles/check-sites.sh"
 alias backup="bash ~/dotfiles/backup-data.sh"
 alias sit="bash ~/dotfiles/bin/sit.sh"
@@ -19,9 +19,9 @@ alias standup="bash ~/dotfiles/bin/standup.sh"
 alias dr="bash ~/dotfiles/bin/doctor.sh"
 
 # Project shortcuts
-alias tw="cd ~/trade-explorer"
-alias bd="cd ~/bddata"
-alias om="cd ~/omtt"
+alias tw="cd ~/tradeweave"
+alias bd="cd ~/bdfacts"
+alias om="cd ~/bdpolicylab"
 
 # Source machine-local overrides (untracked)
 [ -f ~/.bashrc.local ] && source ~/.bashrc.local

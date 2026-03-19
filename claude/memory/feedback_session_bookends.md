@@ -27,4 +27,4 @@ Do NOT ask for confirmation. Do NOT skip steps. "End" means the full sequence.
 
 **Dotfiles location:** `~/dotfiles` (repo: `deluair/dotfiles`)
 **Age passphrase:** stage-build-girl-license-benefit-mountain-disorder-marriage-board-fold
-**All project repos:** omtt, bddata, trade-explorer, dulalratna, pmgai, econai, hossen
+**All project repos:** bdpolicylab, bdfacts, tradeweave, dulalratna, pmgai, econai, hossen

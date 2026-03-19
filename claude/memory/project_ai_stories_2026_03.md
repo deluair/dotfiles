@@ -17,4 +17,4 @@ type: project
 - 10 chapters spanning 2025-2045
 - Quality: audited at 8.2/10, stories 86 and 92 rated 9/10
 - Key fix: parts 54-56 had JSON meta.yaml (fixed to YAML)
-- bdfacts owns all narrative content now, no dependency on bdpolicylab/omtt
+- bdfacts owns all narrative content now, no dependency on bdpolicylab

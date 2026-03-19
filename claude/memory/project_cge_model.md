@@ -6,9 +6,9 @@ type: project
 
 ## GTAP CGE Model for Bangladesh (OMTT)
 
-**Branch:** `feat/cge-model` on `D:/omtt`
-**Plan:** `D:/omtt/docs/superpowers/plans/2026-03-11-gtap-cge-model.md`
-**Spec:** `D:/omtt/docs/superpowers/specs/2026-03-11-gtap-cge-model-design.md`
+**Branch:** `feat/cge-model` on `D:/bdpolicylab`
+**Plan:** `D:/bdpolicylab/docs/superpowers/plans/2026-03-11-gtap-cge-model.md`
+**Spec:** `D:/bdpolicylab/docs/superpowers/specs/2026-03-11-gtap-cge-model-design.md`
 
 ### Architecture
 - Pure Python CGE calibrated from real GTAP 10A data (HAR files via `harpy3`)
@@ -39,9 +39,9 @@ type: project
 - **Task 15:** Final lint, full test suite, verification
 
 ### Key Technical Notes
-- GTAP data at `D:/omtt/GTAP10A_GTAP_AY.pkg` (ZIP format)
+- GTAP data at `D:/bdpolicylab/GTAP10A_GTAP_AY.pkg` (ZIP format)
 - VDFM is (65, 66, 141) — slice to (65, 65, 141) to skip CGDS column
 - EVFA (8, 66, 141) is factor-by-sector; EVOA (8, 141) is factor-by-region only
 - HAR set headers: H1=REG, H2=TRAD_COMM, H6=ENDW_COMM
 - Tiny 2x2 synthetic data produces ill-conditioned matrices (expected, not a bug)
-- Windows paths: use `D:/omtt` not `/d/omtt` in Python Path objects
+- Windows paths: use `D:/bdpolicylab` not `/d/bdpolicylab` in Python Path objects

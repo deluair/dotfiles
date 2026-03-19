@@ -6,7 +6,7 @@ Validate trade data using the trade toolkit. Use for TradeWeave or any trade ana
 
 ### Validate trade.db
 ```bash
-uv run python ~/scripts/trade-toolkit/trade_toolkit.py validate-db ~/trade-explorer/data/trade.db
+uv run python ~/scripts/trade-toolkit/trade_toolkit.py validate-db ~/tradeweave/data/trade.db
 ```
 
 ### Look up HS code
