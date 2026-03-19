@@ -154,7 +154,10 @@ Project skills created:
 - `trade-explorer/.claude/skills/add-research-page/` - scaffold new research pages
 
 ### Agent Limits
-- [Max 10 parallel agents](feedback_max_agents.md): Never launch more than 10 agents at once. Batch in waves, write results to /tmp.
+- [Max 15 parallel agents](feedback_max_agents.md): Never launch more than 15 agents at once. Batch in waves, write results to /tmp.
+
+### Adaptive Learning
+- [Always learn adaptively](feedback_adaptive_learning.md): One correction = permanent behavior change. Question assumptions early. Don't cargo-cult patterns. If something is unnecessary, stop doing it immediately.
 
 ### Key Patterns Identified
 - Build-then-audit cycle: build features, then obsessively verify data
