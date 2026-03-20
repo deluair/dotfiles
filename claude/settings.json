@@ -17,11 +17,8 @@
   },
   "enabledPlugins": {
     "superpowers@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
     "commit-commands@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
     "telegram@claude-plugins-official": true
   },
-  "effortLevel": "high",
   "skipDangerousModePermissionPrompt": true
 }
