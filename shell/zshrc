@@ -28,3 +28,10 @@ alias om="cd ~/bdpolicylab"
 
 # Added by Antigravity
 export PATH="/Users/mddeluairhossen/.antigravity/antigravity/bin:$PATH"
+
+# bun completions
+[ -s "/Users/mddeluairhossen/.bun/_bun" ] && source "/Users/mddeluairhossen/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
