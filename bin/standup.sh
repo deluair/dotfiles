@@ -16,7 +16,16 @@ echo "dotfiles:"
 cd "$DOTFILES_DIR"
 git add claude/ shell/ bin/ *.sh Makefile Brewfile 2>/dev/null || true
 git diff --cached --quiet || git commit -m "sync memory"
-git push 2>/dev/null && echo "  OK" || echo "  already up to date"
+if ! git push 2>/dev/null; then
+    echo "  behind remote, rebasing..."
+    if git pull --rebase 2>/dev/null && git push 2>/dev/null; then
+        echo "  OK (rebased + pushed)"
+    else
+        echo "  FAILED (resolve manually)"
+    fi
+else
+    echo "  OK"
+fi
 echo ""
 
 # Push all project repos
@@ -28,7 +37,17 @@ for repo in $REPOS; do
             printf "  %-20s up to date\n" "$repo"
         else
             printf "  %-20s pushing $AHEAD commit(s)... " "$repo"
-            cd "$HOME/$repo" && git push 2>/dev/null && printf "OK\n" || printf "FAILED\n"
+            if cd "$HOME/$repo" && git push 2>/dev/null; then
+                printf "OK\n"
+            else
+                # Remote has new commits, rebase and retry
+                printf "behind, rebasing... "
+                if git pull --rebase 2>/dev/null && git push 2>/dev/null; then
+                    printf "OK\n"
+                else
+                    printf "FAILED (resolve manually)\n"
+                fi
+            fi
         fi
     fi
 done

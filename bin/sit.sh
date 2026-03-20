@@ -7,10 +7,24 @@ source "$DOTFILES_DIR/paths.sh"
 echo "=== sit ($MACHINE_NAME) ==="
 echo ""
 
-# Pull dotfiles
+# Pull dotfiles (stash local changes if needed)
 echo "Pulling dotfiles..."
 cd "$DOTFILES_DIR"
-git pull --ff-only 2>/dev/null || git pull
+DOTFILES_STASHED=false
+if ! git diff --quiet 2>/dev/null || ! git diff --cached --quiet 2>/dev/null; then
+    if git stash push -m "sit-auto-$(date +%s)" 2>/dev/null; then
+        DOTFILES_STASHED=true
+        echo "  (stashed local changes)"
+    fi
+fi
+git pull --ff-only 2>/dev/null || git pull --rebase 2>/dev/null || git pull
+if $DOTFILES_STASHED; then
+    if git stash pop 2>/dev/null; then
+        echo "  (restored local changes)"
+    else
+        echo "  CONFLICT in dotfiles (changes in stash@{0}, resolve manually)"
+    fi
+fi
 echo ""
 
 # One-time repo rename migration (safe to re-run)
