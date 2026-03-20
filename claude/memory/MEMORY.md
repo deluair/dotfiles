@@ -178,6 +178,14 @@ Project skills created:
 
 See [hardware.md](hardware.md). 4 machines: Mac Mini M4, MacBook Air M4 (both 256GB), Samsung Galaxy Book Edge (Snapdragon, 512GB), Dell Precision 5560 (32GB, 1TB). 256GB Macs are tight with 18GB trade.db.
 
+## TradeWeave Sector Trade Monitor (2026-03-20)
+
+Built a quarterly publication platform at /monitor with 10 sector deep-dive reports (Energy, Fertilizers, Grains, Semiconductors, Metals, Textiles, Pharma, Automotive, Chemicals, Food). Python pipeline fetches Comtrade/FRED/BLS/Census data, generates JSON + markdown. Next.js renders NDSU-style reports with exhibits, tables, horizontal bar charts. All 10 Q4 2025 issues published with real data and written narratives. Audited twice. Light theme redesign completed 2026-03-20 (79 files, 14 commits). See [project_tradeweave_light_theme.md](project_tradeweave_light_theme.md).
+
+## TradeWeave Monitor Maps (pending)
+
+See [project_monitor_maps.md](project_monitor_maps.md). Adding NDSU-style choropleth + D3 SVG flow arc maps to all 10 monitor reports. Brainstorming paused with all decisions made. Resume from spec at `docs/superpowers/specs/2026-03-20-monitor-maps-design.md`.
+
 ## TradeWeave Audit (2026-03-12)
 
 See [tradeweave_audit_2026_03.md](tradeweave_audit_2026_03.md) for full details. 3-wave audit, 49 CRITICAL fixes, 44 files. Key: FAOSTAT 1e3 not 1e6, ECI citation is Hidalgo 2009 PNAS, PCI negatives are normal, HHI thresholds 0.15/0.25, unit values in USD/t not $/kg.
