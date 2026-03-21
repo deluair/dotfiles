@@ -2,3 +2,5 @@
 *.swp
 *.swo
 config.sh
+.gitsecret/keys/random_seed
+!*.secret
