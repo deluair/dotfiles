@@ -3,9 +3,76 @@
 ## About Me
 - Md Deluair Hossen, PhD, Post-Doc, University of Tennessee
 - Domain: BD policy, economics, trade, open data, genomics, geospatial, AI/ML
-- Projects: bdpolicylab.com (OMTT), bdfacts.org (BDFacts), tradeweave.org (TradeWeave)
 - GitHub: github.com/deluair
 - Default language: Python
+
+## Projects (4 repos, 3 public platforms + 1 private life OS)
+
+### BDPolicyLab (bdpolicylab.com) -- ~/bdpolicylab
+- **What**: Solo AI-augmented policy think tank for Bangladesh (OMTT)
+- **Stack**: FastAPI + aiosqlite + Jinja2, Python 3.11, uv
+- **DB**: bdpolicy.db (aiosqlite, async), govtwin.db (government digital twin)
+- **Key modules**:
+  - 18 analyzer modules (banking, climate, education, fiscal, etc.)
+  - 32 data collectors (BB, FRED, WB, IMF, ILO, HDX, etc.)
+  - 17 publication generators (policy briefs)
+  - Narrative engine (Pueyo-style long-form, YAML frontmatter + chart directives)
+  - EconAI toolkit (47 files): 12 estimators (OLS, IV, DiD, RDD, Double ML, Causal Forest, etc.), figures, tables, research gap finder, literature search
+  - GovTwin: 5-layer government digital twin (263 entities, 35 relationships, Claude brain with 6 tools, counterfactual simulation, peer country benchmarking)
+  - Stories engine (AI data stories)
+- **CLI**: `python -m app.cli` (serve, generate-*, collect-*, narrative-*, govtwin)
+- **Deploy**: systemd, port 8001, rsync to VPS
+- **Tests**: 158 tests, pytest-asyncio
+
+### BDFacts (bdfacts.org) -- ~/bdfacts
+- **What**: Bangladesh open data education platform (free public good, no ads/login)
+- **Stack**: React 19 + Vite 7 SPA, FastAPI backend, bilingual (Bangla-first)
+- **DB**: analytics.db, wdi.db (57MB WDI), bangladesh.db (symlink to OneDrive), baci.db (215MB trade)
+- **Key modules**:
+  - 69 lazy-loaded routes, 48 page components
+  - 40 life simulators (salary, education, family, fiscal impact)
+  - 41 sector projections (growth, fiscal, poverty, HDI, ARIMA, OLS)
+  - 9 economic models (Solow, Harrod-Domar, Phillips, Taylor, ERPT, fiscal multiplier)
+  - 100 data narratives (25 story series)
+  - PWA with Workbox (292 precache entries)
+- **CLI**: npm scripts (dev, build, test)
+- **Deploy**: rsync dist/ + backend to VPS, systemd (bddata-backend), Nginx
+- **Tests**: Playwright E2E (33 routes + 10 journeys)
+
+### TradeWeave (tradeweave.org) -- ~/tradeweave
+- **What**: International trade analytics platform
+- **Stack**: Next.js 16 + React 19 + TypeScript (strict), Tailwind v4, D3.js v7, Deck.gl v9
+- **DB**: trade.db (19GB, read-only, IMMUTABLE on VPS), app.db (writable), imf.db (627MB, read-only)
+- **Key modules**:
+  - 52 pages, 135 API routes, 15 D3/Deck.gl visualizations
+  - Live vessel AIS + cargo flight tracking (3D globe)
+  - Product space (Hausmann-Hidalgo), gravity model, tariff simulation
+  - ECI/PCI rankings, RCA analysis, supply chain mapping
+  - Commodities (71 Pink Sheet prices, FAOSTAT food security)
+  - 200-year historical trade flows, Sankey diagrams
+  - 10 Python data ingest scripts (BACI, Gravity, CHELEM, FAOSTAT, etc.)
+  - AI weekly intelligence briefings
+- **Data conventions**: BACI in thousands USD, PCI zero-centered (never filter negatives), RCA dimensionless, ISO3 uppercase
+- **Deploy**: pm2, rsync to VPS, chmod 444 trade.db + imf.db post-deploy
+- **Tests**: npm run lint
+
+### DulalRatna (private) -- ~/dulalratna
+- **What**: Personal life OS (health, finance, career, family, discipline, AI assistant)
+- **Stack**: FastAPI + SQLite (WAL) + vanilla JS SPA, Python 3.11, uv
+- **DB**: me.db (schema v5, 30+ tables, append-only, FTS5 memories)
+- **Key modules**:
+  - AI brain: GLM-4.7 via z.ai, NanoClaw v3 agentic loop, 28 tools, 12 rounds
+  - Analytics engine: trends, anomaly detection (z-score + IQR), Holt's forecasting, cross-domain correlations
+  - Config system: centralized thresholds, tax brackets, rates
+  - Projections: Monte Carlo retirement/house/NC move, Framingham CVD, prediabetes
+  - Alerts: health, finance, goals, documents, TTL cleanup
+  - Discipline: wins/slips/streaks, heartbeat (morning briefing, evening check-in)
+  - Telegram bot: 14 commands + free-form NLP + proactive heartbeat
+  - Ingestion: CDA XML health, bank CSV, Apple Health, Amazon orders, Taptap remittance
+  - 12-tab dashboard (overview, health, finance, projections, risk, goals, timeline, monte carlo, AI, jobs, discipline, analytics)
+- **CLI**: `uv run python run_me.py`
+- **Deploy**: systemd, port 8050
+- **Repo**: PRIVATE (github.com/deluair/dulalratna)
 
 ## Environment
 - Current machine: read `~/.claude/.machine`, then `~/dotfiles/config.sh` for MACHINE_NAME
