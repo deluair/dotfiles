@@ -63,6 +63,11 @@
 - VPS trade.db backup: Google Drive root (`trade.db`), not OneDrive. Restore via rclone on VPS
 
 ## Deploy
+- ALL work happens locally. VPS only receives finished, tested code via deploy.sh
+- NEVER run generators, collectors, or any data-modifying commands on VPS via SSH
+- NEVER touch, delete, replace, or modify database files on VPS. Ask first
+- VPS is a dumb server: receives code, installs deps, restarts service. That is all
+- If deploy health-check fails, check logs (journalctl), fix code LOCALLY, redeploy
 - VPS: `npm install` not `npm ci`. Remove WAL/SHM before/after DB ops
 - Verify SSH before transfers. Build locally first. Health-check after deploy
 
