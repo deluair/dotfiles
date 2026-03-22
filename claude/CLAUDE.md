@@ -16,9 +16,9 @@ All 4 share one OVH VPS (vps-45aafae5.vps.ovh.us, ubuntu@40.160.2.223). All use 
 - **DB**: bdpolicy.db (aiosqlite, async, key tables: data_series, data_points, publications, collection_log), govtwin.db (government digital twin)
 - **Async everywhere**: all DB ops, collectors, analyzers, generators are async
 - **Key modules**:
-  - 18 analyzer modules (banking, climate, education, fiscal, energy, agriculture, etc.)
-  - 32 data collectors (BB, FRED, WB, IMF, ILO, HDX x5, FAO, EIA, BLS, NOAA, Comtrade, etc.)
-  - 17 publication generators (policy briefs, use assemble_html() from base.py, register in registry.py)
+  - 58 analyzer modules (banking, climate, education, fiscal, energy, agriculture, etc.)
+  - 37 data collectors (BB, FRED, WB, IMF, ILO, HDX x5, FAO, EIA, BLS, NOAA, Comtrade, etc.)
+  - 73 publication generators (policy briefs, use assemble_html() from base.py, register in registry.py)
   - Narrative engine (Pueyo-style long-form, YAML frontmatter + {{chart:name}} directives, Plotly charts)
   - EconAI toolkit (app/econai/, 47 files, 13.5K lines): 12 estimators (OLS, IV, Panel FE, DiD, RDD, Double ML, Causal Forest, Synthetic DiD, Staggered DiD, Shift-Share, Bounds, Randomization Inference), figures (binscatter, coefficient, event study), tables (regression, balance, summary stats), research gap finder (6 modules), literature search (OpenAlex, Semantic Scholar, BibTeX)
   - GovTwin (app/govtwin/): 5-layer government digital twin (263 entities, 35 relationship types, 50 policy domains, 100 legal frameworks, 20 committees). Claude Sonnet 4 brain with 6 tools, counterfactual simulation (merge/dissolve/split/transfer), 5 peer countries (Vietnam, India, Sri Lanka, Malaysia, Philippines), 225 comparative metrics. Schema v5, 20+ tables.
@@ -28,7 +28,7 @@ All 4 share one OVH VPS (vps-45aafae5.vps.ovh.us, ubuntu@40.160.2.223). All use 
 - **CLI**: `python -m app.cli` (serve, generate-pulse, generate-all, collect-all, collect bb, narrative-list, narrative-build, narrative-build-all, govtwin seed/scrape/bridge/query/stats/tree/simulate, status)
 - **API gotchas**: IMF uses DataMapper API (NOT SDMX), ILO uses SDMX-JSON 2.0, FAO uses local bulk zips (Area Code 16 = Bangladesh), Plotly 6 add_vline with annotation_text + string x-axis broken (use add_shape + add_annotation)
 - **Deploy**: systemd (bdpolicylab), port 8001, rsync to VPS (excludes data/), health check /api/health
-- **Tests**: 158 tests, pytest-asyncio (asyncio_mode=auto), skip test_collectors.py::test_scheduler_config
+- **Tests**: 499 tests, pytest-asyncio (asyncio_mode=auto), skip test_collectors.py::test_scheduler_config
 - **Env**: FRED_API_KEY, COMTRADE_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY, EIA_API_KEY, BLS_API_KEY, NOAA_TOKEN, ADMIN_KEY, DATABASE_PATH
 
 ### BDFacts (bdfacts.org) -- ~/bdfacts
@@ -37,14 +37,14 @@ All 4 share one OVH VPS (vps-45aafae5.vps.ovh.us, ubuntu@40.160.2.223). All use 
 - **DB**: analytics.db (sessions/events/feedback), wdi.db (57MB World Bank WDI), bangladesh.db (symlink to OneDrive), baci.db (215MB trade)
 - **Routes**: src/config/routes.js is single source of truth. routeMeta.js for bilingual SEO.
 - **Key modules**:
-  - 69 lazy-loaded routes, 48 page components, 15 model pages
+  - 81 lazy-loaded routes, 57 page components, 15 model pages, 10 game pages
   - 40 life simulators (src/components/simulators/, preloaded via requestIdleCallback)
-  - 41 sector projections (backend/models/sectors.py, auto-discovered via /api/simulate/sector)
+  - 5 sector simulations (agriculture, climate, trade, energy, health)
   - 9 economic models (Solow, Harrod-Domar, Phillips, Taylor, ERPT, fiscal multiplier, poverty-growth, HDI, budget sustainability)
-  - 100 data narratives in 25 story series (src/data/narrativeData.js, migrated from OMTT)
+  - 400 data narratives in 25 story series (src/data/narrativeData.js, migrated from OMTT)
   - PWA with Workbox (292 precache entries, autoUpdate, installable)
   - 7 React contexts (Language, Theme, Analytics, LifeSim, Trails, Bookmarks, DataMode)
-  - Backend: ~30 endpoints with SlowAPI rate limiting
+  - Backend: ~60 endpoints with SlowAPI rate limiting
 - **Styling**: dark mode default, glassmorphism, CSS variables, Noto Sans Bengali + Sora + Manrope fonts
 - **CLI**: npm run dev/build/lint/test/deploy, deploy.sh reads .env for VPS_HOST/VPS_USER
 - **Deploy**: rsync dist/ to /var/www/bddata/dist/, rsync backend/, systemd (bddata-backend), Nginx, health check /api/health. index.html no-cache, /assets/ immutable 1yr.
@@ -54,11 +54,11 @@ All 4 share one OVH VPS (vps-45aafae5.vps.ovh.us, ubuntu@40.160.2.223). All use 
 
 ### TradeWeave (tradeweave.org) -- ~/tradeweave
 - **What**: International trade analytics platform. 238 countries, 5,022 HS6 products, 30 years BACI data (1995-2024), 200+ years historical.
-- **Stack**: Next.js 16 (App Router) + React 19 + TypeScript (strict), Tailwind v4, D3.js v7 (13 components), Deck.gl v9 + MapLibre (2 components), better-sqlite3
+- **Stack**: Next.js 16 (App Router) + React 19 + TypeScript (strict), Tailwind v4, D3.js v7 (12 components), Deck.gl v9 + MapLibre (3 components), better-sqlite3
 - **DB**: trade.db (19GB, read-only, WAL mode, 64MB cache, 4GB mmap, IMMUTABLE on VPS), app.db (writable, auto-created), imf.db (627MB, read-only, 32MB cache, 1GB mmap). Local: data/. VPS: /opt/tradeweave/data (DATA_DIR env).
 - **All pages 'use client' except layout.tsx.** useSearchParams() requires Suspense wrapper.
 - **Key modules**:
-  - 52 pages, 135 API routes, 15 D3/Deck.gl visualizations (Treemap, BarChart, LineChart, ScatterPlot, StackedArea, GeoMap, AnimatedGeoMap, ProductSpace, Sankey, TradeNetwork, GravityScatter, RadarChart, ResidualMap, TradeFlowMap, TradeGlobe)
+  - 64 pages, 150 API routes, 16 D3/Deck.gl visualizations (Treemap, BarChart, LineChart, ScatterPlot, StackedArea, GeoMap, AnimatedGeoMap, ProductSpace, Sankey, TradeNetwork, GravityScatter, RadarChart, ResidualMap, TradeFlowMap, TradeGlobe, SankeyChart)
   - Live vessel AIS + cargo flight tracking (3D Deck.gl globe, OpenSky + Digitraffic + Barentswatch)
   - Product space (Hausmann-Hidalgo), gravity model, tariff simulation, ML forecasting, trade costs
   - ECI/PCI rankings, RCA analysis, supply chain mapping, structural change
@@ -89,7 +89,7 @@ All 4 share one OVH VPS (vps-45aafae5.vps.ovh.us, ubuntu@40.160.2.223). All use 
   - Telegram bot (melib/telegram_bot.py): 14 commands (/start /health /finance /goals /jobs /apply /briefing /alerts /reflect /discipline /streak /ratna /chart /clear), free-form NLP via GLM, proactive heartbeat, auth via TELEGRAM_ALLOWED_USERS
   - Ingestion: CDA XML health, bank/CC CSV (auto-detect format), Apple Health (iterparse), Amazon orders, Taptap remittance, file watcher
   - Dashboard: 12 tabs (overview, health, finance, projections, risk, goals, timeline, monte carlo, AI, jobs, discipline, analytics), data entry forms
-  - Server: FastAPI v4.0, 46 routes, port 8050, CORS enabled
+  - Server: FastAPI v4.0, 41 routes, port 8050, CORS enabled
 - **Health conventions**: test_name (not test), flag (not flag_code), panel (not panel_name). Lab queries: use full LOINC names like "Cholesterol in LDL [Mass/volume]". Glucose columns: dulal and ratna per row.
 - **CLI**: `uv run python run_me.py` (status, ingest), `uv run python server.py`, `uv run python run_telegram.py`
 - **Deploy**: systemd, port 8050
