@@ -20,5 +20,6 @@
     "commit-commands@claude-plugins-official": true,
     "telegram@claude-plugins-official": true
   },
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "effortLevel": "high"
 }
